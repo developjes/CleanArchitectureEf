@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.Ecommerce.Application.DTO\Example.Ecommerce.Application.DTO.csproj" />
+    <ProjectReference Include="..\Example.Ecommerce.Domain\Example.Ecommerce.Domain.csproj" />
+    <ProjectReference Include="..\Example.Ecommerce.Transversal.Common\Example.Ecommerce.Transversal.Common.csproj" />
+  </ItemGroup>
+
+</Project>
