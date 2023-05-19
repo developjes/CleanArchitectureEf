@@ -4,6 +4,7 @@ using Example.Ecommerce.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Example.Ecommerce.Persistence.Migrations
 {
     [DbContext(typeof(EfApplicationDbContext))]
-    partial class EfApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230519191144_AddOrderState")]
+    partial class AddOrderState
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

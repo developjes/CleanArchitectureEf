@@ -1,5 +1,4 @@
-﻿using Example.Ecommerce.Domain.Entities.Parametrization;
-using Example.Ecommerce.Persistence.Configurations.Common;
+﻿using Example.Ecommerce.Persistence.Configurations.Common;
 using Example.Ecommerce.Persistence.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -9,11 +8,9 @@ namespace Example.Ecommerce.Persistence.Contexts;
 
 public class EfApplicationDbContext : DbContext
 {
-    #region DbSet Entities
-
-    public virtual DbSet<StateEntity>? StateEntity { get; set; }
-
-    #endregion DbSet Entities
+    //#region DbSet Entities
+    //public virtual DbSet<StateEntity>? StateEntity
+    //#endregion DbSet Entities
 
     #region Interceptors
 
