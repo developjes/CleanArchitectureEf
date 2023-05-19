@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Example.Ecommerce.Domain.Entities.Parametrization;
+using Example.Ecommerce.Persistence.Seeders.Parametrization;
 using Microsoft.EntityFrameworkCore;
-using Example.Ecommerce.Domain.Entities.Parametrization;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Example.Ecommerce.Persistence.Configurations.Parametrization;
 
@@ -22,7 +23,7 @@ public sealed class StateConfiguration : IEntityTypeConfiguration<StateEntity>
             .HasColumnName("Name")
             .HasComment("State Name")
             .HasColumnType("varchar")
-            .HasMaxLength(50)
+            .HasMaxLength(100)
             .HasColumnOrder(2)
             .IsUnicode(false)
             .IsRequired(required: true);
@@ -40,12 +41,17 @@ public sealed class StateConfiguration : IEntityTypeConfiguration<StateEntity>
 
         #region Relationships
 
-        // Unique Index
-        stateBuilder.HasIndex(state => state.Name).IsUnique();
+        stateBuilder.HasMany(state => state.Products)
+            .WithOne(product => product.State)
+            .HasForeignKey("_stateId")
+            .HasConstraintName("FK_Product_State_StateId")
+            .OnDelete(DeleteBehavior.Restrict);
 
         #endregion Relationships
 
         #region Seeder
+
+        stateBuilder.AddSeeder();
 
         #endregion Seeder
 

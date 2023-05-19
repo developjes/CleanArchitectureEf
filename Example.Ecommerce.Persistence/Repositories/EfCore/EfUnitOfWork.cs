@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Example.Ecommerce.Application.DTO.Common;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Persistence.Contexts;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Collections;
 using System.Data;
 using System.Data.Common;
-using Microsoft.Data.SqlClient;
 using System.Reflection;
-using Example.Ecommerce.Application.DTO.Common;
-using Example.Ecommerce.Persistence.Contexts;
-using System.Collections;
-using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
 

@@ -23,12 +23,16 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
         {
             switch (entry.State)
             {
-                case EntityState.Added :
+                case EntityState.Added:
                     entry.Entity.CreateAt = DateTime.Now.DateTimeZoneInfo();
+
+                    if (entry.Entity.CreatedBy is null) entry.Entity.CreatedBy = "System";
                     break;
 
                 case EntityState.Modified:
                     entry.Entity.UpdateAt = DateTime.Now.DateTimeZoneInfo();
+
+                    if (entry.Entity.LastModifiedBy is null) entry.Entity.LastModifiedBy = "System";
                     break;
             }
         }

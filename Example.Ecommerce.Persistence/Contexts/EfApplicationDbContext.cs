@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Example.Ecommerce.Persistence.Interceptors;
-using System.Reflection;
-using Example.Ecommerce.Domain.Entities.Parametrization;
+﻿using Example.Ecommerce.Domain.Entities.Parametrization;
 using Example.Ecommerce.Persistence.Configurations.Common;
+using Example.Ecommerce.Persistence.Interceptors;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Reflection;
 
 namespace Example.Ecommerce.Persistence.Contexts;
 
@@ -37,13 +37,17 @@ public class EfApplicationDbContext : DbContext
 
     #region Methods
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.AddAuditFieldsConfiguration();
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.AddPrimaryKeyConfiguration();
+        modelBuilder.AddAuditFieldsConfiguration();
+
         base.OnModelCreating(modelBuilder);
     }
 

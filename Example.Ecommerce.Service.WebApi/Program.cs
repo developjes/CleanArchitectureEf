@@ -4,15 +4,10 @@ using Example.Ecommerce.Service.WebApi.Handlers.Extension.AntiforgeryCookie;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Authentication;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Converters;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Feature;
-using Example.Ecommerce.Service.WebApi.Handlers.Extension.HealthCheck;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Injection;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Swagger;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Versioning;
-using Example.Ecommerce.Service.WebApi.Handlers.Middleware;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Text.Json.Serialization;
@@ -200,9 +195,9 @@ else
 // Cancel request
 //app.UseMiddleware<TaskCanceledMiddleware>();
 // Scan Headers: https://securityheaders.com/
-app.UseMiddleware<SecurityHeadersMiddleware>();
+//app.UseMiddleware<SecurityHeadersMiddleware>();
 // Global Exception
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseCors("policyApiEcommerce");

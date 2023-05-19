@@ -1,33 +1,30 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿namespace Example.Ecommerce.Service.WebApi.Handlers.Extension.Feature;
 
-namespace Example.Ecommerce.Service.WebApi.Handlers.Extension.Feature
+public static class FeatureExtension
 {
-    public static class FeatureExtension
+    public static IServiceCollection AddFeature(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddFeature(this IServiceCollection services, IConfiguration configuration)
-        {
-            #region cors
+        #region cors
 
-            IConfiguration corsOrigin = configuration.GetSection("CorsOrigin");
-            string localUrl = corsOrigin.GetSection("Local").Value ?? string.Empty;
+        IConfiguration corsOrigin = configuration.GetSection("CorsOrigin");
+        string localUrl = corsOrigin.GetSection("Local").Value ?? string.Empty;
 
-            const string myPolicy = "policyApiEcommerce";
-            services.AddCors(options =>
-                options.AddPolicy(myPolicy,
-                    builder => builder
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .WithOrigins(localUrl!)
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowAnyOrigin()
-                )
-            );
+        const string myPolicy = "policyApiEcommerce";
+        services.AddCors(options =>
+            options.AddPolicy(myPolicy,
+                builder => builder
+                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .WithOrigins(localUrl!)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+            )
+        );
 
-            #endregion
+        #endregion
 
-            services.AddMvc();
+        services.AddMvc();
 
-            return services;
-        }
+        return services;
     }
 }

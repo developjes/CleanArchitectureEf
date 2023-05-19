@@ -1,10 +1,13 @@
-﻿namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+﻿using Example.Ecommerce.Domain.Entities.Common;
 
-public sealed class ReviewEntity
+namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+
+public sealed class ReviewEntity : BaseDomainEntity
 {
     #region Fields Prop
 
     public string? Name { get; set; }
+    public int Rating { get; set; }
     public string? Comment { get; set; }
 
     #endregion Fields Prop

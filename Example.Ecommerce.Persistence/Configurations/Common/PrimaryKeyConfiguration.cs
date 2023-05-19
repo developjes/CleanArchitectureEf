@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Example.Ecommerce.Persistence.Configurations.Common;
 
@@ -10,14 +10,16 @@ public static class PrimaryKeyConfiguration
         foreach (IMutableEntityType entityType in modelBuilder.Model.GetEntityTypes())
         {
             foreach (IMutableProperty property in entityType.GetProperties()
-                .Where(p => p.ClrType.Equals(typeof(int)) && p.Name.Equals("Id")))
+                .Where(p => (p.Name.Equals("Id") || p.Name.Equals($"{entityType.Name}Id")) && p.ClrType.Equals(typeof(int))))
             {
-                property.SetColumnName("Id");
+                property.SetColumnName(property.Name);
                 property.SetColumnType("int");
-                property.SetIdentityIncrement(1);
                 property.SetComment("Table Id");
+                property.SetIdentityIncrement(1);
                 property.SetColumnOrder(1);
-                property.IsNullable = true;
+                property.IsNullable = false;
+
+                entityType.SetPrimaryKey(property);
             }
         }
 

@@ -1,23 +1,41 @@
-﻿using System.Runtime.Serialization;
+﻿using System.ComponentModel;
 
 namespace Example.Ecommerce.Domain.Enums.Parametrization;
 
-public enum EProduct : byte
+public enum EAllStates : byte
 {
-    [EnumMember(Value = "Inactive State")]
+    [Description("Inactive state")]
     Inactive = 1,
-    [EnumMember(Value = "Active State")]
+    [Description("Active state")]
+    Active = 2,
+    [Description("Pending state")]
+    Pending = 3,
+    [Description("Completed state")]
+    Completed = 4,
+    [Description("Sent state")]
+    Sent = 5,
+    [Description("Error state")]
+    Error = 6
+}
+
+[DefaultValue(Active)]
+public enum EProductState : byte
+{
+    [Description("Inactive")]
+    Inactive = 1,
+    [Description("Active")]
     Active = 2
 }
 
-public enum EOrder : byte
+[DefaultValue(Pending)]
+public enum EOrderState : byte
 {
-    [EnumMember(Value = "Pending State")]
-    Pending,
-    [EnumMember(Value = "Completed State")]
-    Completed,
-    [EnumMember(Value = "Sent State")]
-    Sent,
-    [EnumMember(Value = "Error State")]
-    Error
+    [Description("Pending")]
+    Pending = 3,
+    [Description("Completed")]
+    Completed = 4,
+    [Description("Sent")]
+    Sent = 5,
+    [Description("Error")]
+    Error = 6
 }
