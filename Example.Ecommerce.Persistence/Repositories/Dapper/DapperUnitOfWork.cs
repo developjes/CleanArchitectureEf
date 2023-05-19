@@ -3,48 +3,47 @@ using Example.Ecommerce.Persistence.Contexts;
 using System.Collections;
 using System.Data;
 
-namespace Example.Ecommerce.Persistence.Repositories.Dapper
+namespace Example.Ecommerce.Persistence.Repositories.Dapper;
+
+public class DapperUnitOfWork : IDapperUnitOfWork
 {
-    public class DapperUnitOfWork : IDapperUnitOfWork
+    private Hashtable? _repositories;
+    private readonly IDbConnection _context;
+    private bool _disposed;
+
+    public DapperUnitOfWork(DapperApplicationDbContext context)
     {
-        private Hashtable? _repositories;
-        private readonly IDbConnection _context;
-        private bool _disposed;
+        _context = context.CreateConnection();
+    }
 
-        public DapperUnitOfWork(DapperApplicationDbContext context)
+    public IDapperBaseRepository<T> DapperRepository<T>() where T : class
+    {
+        string type = typeof(T).Name;
+        _repositories ??= new Hashtable();
+
+        if (!_repositories.ContainsKey(type))
         {
-            _context = context.CreateConnection();
+            Type repositoryType = typeof(DapperBaseRepository<>);
+            object? repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
+            _repositories.Add(type, repositoryInstance);
         }
 
-        public IDapperBaseRepository<T> DapperRepository<T>() where T : class
+        return (IDapperBaseRepository<T>)_repositories[type]!;
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected void Dispose(bool disposing)
+    {
+        if (!_disposed)
         {
-            string type = typeof(T).Name;
-            _repositories ??= new Hashtable();
+            if (disposing) _context.Dispose();
 
-            if (!_repositories.ContainsKey(type))
-            {
-                Type repositoryType = typeof(DapperBaseRepository<>);
-                object? repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
-                _repositories.Add(type, repositoryInstance);
-            }
-
-            return (IDapperBaseRepository<T>)_repositories[type]!;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing) _context.Dispose();
-
-                _disposed = true;
-            }
+            _disposed = true;
         }
     }
 }

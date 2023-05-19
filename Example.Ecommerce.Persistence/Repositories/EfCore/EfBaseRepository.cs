@@ -3,163 +3,175 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Example.Ecommerce.Persistence.Repositories.EfCore
+namespace Example.Ecommerce.Persistence.Repositories.EfCore;
+
+public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
 {
-    public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
+    private readonly DbContext _dbcontext;
+    private readonly DbSet<T> _dbSet;
+
+    public EfBaseRepository(DbContext dbcontext) => (_dbcontext, _dbSet) = (dbcontext, dbcontext.Set<T>());
+
+    public IQueryable<T> AsQuery() => _dbSet.AsQueryable<T>().AsNoTracking();
+
+    public IQueryable<T> AsQuery(
+        bool asTracking,
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        int? top = null,
+        int? skip = null,
+        Expression<Func<T, object>>[] includeProperties = default!
+    )
     {
-        private readonly DbContext _dbcontext;
-        private readonly DbSet<T> _dbSet;
+        IQueryable<T> query = _dbSet.AsQueryable<T>();
 
-        public EfBaseRepository(DbContext dbcontext) => (_dbcontext, _dbSet) = (dbcontext, dbcontext.Set<T>());
-        public IQueryable<T> AsQuery() => _dbSet.AsQueryable<T>().AsNoTracking();
+        if (filter is not null) query = query.Where(filter);
 
-        public IQueryable<T> AsQuery(
-            bool asTracking,
-            Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-            int? top = null,
-            int? skip = null,
-            Expression<Func<T, object>>[] includeProperties = default!
-        )
+        if (orderBy is not null) query = includeProperties.Aggregate(query, (current, include) => current.Include(include));
+
+        if (orderBy is not null) query = orderBy(query);
+
+        if (skip.HasValue) query = query.Skip(skip.Value);
+
+        if (top.HasValue) query = query.Take(top.Value);
+
+        if (asTracking) query = query.AsTracking();
+
+        return query;
+    }
+
+    #region Get methods data
+
+    public async Task<IReadOnlyList<T>> Get(
+        bool asTracking = true,
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        int? top = null,
+        int? skip = null,
+        Expression<Func<T, object>>[] includeProperties = default!,
+        CancellationToken cancellationToken = default
+    ) => await AsQuery(asTracking, filter, orderBy, top, skip, includeProperties).ToListAsync(cancellationToken);
+
+    public async Task<int> Count(
+        bool asTracking,
+        Expression<Func<T, bool>>? filter = null,
+        CancellationToken cancellationToken = default
+    ) => await AsQuery(asTracking: asTracking, filter: filter).CountAsync(cancellationToken);
+
+    public async Task<T?> GetFirst(
+        bool asTracking = true,
+        Expression<Func<T, bool>>? filter = null,
+        int? top = null,
+        int? skip = null,
+        Expression<Func<T, object>>[] includeProperties = default!,
+        CancellationToken cancellationToken = default
+    ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
+            .FirstOrDefaultAsync(cancellationToken);
+
+    public async Task<T?> GetLast(
+        bool asTracking = true,
+        Expression<Func<T, bool>>? filter = null,
+        int? top = null,
+        int? skip = null,
+        Expression<Func<T, object>>[] includeProperties = default!,
+        CancellationToken cancellationToken = default
+    ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
+        .LastOrDefaultAsync(cancellationToken);
+
+    #endregion Get methods data
+
+    #region Insert Data
+
+    public async Task Insert(T tEntity) => await _dbcontext.AddAsync(tEntity);
+
+    public async Task Insert(IEnumerable<T> tEntities) => await _dbcontext.AddRangeAsync(tEntities);
+
+    #endregion Insert Data
+
+    #region Update Data
+
+    public async Task<T> Patch(object entityId, object updateObject)
+    {
+        if (entityId is null)
+            throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
+
+        if (updateObject is null)
+            throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
+
+        T? tEntity = await _dbSet.FindAsync(entityId);
+
+        if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
+
+        foreach (PropertyInfo? dbProperty in
+            tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
         {
-            IQueryable<T> query = _dbSet.AsQueryable<T>();
+            PropertyInfo? propertyNameNewTentity =
+                Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
 
-            if (filter is not null) query = query.Where(filter);
-
-            if (orderBy is not null) query = includeProperties.Aggregate(query, (current, include) => current.Include(include));
-
-            if (orderBy is not null) query = orderBy(query);
-
-            if (skip.HasValue) query = query.Skip(skip.Value);
-
-            if (top.HasValue) query = query.Take(top.Value);
-
-            if (asTracking) query = query.AsTracking();
-
-            return query;
+            if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) == true)
+                dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
         }
 
-        #region Get methods data
+        return tEntity;
+    }
 
-        public async Task<IReadOnlyList<T>> Get(
-            bool asTracking = true,
-            Expression<Func<T, bool>>? filter = null,
-            Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-            int? top = null,
-            int? skip = null,
-            Expression<Func<T, object>>[] includeProperties = default!,
-            CancellationToken cancellationToken = default
-        ) => await AsQuery(asTracking, filter, orderBy, top, skip, includeProperties).ToListAsync(cancellationToken);
+    public T Patch(T? tEntity, object updateObject)
+    {
+        if (tEntity is not null)
+            throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
 
-        public async Task<int> Count(
-            bool asTracking,
-            Expression<Func<T, bool>>? filter = null,
-            CancellationToken cancellationToken = default
-        ) => await AsQuery(asTracking: asTracking, filter: filter).CountAsync(cancellationToken);
+        if (updateObject is null)
+            throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
 
-        public async Task<T?> GetFirst(
-            bool asTracking = true,
-            Expression<Func<T, bool>>? filter = null,
-            int? top = null,
-            int? skip = null,
-            Expression<Func<T, object>>[] includeProperties = default!,
-            CancellationToken cancellationToken = default
-        ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
-                .FirstOrDefaultAsync(cancellationToken);
+        _dbSet.Attach(tEntity!);
 
-        public async Task<T?> GetLast(
-            bool asTracking = true,
-            Expression<Func<T, bool>>? filter = null,
-            int? top = null,
-            int? skip = null,
-            Expression<Func<T, object>>[] includeProperties = default!,
-            CancellationToken cancellationToken = default
-        ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
-            .LastOrDefaultAsync(cancellationToken);
+        if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
 
-        #endregion
-
-        public async Task Insert(T tEntity) => await _dbcontext.AddAsync(tEntity);
-
-        public async Task Insert(IEnumerable<T> tEntities) => await _dbcontext.AddRangeAsync(tEntities);
-
-        public async Task<T> Patch(object entityId, object updateObject)
+        foreach (PropertyInfo? dbProperty in
+            tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
         {
-            if (entityId is null)
-                throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
+            PropertyInfo? propertyNameNewTentity =
+                Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
 
-            if (updateObject is null)
-                throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
-
-            T? tEntity = await _dbSet.FindAsync(entityId);
-
-            if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
-
-            foreach (PropertyInfo? dbProperty in
-                tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
-            {
-                PropertyInfo? propertyNameNewTentity =
-                    Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
-
-                if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) == true)
-                    dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
-            }
-
-            return tEntity;
+            if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) is true)
+                dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
         }
 
-        public T Patch(T? tEntity, object updateObject)
+        return tEntity;
+    }
+
+    public void Update(T tEntity) => _dbcontext.Update(tEntity);
+
+    public void Update(IEnumerable<T> tEntitites) => _dbcontext.UpdateRange(tEntitites);
+
+    #endregion Update Data
+
+    #region Hard Delete Data
+
+    public void Delete(object id) { T? tEntity = _dbSet.Find(id); Delete(tEntity); }
+
+    private void Delete(T? tEntity)
+    {
+        if (tEntity is null)
+            throw new DbUpdateConcurrencyException(nameof(tEntity));
+
+        if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached))
+            _dbSet.Attach(tEntity);
+
+        _dbSet.Remove(tEntity);
+    }
+
+    public void Delete(IEnumerable<T> tEntities)
+    {
+        if (tEntities.Any(x => x is null)) throw new DbUpdateConcurrencyException(nameof(tEntities));
+
+        foreach (T tEntity in tEntities)
         {
-            if (tEntity is not null)
-                throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
-
-            if (updateObject is null)
-                throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
-
-            _dbSet.Attach(tEntity!);
-
-            if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
-
-            foreach (PropertyInfo? dbProperty in
-                tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
-            {
-                PropertyInfo? propertyNameNewTentity =
-                    Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
-
-                if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) is true)
-                    dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
-            }
-
-            return tEntity;
-        }
-
-        public void Update(T tEntity) => _dbcontext.Update(tEntity);
-
-        public void Update(IEnumerable<T> tEntitites) => _dbcontext.UpdateRange(tEntitites);
-
-        public void Delete(object id) { T? tEntity = _dbSet.Find(id); Delete(tEntity); }
-
-        private void Delete(T? tEntity)
-        {
-            if (tEntity is null)
-                throw new DbUpdateConcurrencyException(nameof(tEntity));
-
-            if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached))
-                _dbSet.Attach(tEntity);
+            if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached)) _dbSet.Attach(tEntity);
 
             _dbSet.Remove(tEntity);
         }
-
-        public void Delete(IEnumerable<T> tEntities)
-        {
-            if (tEntities.Any(x => x is null)) throw new DbUpdateConcurrencyException(nameof(tEntities));
-
-            foreach (T tEntity in tEntities)
-            {
-                if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached)) _dbSet.Attach(tEntity);
-
-                _dbSet.Remove(tEntity);
-            }
-        }
     }
+
+    #endregion Hard Delete Data
 }

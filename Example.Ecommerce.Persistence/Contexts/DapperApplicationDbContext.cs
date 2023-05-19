@@ -8,8 +8,8 @@ namespace Example.Ecommerce.Persistence.Contexts
     {
         private readonly string _connectionString;
 
-        public DapperApplicationDbContext(IConfiguration configuration) =>
-            _connectionString = configuration.GetConnectionString("NorthwindConnection")!;
+        public DapperApplicationDbContext(IConfiguration configuration, string connectionStringJsonName) =>
+            _connectionString = configuration.GetConnectionString(connectionStringJsonName)!;
 
         public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
     }

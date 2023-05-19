@@ -52,4 +52,8 @@
     <ProjectReference Include="..\Example.Ecommerce.Transversal.Logging\Example.Ecommerce.Transversal.Logging.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\v1\" />
+  </ItemGroup>
+
 </Project>

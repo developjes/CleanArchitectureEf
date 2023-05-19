@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Example.Ecommerce.Transversal.Common\Example.Ecommerce.Transversal.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Parametrization\" />
+    <Folder Include="UseCases\" />
+  </ItemGroup>
+
 </Project>

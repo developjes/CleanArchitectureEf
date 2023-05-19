@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Parametrization\Request\" />
+    <Folder Include="Parametrization\Response\" />
   </ItemGroup>
 
 </Project>

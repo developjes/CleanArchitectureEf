@@ -1,41 +1,63 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
-using Example.Ecommerce.Application.Interface.Persistence.ExternalServices;
+﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Persistence.Contexts;
-using Example.Ecommerce.Persistence.ExternalServices;
 using Example.Ecommerce.Persistence.Interceptors;
+using Example.Ecommerce.Persistence.Repositories.Dapper;
 using Example.Ecommerce.Persistence.Repositories.EfCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Example.Ecommerce.Persistence
+namespace Example.Ecommerce.Persistence;
+
+public static class ConfigureServices
 {
-    public static class ConfigureServices
+    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+        #region Interceptor
+
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
+        #endregion Interceptor
+
+        #region DbContext
+
+        const string connectionStringJsonName = "NorthwindConnection";
+
+        #region Dapper
+
+        services.AddSingleton(_ => new DapperApplicationDbContext(configuration, connectionStringJsonName));
+
+        #endregion Dapper
+
+        #region EF
+
+        services.AddDbContext<EfApplicationDbContext>(options =>
         {
-            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            options.EnableSensitiveDataLogging();
+            options.UseSqlServer(
+                configuration.GetConnectionString(connectionStringJsonName)!,
+                builder =>
+                {
+                    builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
+                    builder.MigrationsAssembly(typeof(EfApplicationDbContext).Assembly.FullName);
+                    builder.UseNetTopologySuite();
+                }
+            );
+        });
 
-            services.AddSingleton<DapperApplicationDbContext>();
-            services.AddDbContext<EfApplicationDbContext>(options =>
-            {
-                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-                options.EnableSensitiveDataLogging();
-                options.UseSqlServer(
-                    configuration.GetConnectionString("NorthwindConnection")!,
-                    builder =>
-                    {
-                        builder.UseQuerySplittingBehavior(QuerySplittingBehavior.SingleQuery);
-                        builder.MigrationsAssembly(typeof(EfApplicationDbContext).Assembly.FullName);
-                        builder.UseNetTopologySuite();
-                    }
-                );
-            });
+        #endregion EF
 
-            services.AddScoped<IEfUnitOfWork, EfUnitOfWork>();
-            services.AddTransient<IRestService, RestService>();
+        #endregion DbContext
 
-            return services;
-        }
+        #region UnitOfWork
+
+        services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
+        services.AddScoped<IEfUnitOfWork, EfUnitOfWork>();
+
+        #endregion UnitOfWork
+
+        return services;
     }
 }

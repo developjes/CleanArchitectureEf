@@ -1,9 +1,8 @@
 ﻿using System.Data;
 
-namespace Example.Ecommerce.Application.DTO.Common
+namespace Example.Ecommerce.Application.DTO.Common;
+
+public class SqlParamConfig
 {
-    public class SqlParamConfig
-    {
-        public SqlDbType DataType { get; set; }
-    }
+    public SqlDbType DataType { get; set; }
 }
