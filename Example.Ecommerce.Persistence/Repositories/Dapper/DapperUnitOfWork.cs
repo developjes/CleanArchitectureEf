@@ -37,7 +37,7 @@ public class DapperUnitOfWork : IDapperUnitOfWork
         GC.SuppressFinalize(this);
     }
 
-    protected void Dispose(bool disposing)
+    protected virtual void Dispose(bool disposing)
     {
         if (!_disposed)
         {
@@ -46,4 +46,6 @@ public class DapperUnitOfWork : IDapperUnitOfWork
             _disposed = true;
         }
     }
+
+    ~DapperUnitOfWork() => Dispose(false);
 }
