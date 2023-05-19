@@ -1,6 +1,7 @@
-﻿using Example.Ecommerce.Domain.Entities.Parametrization;
+﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Domain.Entities.Parametrization;
 
 namespace Example.Ecommerce.Application.Interface.Persistence.Parametrization
 {
-    public interface IIdentificationTypeRepository : IBaseRepository<IdentificationTypeEntity> { }
+    public interface IIdentificationTypeRepository : IEfBaseRepository<IdentificationTypeEntity> { }
 }

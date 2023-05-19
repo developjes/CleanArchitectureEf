@@ -13,7 +13,7 @@ namespace Example.Ecommerce.Persistence.Configurations.Petition
 
             #region General config
 
-            beneficiaryBuilder.ToTable(name: "Beneficiary", schema: "northwindconnect");
+            beneficiaryBuilder.ToTable(name: "Beneficiary", schema: "Petition");
 
             #endregion General config
 

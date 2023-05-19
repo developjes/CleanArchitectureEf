@@ -16,7 +16,7 @@ namespace Example.Ecommerce.Domain.Entities.Petition
         public string? FirstLastName { get; set; }
         public string? SecondLastName { get; set; }
         public DateTime BirthDate { get; set; }
-        public Point? Location { get; set; }
+        //public Point? Location { get; set; }
 
         #endregion Fields
 

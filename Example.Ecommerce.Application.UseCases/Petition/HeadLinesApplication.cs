@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.ExternalServices;
 using Example.Ecommerce.Application.DTO.Petition.Response;
-using Example.Ecommerce.Application.Interface.Persistence;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Application.Interface.Persistence.ExternalServices;
 using Example.Ecommerce.Application.Interface.UseCases.Petition;
 using Example.Ecommerce.Domain.Entities.ExternalServices;
@@ -13,11 +13,11 @@ namespace Example.Ecommerce.Application.UseCases.Petition
 {
     public class HeadLinesApplication : IHeadLinesApplication
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IEfUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IRestService _restService;
 
-        public HeadLinesApplication(IUnitOfWork unitOfWork, IMapper mapper, IRestService restService) =>
+        public HeadLinesApplication(IEfUnitOfWork unitOfWork, IMapper mapper, IRestService restService) =>
             (_unitOfWork, _mapper, _restService) = (unitOfWork, mapper, restService);
 
         public async Task<Response<IEnumerable<HeadLineDto>>> GetAll()
@@ -26,7 +26,9 @@ namespace Example.Ecommerce.Application.UseCases.Petition
 
             try
             {
-                response.Data = _mapper.Map<List<HeadLineDto>>(await _unitOfWork.HeadLineRepository.Get(
+                IEnumerable<HeadLineEntity> d = await _unitOfWork.EfRepository<HeadLineEntity>().Get();
+
+                response.Data = _mapper.Map<List<HeadLineDto>>(await _unitOfWork.EfRepository<HeadLineEntity>().Get(
                     asTracking: false,
                     includeProperties: new Expression<Func<HeadLineEntity, object>>[]
                     {

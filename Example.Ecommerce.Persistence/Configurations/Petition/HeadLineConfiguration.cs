@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Example.Ecommerce.Persistence.Seeders.Petition;
+using Example.Ecommerce.Domain.Entities.Parametrization;
+using MySql.Data.Types;
+using NetTopologySuite.Geometries;
 
 namespace Example.Ecommerce.Persistence.Configurations.Petition
 {
@@ -13,7 +16,7 @@ namespace Example.Ecommerce.Persistence.Configurations.Petition
 
             #region General config
 
-            headLineBuilder.ToTable(name: "HeadLine", schema: "northwindconnect");
+            headLineBuilder.ToTable(name: "HeadLine", schema: "Petition");
 
             #endregion General config
 
@@ -79,12 +82,15 @@ namespace Example.Ecommerce.Persistence.Configurations.Petition
                 .HasColumnType("date")
                 .HasColumnOrder(7)
                 .IsRequired(required: true);
-
+            /*
             headLineBuilder.Property(headLine => headLine.Location)
                 .HasColumnName("Location")
                 .HasComment("Head Line Location")
-                .HasColumnType("Point")
+                .HasColumnType("GEOMETRY")
+                //.HasConversion(p =>
+                //    new MySqlGeometry(p!.X, p!.Y), value => new Point(value.XCoordinate!.Value, value.YCoordinate!.Value))
                 .IsRequired(required: true);
+            */
 
             headLineBuilder.Ignore(headLine => headLine.AgeYearsRunning);
             headLineBuilder.Ignore(headLine => headLine.AgeMonthsRunning);

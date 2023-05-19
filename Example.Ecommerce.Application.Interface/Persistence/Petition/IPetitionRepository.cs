@@ -1,6 +1,7 @@
-﻿using Example.Ecommerce.Domain.Entities.Petition;
+﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Domain.Entities.Petition;
 
 namespace Example.Ecommerce.Application.Interface.Persistence.Petition
 {
-    public interface IPetitionRepository : IBaseRepository<PetitionEntity> { }
+    public interface IPetitionRepository : IEfBaseRepository<PetitionEntity> { }
 }

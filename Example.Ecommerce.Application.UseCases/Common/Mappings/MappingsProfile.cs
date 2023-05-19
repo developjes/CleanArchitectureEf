@@ -18,12 +18,7 @@ namespace Pacagroup.Ecommerce.Application.UseCases.Common.Mappings
             CreateMap<IdentificationTypeEntity, IdentificationTypeDto>().ReverseMap();
 
             CreateMap<PetitionEntity, PetitionDto>().ReverseMap();
-
-            CreateMap<HeadLineEntity, HeadLineDto>()
-                .ForMember(dest => dest.Latitude, src => src.MapFrom(src => src.Location!.Y))
-                .ForMember(dest => dest.Longitude, src => src.MapFrom(src => src.Location!.X))
-                .ReverseMap();
-
+            CreateMap<HeadLineEntity, HeadLineDto>().ReverseMap();
             CreateMap<BeneficiaryEntity, BeneficiaryDto>().ReverseMap();
 
             // external pokemon api
@@ -34,7 +29,8 @@ namespace Pacagroup.Ecommerce.Application.UseCases.Common.Mappings
 
             // GoRest
             CreateMap<GoRestGetPostDto, GoRestGetPostData>().ReverseMap();
-            CreateMap<GoRestPostPostData, GoRestCreatePostDto>().ReverseMap();
+            CreateMap<GoRestPostPostData, GoRestCreatePostDto
+>().ReverseMap();
         }
     }
 }

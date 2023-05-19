@@ -13,7 +13,7 @@ namespace Example.Ecommerce.Persistence.Configurations.Parametrization
 
             #region General config
 
-            stateBuilder.ToTable(name: "State", schema: "northwindconnect");
+            stateBuilder.ToTable(name: "State", schema: "Parametrization");
 
             #endregion General config
 

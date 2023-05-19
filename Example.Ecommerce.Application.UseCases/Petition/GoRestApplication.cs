@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.Interface.Persistence.ExternalServices;
-using Example.Ecommerce.Application.Interface.Persistence;
 using Example.Ecommerce.Application.DTO.ExternalServices;
 using Example.Ecommerce.Transversal.Common.Generic;
 using Example.Ecommerce.Domain.Entities.ExternalServices;
@@ -8,16 +7,17 @@ using Example.Ecommerce.Application.Interface.UseCases.Petition;
 using System.Text.Json.Nodes;
 using System.Text.Json;
 using System;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 
 namespace Example.Ecommerce.Application.UseCases.Petition
 {
     internal class GoRestPostApplication : IGoRestPostApplication
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IEfUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IRestService _restService;
 
-        public GoRestPostApplication(IUnitOfWork unitOfWork, IMapper mapper, IRestService restService) =>
+        public GoRestPostApplication(IEfUnitOfWork unitOfWork, IMapper mapper, IRestService restService) =>
             (_unitOfWork, _mapper, _restService) = (unitOfWork, mapper, restService);
 
         public async Task<Response<List<GoRestGetPostDto>>> GetPosts()

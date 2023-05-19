@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.Common;
 using Example.Ecommerce.Application.DTO.Parametrization.Response;
-using Example.Ecommerce.Application.Interface.Persistence;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Application.Interface.UseCases.Parametrization;
 using Example.Ecommerce.Domain.Entities.Parametrization;
 using Example.Ecommerce.Transversal.Common.Generic;
@@ -12,10 +12,10 @@ namespace Example.Ecommerce.Application.UseCases.Parametrization
 {
     public class StatesApplication : IStatesApplication
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IEfUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public StatesApplication(IUnitOfWork unitOfWork, IMapper mapper) => (_unitOfWork, _mapper) = (unitOfWork, mapper);
+        public StatesApplication(IEfUnitOfWork unitOfWork, IMapper mapper) => (_unitOfWork, _mapper) = (unitOfWork, mapper);
 
         /// <summary>
         /// Get all states
@@ -28,7 +28,7 @@ namespace Example.Ecommerce.Application.UseCases.Parametrization
 
             try
             {
-                response.Data = _mapper.Map<List<StateDto>>(await _unitOfWork.StateRepository.Get(
+                response.Data = _mapper.Map<List<StateDto>>(await _unitOfWork.EfRepository<StateEntity>().Get(
                     asTracking: false,
                     top: 50, skip: 0,
                     includeProperties: new Expression<Func<StateEntity, object>>[] { x => x.Petitions! },
@@ -68,7 +68,7 @@ namespace Example.Ecommerce.Application.UseCases.Parametrization
 
             try
             {
-                response.Data = _mapper.Map<StateDto>(await _unitOfWork.StateRepository.GetFirst(
+                response.Data = _mapper.Map<StateDto>(await _unitOfWork.EfRepository<StateEntity>().GetFirst(
                     asTracking: false,
                     filter: x => x.Id.Equals(id),
                     top: 1, skip: 0,
@@ -104,7 +104,7 @@ namespace Example.Ecommerce.Application.UseCases.Parametrization
 
             try
             {
-                response.Data = await _unitOfWork.ExecuteEnumerableSP<StateDto>(
+                response.Data = await _unitOfWork.EfExecuteEnumerableSP<StateDto>(
                     "[dbo].[sp_getStatesById]",
                     new List<SqlParam>() { new() { Name = "Id", Value = id, Config = new() { DataType = SqlDbType.Int } } }
                 );

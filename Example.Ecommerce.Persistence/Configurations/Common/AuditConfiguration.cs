@@ -15,7 +15,6 @@ namespace Example.Ecommerce.Persistence.Configurations.Common
                     {
                         property.SetColumnName("CreateAt");
                         property.SetComment("Fecha de creacion del registro");
-                        property.SetColumnType("datetime");
                         property.IsNullable = false;
                     }
 
@@ -23,7 +22,6 @@ namespace Example.Ecommerce.Persistence.Configurations.Common
                     {
                         property.SetColumnName("UpdateAt");
                         property.SetComment("Fecha de actualizacion del registro");
-                        property.SetColumnType("datetime");
                         property.IsNullable = true;
                     }
                 }

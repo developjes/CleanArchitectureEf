@@ -13,7 +13,7 @@ namespace Example.Ecommerce.Persistence.Configurations.Parametrization
 
             #region General config
 
-            identificationTypeBuilder.ToTable(name: "IdentificationType", schema: "northwindconnect");
+            identificationTypeBuilder.ToTable(name: "IdentificationType", schema: "Parametrization");
 
             #endregion General config
 

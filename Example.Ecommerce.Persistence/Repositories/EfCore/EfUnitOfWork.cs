@@ -1,9 +1,4 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence;
-using Example.Ecommerce.Application.Interface.Persistence.Parametrization;
-using Example.Ecommerce.Application.Interface.Persistence.Petition;
-using Example.Ecommerce.Persistence.Repositories.Parametrization;
-using Example.Ecommerce.Persistence.Repositories.Petition;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
@@ -11,55 +6,45 @@ using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using System.Reflection;
 using Example.Ecommerce.Application.DTO.Common;
-using Example.Ecommerce.Persistence.Contexts.SqlServer;
-using Example.Ecommerce.Persistence.Contexts.Mysql;
+using Example.Ecommerce.Persistence.Contexts;
+using System.Collections;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 
-namespace Example.Ecommerce.Persistence.Repositories
+namespace Example.Ecommerce.Persistence.Repositories.EfCore
 {
-    public class UnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IEfUnitOfWork
     {
-        protected readonly MysqlApplicationDbContext _context;
+        protected readonly EfApplicationDbContext _context;
+        private Hashtable? _repositories;
         private bool _disposed;
+
+        public EfUnitOfWork(EfApplicationDbContext context) =>
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
         #region Repositories
 
-        #region Parametrization
+        public IEfBaseRepository<T> EfRepository<T>() where T : class
+        {
+            string type = typeof(T).Name;
+            _repositories ??= new Hashtable();
 
-        private readonly IStateRepository _stateRepository = null!;
-        public IStateRepository StateRepository { get { return _stateRepository ?? new StateRepository(_context); } }
+            if (!_repositories.ContainsKey(type))
+            {
+                Type repositoryType = typeof(EfBaseRepository<>);
+                object? repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
+                _repositories.Add(type, repositoryInstance);
+            }
 
-        private readonly IIdentificationTypeRepository _identificationTypeRepository = null!;
-        public IIdentificationTypeRepository IdentificationTypeRepository { get
-            { return _identificationTypeRepository ?? new IdentificationTypeRepository(_context); }
+            return (IEfBaseRepository<T>)_repositories[type]!;
         }
 
-        #endregion
-
-        #region Petition
-
-        private readonly IPetitionRepository _petitionRepository = null!;
-        public IPetitionRepository PetitionRepository { get { return _petitionRepository ?? new PetitionRepository(_context); } }
-
-        private readonly IHeadLineRepository _headLineRepository = null!;
-        public IHeadLineRepository HeadLineRepository { get { return _headLineRepository ?? new HeadLineRepository(_context); } }
-
-        private readonly IBeneficiaryRepository _beneficiaryRepository = null!;
-        public IBeneficiaryRepository BeneficiaryRepository { get { return _beneficiaryRepository ?? new BeneficiaryRepository(_context); } }
-
-        #endregion
-
-        #endregion
-
-        public UnitOfWork(MysqlApplicationDbContext context) =>
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+        #endregion Repositories
 
         public async ValueTask DisposeAsync()
         {
             await DisposeAsync(true);
             GC.SuppressFinalize(this);
         }
-
-        ~UnitOfWork() { _ = DisposeAsync(false); }
 
         protected async virtual ValueTask DisposeAsync(bool disposing)
         {
@@ -71,10 +56,10 @@ namespace Example.Ecommerce.Persistence.Repositories
             }
         }
 
-        public async Task<int> Save(CancellationToken cancellationToken = default) =>
+        public async Task<int> EfSave(CancellationToken cancellationToken = default) =>
             await _context.SaveChangesAsync(cancellationToken);
 
-        public void RejectChanges()
+        public void EfRejectChanges()
         {
             _context.ChangeTracker.Entries().Where(e => e.State is not EntityState.Unchanged).ToList().ForEach(entry =>
             {
@@ -90,15 +75,15 @@ namespace Example.Ecommerce.Persistence.Repositories
             });
         }
 
-        #region Execute Raw SQL
+        #region Execute Raw SP
 
-        public async Task<IEnumerable<T>> ExecuteEnumerableSP<T>(string spName, List<SqlParam> parameters)
+        public async Task<IReadOnlyList<T>> EfExecuteEnumerableSP<T>(string spName, List<SqlParam> parameters)
         {
             using DbCommand command = _context.Database.GetDbConnection().CreateCommand();
 
             parameters.ForEach(p =>
             {
-                SqlParameter sqlParameter = new (p.Name, p.Value) { SqlDbType = p.Config!.DataType };
+                SqlParameter sqlParameter = new(p.Name, p.Value) { SqlDbType = p.Config!.DataType };
                 command.Parameters.Add(sqlParameter);
             });
 
@@ -114,7 +99,7 @@ namespace Example.Ecommerce.Persistence.Repositories
             {
                 using DbDataReader reader = await command.ExecuteReaderAsync(CommandBehavior.SequentialAccess);
 
-                List<T> data = MapToList<T>(reader);
+                List<T> data = EfMapToList<T>(reader);
 
                 await reader.CloseAsync();
 
@@ -136,7 +121,7 @@ namespace Example.Ecommerce.Persistence.Repositories
             }
         }
 
-        private static List<T> MapToList<T>(DbDataReader dbDataReader)
+        private static List<T> EfMapToList<T>(DbDataReader dbDataReader)
         {
             List<T> Response = new();
 
@@ -171,17 +156,17 @@ namespace Example.Ecommerce.Persistence.Repositories
             return Response;
         }
 
-        #endregion
+        #endregion Execute Raw SP
 
         #region Transaction
 
-        public async Task<IDbContextTransaction> BeginTransactionAsync() =>
+        public async Task<IDbContextTransaction> EfBeginTransactionAsync() =>
             await _context.Database.BeginTransactionAsync();
 
-        public async Task CommitAsync(IDbContextTransaction transaction) =>
+        public async Task EfCommitAsync(IDbContextTransaction transaction) =>
             await transaction.CommitAsync();
 
-        public async Task RollbackAsync(IDbContextTransaction transaction) =>
+        public async Task EfRollbackAsync(IDbContextTransaction transaction) =>
             await transaction.RollbackAsync();
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Example.Ecommerce.Domain.Entities.Petition;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MySql.Data.Types;
 using NetTopologySuite.Geometries;
 
 namespace Example.Ecommerce.Persistence.Seeders.Petition
@@ -18,8 +19,7 @@ namespace Example.Ecommerce.Persistence.Seeders.Petition
                     FirstLastName = "Solarte",
                     SecondLastName = "Vasquez",
                     BirthDate = new DateTime(1993, 2, 23),
-                    IdentificationTypeId = 1,
-                    Location = new Point(18.4839233, -69.9388777)
+                    IdentificationTypeId = 1
                 },
                 new() {
                     Id = 2,
@@ -29,8 +29,8 @@ namespace Example.Ecommerce.Persistence.Seeders.Petition
                     FirstLastName = "Diaz",
                     SecondLastName = "Manzano",
                     BirthDate = new DateTime(1991, 12, 11),
-                    IdentificationTypeId = 3,
-                    Location = new Point(18.4839233, -69.9388777)
+                    IdentificationTypeId = 3
+                    //Location = new Point(18.4839233, -69.9388777)
                 },
                 new() {
                     Id = 3,
@@ -40,8 +40,7 @@ namespace Example.Ecommerce.Persistence.Seeders.Petition
                     FirstLastName = "Diaz",
                     SecondLastName = null,
                     BirthDate = new DateTime(1969, 5, 25),
-                    IdentificationTypeId = 3,
-                    Location = new Point(18.4839233, -69.9388777)
+                    IdentificationTypeId = 3
                 }
             });
 

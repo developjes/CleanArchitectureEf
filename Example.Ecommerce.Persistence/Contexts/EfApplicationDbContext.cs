@@ -6,10 +6,9 @@ using Example.Ecommerce.Persistence.Configurations.Common;
 using Example.Ecommerce.Domain.Entities.Petition;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Example.Ecommerce.Persistence.Contexts.SqlServer
+namespace Example.Ecommerce.Persistence.Contexts
 {
-    /*
-    public class ApplicationDbContext : DbContext
+    public class EfApplicationDbContext : DbContext
     {
         public virtual DbSet<StateEntity>? StateEntity { get; set; }
         public virtual DbSet<IdentificationTypeEntity>? IdentificationTypeEntity { get; set; }
@@ -20,22 +19,20 @@ namespace Example.Ecommerce.Persistence.Contexts.SqlServer
 
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-        public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options,
+        public EfApplicationDbContext(
+            DbContextOptions<EfApplicationDbContext> options,
             AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor
-        ) : base(options) =>
+        ) : base(options)
+        {
+            ChangeTracker.AutoDetectChangesEnabled = true;
+            ChangeTracker.LazyLoadingEnabled = false;
             _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //ChangeTracker.AutoDetectChangesEnabled = true;
-            //ChangeTracker.LazyLoadingEnabled = false;
-
             optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
         }
-
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) =>
-            configurationBuilder.Properties<DateTime>().HaveColumnType("date");
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
             await base.SaveChangesAsync(cancellationToken);
@@ -47,5 +44,4 @@ namespace Example.Ecommerce.Persistence.Contexts.SqlServer
             base.OnModelCreating(modelBuilder);
         }
     }
-    */
 }
