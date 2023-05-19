@@ -2,13 +2,12 @@
 
 namespace Example.Ecommerce.Domain.Entities.Ecommerce;
 
-public class ReviewEntity : BaseDomainEntity
+public class ProductImageEntity : BaseDomainEntity
 {
     #region Fields Prop
 
-    public string? Name { get; set; }
-    public int Rating { get; set; }
-    public string? Comment { get; set; }
+    public string? Url { get; set; }
+    public string? PublicCode { get; set; }
 
     #endregion Fields Prop
 

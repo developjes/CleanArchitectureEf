@@ -24,6 +24,7 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
             .HasColumnType("nvarchar")
             .HasMaxLength(100)
             .HasColumnOrder(2)
+            .IsUnicode(false)
             .IsRequired(required: true);
 
         reviewBuilder.Property(review => review.Rating)
@@ -39,11 +40,16 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
             .HasColumnType("nvarchar")
             .HasMaxLength(4000)
             .HasColumnOrder(4)
+            .IsUnicode(false)
             .IsRequired(required: false);
 
         #endregion Fields
 
         #region Relationships
+
+        reviewBuilder.HasOne(review => review.Product)
+            .WithMany(product => product.Reviews)
+            .HasForeignKey(review => review.ProductId);
 
         #endregion Relationships
 

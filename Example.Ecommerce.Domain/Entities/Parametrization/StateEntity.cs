@@ -3,7 +3,7 @@ using Example.Ecommerce.Domain.Entities.Ecommerce;
 
 namespace Example.Ecommerce.Domain.Entities.Parametrization;
 
-public sealed class StateEntity : BaseDomainEntity
+public class StateEntity : BaseDomainEntity
 {
     #region Fields Prop
 
@@ -14,7 +14,7 @@ public sealed class StateEntity : BaseDomainEntity
 
     #region Navigation props
 
-    public ICollection<ProductEntity>? Products { get; set; }
+    public virtual ICollection<ProductEntity>? Products { get; set; }
 
     #endregion Navigation props
 }

@@ -4,7 +4,7 @@ using Example.Ecommerce.Domain.Enums.Parametrization;
 
 namespace Example.Ecommerce.Domain.Entities.Ecommerce;
 
-public sealed class ProductEntity : BaseDomainEntity
+public class ProductEntity : BaseDomainEntity
 {
     #region Fields Prop
 
@@ -28,7 +28,10 @@ public sealed class ProductEntity : BaseDomainEntity
 
     #region Navigation props
 
-    public StateEntity? State { get; set; }
+    public virtual StateEntity? State { get; set; }
+    public virtual CategoryEntity? Category { get; set; }
+    public virtual ICollection<ReviewEntity>? Reviews { get; set; }
+    public virtual ICollection<ProductImageEntity>? ProductImages { get; set; }
 
     #endregion Navigation props
 }

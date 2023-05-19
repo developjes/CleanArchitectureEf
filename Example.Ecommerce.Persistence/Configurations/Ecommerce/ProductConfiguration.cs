@@ -24,6 +24,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .HasColumnType("nvarchar")
             .HasMaxLength(100)
             .HasColumnOrder(2)
+            .IsUnicode(false)
             .IsRequired(required: true);
 
         productBuilder.Property(product => product.Price)
@@ -41,6 +42,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .HasColumnType("nvarchar")
             .HasMaxLength(4000)
             .HasColumnOrder(4)
+            .IsUnicode(false)
             .IsRequired(required: false);
 
         productBuilder.Property(product => product.Rating)
@@ -63,6 +65,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .HasColumnType("nvarchar")
             .HasMaxLength(100)
             .HasColumnOrder(7)
+            .IsUnicode(false)
             .IsRequired(required: true);
 
         productBuilder.Ignore(product => product.StateId);
@@ -81,6 +84,21 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .WithMany(state => state.Products)
             .HasForeignKey("_stateId")
             .HasConstraintName("FK_Product_State_StateId")
+            .OnDelete(DeleteBehavior.Restrict);
+
+        productBuilder.HasOne(product => product.Category)
+            .WithMany(category => category.Products)
+            .HasForeignKey(product => product.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        productBuilder.HasMany(product => product.Reviews)
+            .WithOne(review => review.Product)
+            .HasForeignKey(review => review.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        productBuilder.HasMany(product => product.ProductImages)
+            .WithOne(productImage => productImage.Product)
+            .HasForeignKey(productImage => productImage.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
         #endregion Relationships
