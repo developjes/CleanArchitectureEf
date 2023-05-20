@@ -1,6 +1,8 @@
-﻿namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+﻿using Example.Ecommerce.Domain.Entities.Common;
 
-public class ShoppingCartItemEntity
+namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+
+public class ShoppingCartItemEntity : BaseDomainEntity
 {
     #region Fields Prop
 
@@ -10,14 +12,15 @@ public class ShoppingCartItemEntity
     public string? Image { get; set; }
     public string? Category { get; set; }
     public int Stock { get; set; }
+    public Guid? ShoppingCartMasterId { get; set; }
 
     #endregion Fields Prop
 
     #region Relations
 
     public int ProductId { get; set; }
-    public Guid? ShoppingCartMasterId { get; set; }
     public int ShoppingCartId { get; set; }
+
 
     #endregion Relations
 

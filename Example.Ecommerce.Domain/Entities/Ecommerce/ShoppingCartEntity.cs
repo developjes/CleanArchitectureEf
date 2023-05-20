@@ -1,6 +1,8 @@
-﻿namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+﻿using Example.Ecommerce.Domain.Entities.Common;
 
-public class ShoppingCartEntity
+namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+
+public class ShoppingCartEntity : BaseDomainEntity
 {
     #region Fields Prop
 

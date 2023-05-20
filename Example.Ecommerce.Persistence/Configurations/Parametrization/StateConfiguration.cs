@@ -47,6 +47,12 @@ public sealed class StateConfiguration : IEntityTypeConfiguration<StateEntity>
             .HasConstraintName("FK_Product_State_StateId")
             .OnDelete(DeleteBehavior.Restrict);
 
+        stateBuilder.HasMany(state => state.Orders)
+            .WithOne(order => order.State)
+            .HasForeignKey("_stateId")
+            .HasConstraintName("FK_Order_State_StateId")
+            .OnDelete(DeleteBehavior.Restrict);
+
         #endregion Relationships
 
         #region Seeder

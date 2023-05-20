@@ -1,10 +1,10 @@
-﻿using Example.Ecommerce.Domain.Entities.Ecommerce;
+﻿using Example.Ecommerce.Domain.Entities.Parametrization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Example.Ecommerce.Persistence.Configurations.Ecommerce;
+namespace Example.Ecommerce.Persistence.Configurations.Parametrization;
 
-public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
+public sealed class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
 {
     public void Configure(EntityTypeBuilder<CategoryEntity> categoryBuilder)
     {
@@ -12,13 +12,13 @@ public class CategoryConfiguration : IEntityTypeConfiguration<CategoryEntity>
 
         #region General config
 
-        categoryBuilder.ToTable(name: "Category", schema: "Ecommerce");
+        categoryBuilder.ToTable(name: "Category", schema: "Parametrization");
 
         #endregion General config
 
         #region Fields
 
-        categoryBuilder.Property(product => product.Name)
+        categoryBuilder.Property(category => category.Name)
             .HasColumnName("Name")
             .HasComment("Category Name")
             .HasColumnType("nvarchar")

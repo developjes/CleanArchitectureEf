@@ -43,6 +43,13 @@ public sealed class ReviewConfiguration : IEntityTypeConfiguration<ReviewEntity>
             .IsUnicode(false)
             .IsRequired(required: false);
 
+        reviewBuilder.Property(productImage => productImage.ProductId)
+            .HasColumnName("ProductId")
+            .HasComment("Review ForeignKey Product Table")
+            .HasColumnType("int")
+            .HasColumnOrder(5)
+            .IsRequired(required: true);
+
         #endregion Fields
 
         #region Relationships

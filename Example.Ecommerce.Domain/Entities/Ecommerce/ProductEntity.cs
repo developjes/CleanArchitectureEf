@@ -32,6 +32,7 @@ public class ProductEntity : BaseDomainEntity
     public virtual CategoryEntity? Category { get; set; }
     public virtual ICollection<ReviewEntity>? Reviews { get; set; }
     public virtual ICollection<ProductImageEntity>? ProductImages { get; set; }
+    public virtual ICollection<OrderItemEntity>? OrderItems { get; set; }
 
     #endregion Navigation props
 }

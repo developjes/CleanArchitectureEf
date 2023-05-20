@@ -10,12 +10,6 @@ public class IdentityRoleConfiguration : IEntityTypeConfiguration<IdentityRole>
     {
         #region Rule properties
 
-        #region General config
-
-        identityRoleBuilder.ToTable(name: "IdentityRole", schema: "Auth");
-
-        #endregion General config
-
         #region Fields
 
         identityRoleBuilder.Property(identityRole => identityRole.Id).HasMaxLength(36);

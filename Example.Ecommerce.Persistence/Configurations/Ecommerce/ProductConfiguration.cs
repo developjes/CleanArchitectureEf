@@ -32,7 +32,6 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .HasComment("Product price")
             .HasColumnType("decimal")
             .HasPrecision(10, 2)
-            .HasMaxLength(100)
             .HasColumnOrder(3)
             .IsRequired(required: true);
 
@@ -76,6 +75,13 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .HasColumnOrder(8)
             .IsRequired(required: true);
 
+        productBuilder.Property(product => product.CategoryId)
+            .HasColumnName("CategoryId")
+            .HasComment("Product ForeignKey Category Table")
+            .HasColumnType("int")
+            .HasColumnOrder(9)
+            .IsRequired(required: true);
+
         #endregion Fields
 
         #region Relationships
@@ -99,6 +105,11 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
         productBuilder.HasMany(product => product.ProductImages)
             .WithOne(productImage => productImage.Product)
             .HasForeignKey(productImage => productImage.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        productBuilder.HasMany(product => product.OrderItems)
+            .WithOne(orderItem => orderItem.Product)
+            .HasForeignKey(orderItem => orderItem.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
         #endregion Relationships

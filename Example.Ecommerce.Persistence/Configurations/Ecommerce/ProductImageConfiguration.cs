@@ -31,7 +31,6 @@ public sealed class ProductImageConfiguration : IEntityTypeConfiguration<Product
             .HasColumnName("PublicCode")
             .HasComment("ProductImage PublicCode")
             .HasColumnType("varchar")
-            .HasMaxLength(100)
             .HasColumnOrder(3)
             .IsUnicode(false)
             .IsRequired(required: true);

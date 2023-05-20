@@ -15,6 +15,7 @@ public class StateEntity : BaseDomainEntity
     #region Navigation props
 
     public virtual ICollection<ProductEntity>? Products { get; set; }
+    public virtual ICollection<OrderEntity>? Orders { get; set; }
 
     #endregion Navigation props
 }

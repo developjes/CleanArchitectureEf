@@ -1,6 +1,8 @@
-﻿namespace Example.Ecommerce.Domain.Entities.Ecommerce;
+﻿using Example.Ecommerce.Domain.Entities.Common;
 
-public class AddressEntity
+namespace Example.Ecommerce.Domain.Entities.Identity;
+
+public class AddressEntity : BaseDomainEntity
 {
     public string? Address { get; set; }
     public string? City { get; set; }

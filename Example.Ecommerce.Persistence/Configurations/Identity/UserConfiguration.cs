@@ -10,12 +10,6 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
     {
         #region Rule properties
 
-        #region General config
-
-        userBuilder.ToTable(name: "User", schema: "Auth");
-
-        #endregion General config
-
         #region Fields
 
         userBuilder.Property(user => user.Id).HasMaxLength(36);
