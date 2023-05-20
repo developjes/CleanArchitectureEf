@@ -46,12 +46,14 @@ public class OrderEntity : BaseDomainEntity
     public EOrderState StateId { get => (EOrderState)_stateId; set => _stateId = (int)value; }
     private int _stateId;
 
+    public int OrderAddressId { get; set; }
+
     #endregion Relations
 
     #region Navigation props
 
-    public OrderAddressEntity? OrderAddress { get; set; }
     public StateEntity? State { get; set; }
+    public OrderAddressEntity? OrderAddress { get; set; }
     public ICollection<OrderItemEntity>? OrderItems { get; set; }
 
     #endregion Navigation props

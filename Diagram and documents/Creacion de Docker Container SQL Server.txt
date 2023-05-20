@@ -1,0 +1,1 @@
+docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=VaxiDrez2005$" -p 1433:1433 --name "sql-server-vaxi" -d mcr.microsoft.com/mssql/server

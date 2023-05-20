@@ -18,7 +18,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
 
         #region Fields
 
-        orderAddressBuilder.Property(address => address.Address)
+        orderAddressBuilder.Property(orderAddress => orderAddress.Address)
             .HasColumnName("Address")
             .HasComment("OrderAddress address")
             .HasColumnType("nvarchar")
@@ -27,7 +27,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        orderAddressBuilder.Property(address => address.City)
+        orderAddressBuilder.Property(orderAddress => orderAddress.City)
             .HasColumnName("City")
             .HasComment("OrderAddress City")
             .HasColumnType("nvarchar")
@@ -36,7 +36,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        orderAddressBuilder.Property(address => address.Department)
+        orderAddressBuilder.Property(orderAddress => orderAddress.Department)
             .HasColumnName("Department")
             .HasComment("OrderAddress Department")
             .HasColumnType("nvarchar")
@@ -45,7 +45,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        orderAddressBuilder.Property(address => address.PostalCode)
+        orderAddressBuilder.Property(orderAddress => orderAddress.PostalCode)
             .HasColumnName("PostalCode")
             .HasComment("OrderAddress PostalCode")
             .HasColumnType("nvarchar")
@@ -54,7 +54,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        orderAddressBuilder.Property(address => address.Username)
+        orderAddressBuilder.Property(orderAddress => orderAddress.Username)
             .HasColumnName("Username")
             .HasComment("OrderAddress Username")
             .HasColumnType("nvarchar")
@@ -63,7 +63,7 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        orderAddressBuilder.Property(address => address.Country)
+        orderAddressBuilder.Property(orderAddress => orderAddress.Country)
             .HasColumnName("Country")
             .HasComment("OrderAddress Country")
             .HasColumnType("nvarchar")
@@ -73,6 +73,14 @@ public sealed class OrderAddressConfiguration : IEntityTypeConfiguration<OrderAd
             .IsRequired(required: true);
 
         #endregion Fields
+
+        #region Relationships
+
+        orderAddressBuilder.HasOne(orderAddress => orderAddress.Order)
+            .WithOne(order => order.OrderAddress)
+            .HasForeignKey<OrderEntity>(order => order.OrderAddressId);
+
+        #endregion Relationships
 
         #endregion Rule properties
     }

@@ -101,6 +101,13 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
             .HasColumnOrder(11)
             .IsRequired(required: true);
 
+        ordeBuilder.Property(order => order.OrderAddressId)
+            .HasColumnName("OrderAddressId")
+            .HasComment("Order ForeignKey OrderAddress Table")
+            .HasColumnType("int")
+            .HasColumnOrder(12)
+            .IsRequired(required: true);
+
         #endregion Rule properties
 
         #region Relationships
@@ -111,7 +118,9 @@ public sealed class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
             .HasConstraintName("FK_Order_State_StateId")
             .OnDelete(DeleteBehavior.Restrict);
 
-        ordeBuilder.OwnsOne(o => o.OrderAddress, x => x.WithOwner());
+        ordeBuilder.HasOne(order => order.OrderAddress)
+            .WithOne(orderAddress => orderAddress.Order)
+            .HasForeignKey<OrderEntity>(order => order.OrderAddressId);
 
         #endregion Relationships
     }

@@ -23,8 +23,6 @@ public static class FeatureExtension
 
         #endregion
 
-        services.AddMvc();
-
         return services;
     }
 }

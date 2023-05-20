@@ -10,7 +10,6 @@ public static class InjectionExtension
     {
         services.AddSingleton(configuration);
         services.AddTransient<AntiforgeryCookieResultFilter>();
-        services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
 
         return services;
     }

@@ -16,11 +16,7 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Builder
 
-#region Antiforgery Cross-Site
-
-builder.Services.AddAntiforgery(opts => opts.HeaderName = "X-XSRF-Token");
-
-#endregion
+#region Validator and serializators
 
 builder.Services.AddControllers(x =>
 {
@@ -29,8 +25,6 @@ builder.Services.AddControllers(x =>
     x.ModelMetadataDetailsProviders.Clear();
     x.ModelValidatorProviders.Clear();
     x.RespectBrowserAcceptHeader = true;
-    //x.OutputFormatters.Add(new XmlSerializerOutputFormatter());
-    //x.InputFormatters.Add(new XmlSerializerInputFormatter(x));
 })
 .AddJsonOptions(opt =>
 {
@@ -42,16 +36,28 @@ builder.Services.AddControllers(x =>
     opt.JsonSerializerOptions.IncludeFields = true;
     opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     opt.JsonSerializerOptions.MaxDepth = 0;
-})
-//.AddXmlSerializerFormatters()
-;
+});
+
+#endregion Validator and serializators
+
+#region compresion
 
 builder.Services.AddResponseCompression();
+
+#endregion compresion
+
+#region Asyncronous process
 
 builder.Services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
 builder.Services.Configure<IISServerOptions>(options => options.AllowSynchronousIO = true);
 
+#endregion Asyncronous process
+
+#region ApiExplorer
+
 builder.Services.AddEndpointsApiExplorer();
+
+#endregion ApiExplorer
 
 #region Feature
 
@@ -61,7 +67,7 @@ builder.Services.AddFeature(builder.Configuration);
 
 #region Authentication
 
-builder.Services.AddAuthentication(builder.Configuration);
+builder.Services.AddIdentityAuthentication();
 
 #endregion
 
@@ -74,18 +80,6 @@ builder.Services.AddVersioning();
 #region Dependency Injection
 
 builder.Services.AddInjection(builder.Configuration);
-
-#endregion
-
-#region Session
-
-builder.Services.AddSession();
-
-#endregion
-
-#region HealthCheck
-
-//builder.Services.AddHealthCheck(builder.Configuration)
 
 #endregion
 
@@ -109,7 +103,6 @@ builder.Services.AddApplicationServices();
 
 #endregion Builder
 
-// Configure the HTTP request pipeline.
 WebApplication app = builder.Build();
 
 #region App
@@ -172,40 +165,22 @@ if (app.Environment.IsDevelopment())
 
 #region Production elements
 
-else
-{
-    app.UseHsts();
-    /*
-    app.UseHealthChecksUI(config =>
-    {
-        config.UIPath = "/hc-ui";
-        config.AddCustomStylesheet("./wwwroot/css/dotnet.css");
-    });
-    app.MapHealthChecks("/health", new()
-    {
-        Predicate = _ => true,
-        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
-        AllowCachingResponses = false
-    });
-    */
-}
+else { app.UseHsts(); }
 
 #endregion Production elements
 
-// Cancel request
-//app.UseMiddleware<TaskCanceledMiddleware>();
-// Scan Headers: https://securityheaders.com/
-//app.UseMiddleware<SecurityHeadersMiddleware>();
-// Global Exception
-//app.UseMiddleware<ExceptionMiddleware>();
-
 app.UseHttpsRedirection();
-app.UseCors("policyApiEcommerce");
+
 app.UseRouting();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
+app.UseCors("policyApiEcommerce");
+
 app.UseRequestLocalization();
-app.UseSession();
+
 app.MapControllers();
 
 app.Run();
