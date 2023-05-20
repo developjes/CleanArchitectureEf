@@ -1,17 +1,16 @@
-﻿using Example.Ecommerce.Persistence.Configurations.Common;
+﻿using Example.Ecommerce.Domain.Entities.Identity;
+using Example.Ecommerce.Persistence.Configurations.Common;
 using Example.Ecommerce.Persistence.Interceptors;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
 
 namespace Example.Ecommerce.Persistence.Contexts;
 
-public class EfApplicationDbContext : DbContext
+//public class EfApplicationDbContext : DbContext
+public class EfApplicationDbContext : IdentityDbContext<UserEntity>
 {
-    //#region DbSet Entities
-    //public virtual DbSet<StateEntity>? StateEntity
-    //#endregion DbSet Entities
-
     #region Interceptors
 
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
@@ -34,18 +33,16 @@ public class EfApplicationDbContext : DbContext
 
     #region Methods
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
-    }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        modelBuilder.AddPrimaryKeyConfiguration();
-        modelBuilder.AddAuditFieldsConfiguration();
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.AddPrimaryKeyConfiguration();
+        builder.AddAuditFieldsConfiguration();
 
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
     }
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>
