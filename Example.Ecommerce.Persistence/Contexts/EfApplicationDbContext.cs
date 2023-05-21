@@ -1,6 +1,7 @@
 ﻿using Example.Ecommerce.Domain.Entities.Identity;
 using Example.Ecommerce.Persistence.Configurations.Common;
 using Example.Ecommerce.Persistence.Interceptors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;

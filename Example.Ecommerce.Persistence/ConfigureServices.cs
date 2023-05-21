@@ -1,5 +1,6 @@
 ﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Application.UseCases.Models.Token;
 using Example.Ecommerce.Persistence.Contexts;
 using Example.Ecommerce.Persistence.Interceptors;
 using Example.Ecommerce.Persistence.Repositories.Dapper;
@@ -54,9 +55,17 @@ public static class ConfigureServices
         #region UnitOfWork
 
         services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
+
         services.AddScoped<IEfUnitOfWork, EfUnitOfWork>();
+        services.AddScoped(typeof(IEfBaseRepository<>), typeof(EfBaseRepository<>));
 
         #endregion UnitOfWork
+
+        #region JWT Config
+
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
+        #endregion
 
         return services;
     }

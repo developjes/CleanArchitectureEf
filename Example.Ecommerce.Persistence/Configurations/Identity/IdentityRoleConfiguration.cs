@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Example.Ecommerce.Persistence.Seeders.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,6 +18,12 @@ public class IdentityRoleConfiguration : IEntityTypeConfiguration<IdentityRole>
         identityRoleBuilder.Property(identityRole => identityRole.NormalizedName).HasMaxLength(90);
 
         #endregion Fields
+
+        #region Seeder
+
+        identityRoleBuilder.AddSeeder();
+
+        #endregion Seeder
 
         #endregion Rule properties
     }

@@ -67,7 +67,7 @@ builder.Services.AddFeature(builder.Configuration);
 
 #region Authentication
 
-builder.Services.AddIdentityAuthentication();
+builder.Services.AddIdentityAuthentication(builder.Configuration);
 
 #endregion
 

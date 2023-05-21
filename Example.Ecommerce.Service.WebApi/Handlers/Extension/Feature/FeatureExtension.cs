@@ -11,9 +11,8 @@ public static class FeatureExtension
 
         const string myPolicy = "policyApiEcommerce";
         services.AddCors(options =>
-            options.AddPolicy(myPolicy,
-                builder => builder
-                    .SetIsOriginAllowedToAllowWildcardSubdomains()
+            options.AddPolicy(myPolicy, builder =>
+                builder.SetIsOriginAllowedToAllowWildcardSubdomains()
                     .WithOrigins(localUrl!)
                     .AllowAnyHeader()
                     .AllowAnyMethod()
