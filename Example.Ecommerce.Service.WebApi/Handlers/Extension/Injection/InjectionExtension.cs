@@ -1,6 +1,4 @@
 ﻿using Example.Ecommerce.Service.WebApi.Handlers.Extension.AntiforgeryCookie;
-using Example.Ecommerce.Transversal.Common.Interface;
-using Example.Ecommerce.Transversal.Logging;
 
 namespace Example.Ecommerce.Service.WebApi.Handlers.Extension.Injection;
 

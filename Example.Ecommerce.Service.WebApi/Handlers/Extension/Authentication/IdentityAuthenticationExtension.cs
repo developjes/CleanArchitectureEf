@@ -29,7 +29,7 @@ public static class IdentityAuthenticationExtension
         identityBuilder.AddRoles<IdentityRole>().AddDefaultTokenProviders();
         identityBuilder.AddClaimsPrincipalFactory<UserClaimsPrincipalFactory<UserEntity, IdentityRole>>();
 
-        identityBuilder.AddEntityFrameworkStores<EfApplicationDbContext>();
+        identityBuilder.AddEntityFrameworkStores<EfApplicationDbContext>().AddDefaultUI();
         identityBuilder.AddSignInManager<SignInManager<UserEntity>>();
 
         services.TryAddSingleton<ISystemClock, SystemClock>();

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Example.Ecommerce.Persistence.Migrations
 {
     [DbContext(typeof(EfApplicationDbContext))]
-    [Migration("20230520200402_Initial")]
+    [Migration("20230522043415_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -896,6 +896,46 @@ namespace Example.Ecommerce.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "b74ddd14-6340-4840-95c2-db12554843e5",
+                            AccessFailedCount = 0,
+                            AvatarUrl = "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/vaxidrez.jpg?alt=media&token=14a28860-d149-461e-9c25-9774d7ac1b24",
+                            ConcurrencyStamp = "2f720227-3b1a-4f93-b903-f58b7c6e5417",
+                            Email = "developjes@gmail.com",
+                            EmailConfirmed = false,
+                            IsActive = true,
+                            LastName = "Solarte",
+                            LockoutEnabled = false,
+                            Name = "Jhon",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMxOmA+z7VusdsgQWgF0DqYEx0psTSZttrV4crjA8qgJ9c3Hku1Rx3Fk44ARiyyDnA==",
+                            PhoneNumber = "1234567890",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "099fcf83-9992-4d1e-bccd-3c70debabe25",
+                            TwoFactorEnabled = false,
+                            UserName = "JES"
+                        },
+                        new
+                        {
+                            Id = "b74ddd14-6340-4840-95c2-db579863843e",
+                            AccessFailedCount = 0,
+                            AvatarUrl = "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/avatar-1.webp?alt=media&token=58da3007-ff21-494d-a85c-25ffa758ff6d",
+                            ConcurrencyStamp = "864adedf-0c91-4e64-a64f-fd7c6d0f45d4",
+                            Email = "juan.perez@gmail.com",
+                            EmailConfirmed = false,
+                            IsActive = true,
+                            LastName = "Perez",
+                            LockoutEnabled = false,
+                            Name = "Juan",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBtqzKN9NgbXF3g01MmMaxGodZHIjDBj4pIQL1kxlFFQOFOnv8CsPXGkxGS3NWfT5w==",
+                            PhoneNumber = "98563434534",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "183032ff-489e-4b6e-abdc-f89a9610690d",
+                            TwoFactorEnabled = false,
+                            UserName = "juan.perez"
+                        });
                 });
 
             modelBuilder.Entity("Example.Ecommerce.Domain.Entities.Parametrization.CategoryEntity", b =>
@@ -1145,6 +1185,22 @@ namespace Example.Ecommerce.Persistence.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "fab4fac1-c546-41de-aebc-a14da6895711",
+                            ConcurrencyStamp = "1",
+                            Name = "ADMIN",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "c7b013f0-5201-4317-abd8-c211f91b7330",
+                            ConcurrencyStamp = "2",
+                            Name = "HR",
+                            NormalizedName = "Human Resource"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1238,6 +1294,18 @@ namespace Example.Ecommerce.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "b74ddd14-6340-4840-95c2-db12554843e5",
+                            RoleId = "fab4fac1-c546-41de-aebc-a14da6895711"
+                        },
+                        new
+                        {
+                            UserId = "b74ddd14-6340-4840-95c2-db579863843e",
+                            RoleId = "c7b013f0-5201-4317-abd8-c211f91b7330"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

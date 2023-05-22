@@ -497,6 +497,24 @@ namespace Example.Ecommerce.Persistence.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "c7b013f0-5201-4317-abd8-c211f91b7330", "2", "HR", "Human Resource" },
+                    { "fab4fac1-c546-41de-aebc-a14da6895711", "1", "ADMIN", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "AvatarUrl", "ConcurrencyStamp", "Email", "EmailConfirmed", "IsActive", "LastName", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "Telephone", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "b74ddd14-6340-4840-95c2-db12554843e5", 0, "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/vaxidrez.jpg?alt=media&token=14a28860-d149-461e-9c25-9774d7ac1b24", "2f720227-3b1a-4f93-b903-f58b7c6e5417", "developjes@gmail.com", false, true, "Solarte", false, null, "Jhon", null, null, "AQAAAAEAACcQAAAAEMxOmA+z7VusdsgQWgF0DqYEx0psTSZttrV4crjA8qgJ9c3Hku1Rx3Fk44ARiyyDnA==", "1234567890", false, "099fcf83-9992-4d1e-bccd-3c70debabe25", null, false, "JES" },
+                    { "b74ddd14-6340-4840-95c2-db579863843e", 0, "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/avatar-1.webp?alt=media&token=58da3007-ff21-494d-a85c-25ffa758ff6d", "864adedf-0c91-4e64-a64f-fd7c6d0f45d4", "juan.perez@gmail.com", false, true, "Perez", false, null, "Juan", null, null, "AQAAAAEAACcQAAAAEBtqzKN9NgbXF3g01MmMaxGodZHIjDBj4pIQL1kxlFFQOFOnv8CsPXGkxGS3NWfT5w==", "98563434534", false, "183032ff-489e-4b6e-abdc-f89a9610690d", null, false, "juan.perez" }
+                });
+
+            migrationBuilder.InsertData(
                 schema: "Parametrization",
                 table: "State",
                 columns: new[] { "Id", "CreateAt", "CreatedBy", "Description", "LastModifiedBy", "Name", "UpdateAt" },
@@ -509,6 +527,16 @@ namespace Example.Ecommerce.Persistence.Migrations
                     { 5, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "Sent state", null, "Sent", null },
                     { 6, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "Error state", null, "Error", null }
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "fab4fac1-c546-41de-aebc-a14da6895711", "b74ddd14-6340-4840-95c2-db12554843e5" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "c7b013f0-5201-4317-abd8-c211f91b7330", "b74ddd14-6340-4840-95c2-db579863843e" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

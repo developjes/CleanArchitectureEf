@@ -16,6 +16,12 @@ WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 #region Builder
 
+#region Antiforgery Cross-Site
+
+builder.Services.AddAntiforgery(opts => opts.HeaderName = "X-XSRF-Token");
+
+#endregion
+
 #region Validator and serializators
 
 builder.Services.AddControllers(x =>

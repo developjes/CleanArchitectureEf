@@ -19,7 +19,7 @@ public static class IdentityUserRolesSeeder
             new()
             {
                 RoleId = "c7b013f0-5201-4317-abd8-c211f91b7330",
-                UserId = "b74ddd14-6340-4840-95c2-db579863843e1"
+                UserId = "b74ddd14-6340-4840-95c2-db579863843e"
             }
         });
 
