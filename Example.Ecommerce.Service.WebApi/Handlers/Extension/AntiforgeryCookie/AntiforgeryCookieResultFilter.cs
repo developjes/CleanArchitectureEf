@@ -16,9 +16,6 @@ public class AntiforgeryCookieResultFilter : ResultFilterAttribute
 
         AntiforgeryTokenSet tokens = _antiforgery.GetAndStoreTokens(context.HttpContext);
         context.HttpContext.Response.Cookies.Append(
-            "XSRF-TOKEN",
-            tokens.RequestToken!,
-            new CookieOptions() { HttpOnly = false }
-        );
+            "XSRF-TOKEN", tokens.RequestToken!, new CookieOptions() { HttpOnly = false });
     }
 }

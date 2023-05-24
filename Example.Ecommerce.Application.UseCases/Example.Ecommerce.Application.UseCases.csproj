@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Parametrization\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
@@ -20,6 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Example.Ecommerce.Application.DTO\Example.Ecommerce.Application.DTO.csproj" />
     <ProjectReference Include="..\Example.Ecommerce.Application.Interface\Example.Ecommerce.Application.Interface.csproj" />
+    <ProjectReference Include="..\Example.Ecommerce.Application.Validator\Example.Ecommerce.Application.Validator.csproj" />
+    <ProjectReference Include="..\Example.Ecommerce.Persistence\Example.Ecommerce.Persistence.csproj" />
     <ProjectReference Include="..\Example.Ecommerce.Transversal.Common\Example.Ecommerce.Transversal.Common.csproj" />
   </ItemGroup>
 

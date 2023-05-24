@@ -3,7 +3,7 @@ using Example.Ecommerce.Persistence;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.AntiforgeryCookie;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Authentication;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Converters;
-using Example.Ecommerce.Service.WebApi.Handlers.Extension.Feature;
+using Example.Ecommerce.Service.WebApi.Handlers.Extension.Cors;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Injection;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Swagger;
 using Example.Ecommerce.Service.WebApi.Handlers.Extension.Versioning;

@@ -1,4 +1,4 @@
-﻿using Example.Ecommerce.Application.DTO.Common;
+﻿using Example.Ecommerce.Domain.Persistence;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;

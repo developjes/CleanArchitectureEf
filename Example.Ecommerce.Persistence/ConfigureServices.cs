@@ -1,8 +1,8 @@
 ﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
-using Example.Ecommerce.Application.UseCases.Models.Token;
 using Example.Ecommerce.Persistence.Contexts;
 using Example.Ecommerce.Persistence.Interceptors;
+using Example.Ecommerce.Persistence.Models.Configuration;
 using Example.Ecommerce.Persistence.Repositories.Dapper;
 using Example.Ecommerce.Persistence.Repositories.EfCore;
 using Microsoft.EntityFrameworkCore;
@@ -61,9 +61,12 @@ public static class ConfigureServices
 
         #endregion UnitOfWork
 
-        #region JWT Config
+        #region Config
 
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+        services.Configure<SendGridSettings>(configuration.GetSection("SendGridConfiguration"));
+        services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
 
         #endregion
 

@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Ecommerce\" />
     <Folder Include="Parametrization\Request\" />
     <Folder Include="Parametrization\Response\" />
   </ItemGroup>

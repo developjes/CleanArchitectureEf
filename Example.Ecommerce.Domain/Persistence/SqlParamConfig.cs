@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Example.Ecommerce.Application.DTO.Common;
+namespace Example.Ecommerce.Domain.Persistence;
 
 public class SqlParamConfig
 {

@@ -1,5 +1,5 @@
-﻿using Example.Ecommerce.Application.DTO.Common;
-using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Domain.Persistence;
 using Example.Ecommerce.Persistence.Contexts;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

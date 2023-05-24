@@ -1,6 +1,6 @@
-﻿namespace Example.Ecommerce.Service.WebApi.Handlers.Extension.Feature;
+﻿namespace Example.Ecommerce.Service.WebApi.Handlers.Extension.Cors;
 
-public static class FeatureExtension
+public static class CorsExtension
 {
     public static IServiceCollection AddFeature(this IServiceCollection services, IConfiguration configuration)
     {
