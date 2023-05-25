@@ -1,5 +1,4 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
-using Example.Ecommerce.Application.Interface.Persistence.ImageCloudinary;
 using Example.Ecommerce.Application.UseCases.Features.Products.Queries.GetProductList;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +7,9 @@ using System.Net;
 
 namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 
+/// <summary>
+/// All methods for Product data
+/// </summary>
 [ApiController]
 [ApiExplorerSettings(IgnoreApi = false)]
 [ApiVersion("1.0", Deprecated = false)]
@@ -17,24 +19,30 @@ public sealed class ProductController : ControllerBase
     #region Services
 
     private readonly IMediator _mediator;
-    private readonly IManageImageService _manageImageService;
 
     #endregion Services
 
     #region Constructor
 
-    public ProductController(IMediator mediator, IManageImageService manageImageService) =>
-        (_mediator, _manageImageService) = (mediator, manageImageService);
+    /// <summary>
+    /// Constructor using dependency injection
+    /// </summary>
+    /// <param name="mediator">Allow comunication between layers</param>
+    public ProductController(IMediator mediator) => _mediator = mediator;
 
     #endregion Constructor
 
     #region Methods
 
+    /// <summary>
+    /// Return all product list
+    /// </summary>
+    /// <returns>ProductResponseDto</returns>
     [AllowAnonymous]
     [HttpGet]
     [Route("list", Name = "GetProductList")]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<IEnumerable<ProductResponseDto>>> GetAll()
+    public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll()
     {
         GetProductListQuery query = new();
         IReadOnlyList<ProductResponseDto> products = await _mediator.Send(query);
