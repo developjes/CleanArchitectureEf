@@ -20,14 +20,14 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         int? top = null,
         int? skip = null,
-        Expression<Func<T, object>>[] includeProperties = default!
+        List<Expression<Func<T, object>>>? includeProperties = default!
     )
     {
         IQueryable<T> query = _dbSet.AsQueryable<T>();
 
         if (filter is not null) query = query.Where(filter);
 
-        if (orderBy is not null) query = includeProperties.Aggregate(query, (current, include) => current.Include(include));
+        if (orderBy is not null) query = includeProperties!.Aggregate(query, (current, include) => current.Include(include));
 
         if (orderBy is not null) query = orderBy(query);
 
@@ -48,7 +48,7 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
         int? top = null,
         int? skip = null,
-        Expression<Func<T, object>>[] includeProperties = default!,
+        List<Expression<Func<T, object>>>? includeProperties = default!,
         CancellationToken cancellationToken = default
     ) => await AsQuery(asTracking, filter, orderBy, top, skip, includeProperties).ToListAsync(cancellationToken);
 
@@ -61,19 +61,15 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
     public async Task<T?> GetFirst(
         bool asTracking = true,
         Expression<Func<T, bool>>? filter = null,
-        int? top = null,
-        int? skip = null,
-        Expression<Func<T, object>>[] includeProperties = default!,
+        List<Expression<Func<T, object>>>? includeProperties = default!,
         CancellationToken cancellationToken = default
     ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
-            .FirstOrDefaultAsync(cancellationToken);
+        .FirstOrDefaultAsync(cancellationToken);
 
     public async Task<T?> GetLast(
         bool asTracking = true,
         Expression<Func<T, bool>>? filter = null,
-        int? top = null,
-        int? skip = null,
-        Expression<Func<T, object>>[] includeProperties = default!,
+        List<Expression<Func<T, object>>>? includeProperties = default!,
         CancellationToken cancellationToken = default
     ) => await AsQuery(asTracking: asTracking, filter: filter, includeProperties: includeProperties)
         .LastOrDefaultAsync(cancellationToken);

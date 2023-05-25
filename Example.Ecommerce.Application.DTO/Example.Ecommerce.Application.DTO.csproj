@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Ecommerce\" />
-    <Folder Include="Parametrization\Request\" />
-    <Folder Include="Parametrization\Response\" />
+    <Folder Include="Features\Parametrization\Request\" />
+    <Folder Include="Features\Parametrization\Response\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Example.Ecommerce.Domain\Example.Ecommerce.Domain.csproj" />
   </ItemGroup>
 
 </Project>

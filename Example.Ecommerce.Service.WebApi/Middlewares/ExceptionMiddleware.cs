@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Example.Ecommerce.Application.Validator.Exceptions;
-using Example.Ecommerce.Service.WebApi.Errors;
+using Example.Ecommerce.Service.WebApi.Exceptions;
 using Newtonsoft.Json;
 
 namespace Example.Ecommerce.Service.WebApi.Middlewares;
