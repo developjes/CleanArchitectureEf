@@ -24,7 +24,7 @@ public static class ConfigureServices
 
         services.AddControllers(x =>
         {
-            x.Filters.AddService(typeof(AntiforgeryCookieResultFilter));
+            x.Filters.AddService(typeof(AntiforgeryCookieFilterAttribute));
             x.EnableEndpointRouting = false;
             x.ModelMetadataDetailsProviders.Clear();
             x.ModelValidatorProviders.Clear();
@@ -50,12 +50,12 @@ public static class ConfigureServices
 
         #endregion compresion
 
-        #region Asyncronous process
+        #region Asyncronous server process
 
         services.Configure<KestrelServerOptions>(options => options.AllowSynchronousIO = true);
         services.Configure<IISServerOptions>(options => options.AllowSynchronousIO = true);
 
-        #endregion Asyncronous process
+        #endregion Asyncronous server process
 
         #region ApiExplorer
 

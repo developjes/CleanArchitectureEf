@@ -2,7 +2,7 @@
 
 namespace Example.Ecommerce.Application.Interface.Persistence.EmailSendGrid;
 
-public interface IManagementEmailSengrid
+public interface IManagementEmailSengridService
 {
     Task<bool> SendEmail(EmailDataRequest email, string token);
 }

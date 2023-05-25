@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Example.Ecommerce.Service.WebApi.Services.AntiforgeryCookie;
 
-public class AntiforgeryCookieResultFilter : ResultFilterAttribute
+public class AntiforgeryCookieFilterAttribute : ResultFilterAttribute
 {
     private readonly IAntiforgery _antiforgery;
 
-    public AntiforgeryCookieResultFilter(IAntiforgery antiforgery) => _antiforgery = antiforgery;
+    public AntiforgeryCookieFilterAttribute(IAntiforgery antiforgery) => _antiforgery = antiforgery;
 
     public override void OnResultExecuting(ResultExecutingContext context)
     {

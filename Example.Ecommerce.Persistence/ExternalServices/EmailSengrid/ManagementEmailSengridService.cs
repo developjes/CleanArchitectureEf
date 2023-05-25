@@ -8,12 +8,12 @@ using SendGrid.Helpers.Mail;
 
 namespace Example.Ecommerce.Persistence.ExternalServices.EmailSengrid;
 
-public class ManagementEmailSengrid : IManagementEmailSengrid
+public class ManagementEmailSengridService : IManagementEmailSengridService
 {
     public SendGridSettings SengridSettings { get; }
-    public ILogger<ManagementEmailSengrid> Logger { get; }
+    public ILogger<ManagementEmailSengridService> Logger { get; }
 
-    public ManagementEmailSengrid(IOptions<SendGridSettings> sendGridSettings, ILogger<ManagementEmailSengrid> logger)
+    public ManagementEmailSengridService(IOptions<SendGridSettings> sendGridSettings, ILogger<ManagementEmailSengridService> logger)
     {
         SengridSettings = sendGridSettings.Value;
         Logger = logger;

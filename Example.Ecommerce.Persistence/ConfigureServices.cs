@@ -1,10 +1,16 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
+﻿using Example.Ecommerce.Application.Interface.Identity;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Application.Interface.Persistence.EmailSendGrid;
+using Example.Ecommerce.Application.Interface.Persistence.ImageCloudinary;
 using Example.Ecommerce.Persistence.Contexts;
+using Example.Ecommerce.Persistence.ExternalServices.EmailSengrid;
+using Example.Ecommerce.Persistence.ExternalServices.ImageCloudinary;
 using Example.Ecommerce.Persistence.Interceptors;
 using Example.Ecommerce.Persistence.Models.Configuration;
 using Example.Ecommerce.Persistence.Repositories.Dapper;
 using Example.Ecommerce.Persistence.Repositories.EfCore;
+using Example.Ecommerce.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,6 +66,19 @@ public static class ConfigureServices
         services.AddScoped(typeof(IEfBaseRepository<>), typeof(EfBaseRepository<>));
 
         #endregion UnitOfWork
+
+        #region Services
+
+        services.AddTransient<IAuthService, AuthService>();
+
+        #endregion Services
+
+        #region External Services
+
+        services.AddTransient<IManageImageService, ManageImageService>();
+        services.AddTransient<IManagementEmailSengridService, ManagementEmailSengridService>();
+
+        #endregion External Services
 
         #region Config
 

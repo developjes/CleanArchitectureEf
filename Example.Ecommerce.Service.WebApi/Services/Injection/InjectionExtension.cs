@@ -7,7 +7,7 @@ public static class InjectionExtension
     public static IServiceCollection AddInjection(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton(configuration);
-        services.AddTransient<AntiforgeryCookieResultFilter>();
+        services.AddTransient<AntiforgeryCookieFilterAttribute>();
 
         return services;
     }

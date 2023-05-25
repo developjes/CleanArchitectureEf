@@ -14,11 +14,21 @@ namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 [Route("api/v{version:apiVersion}/[controller]")]
 public sealed class ProductController : ControllerBase
 {
+    #region Services
+
     private readonly IMediator _mediator;
     private readonly IManageImageService _manageImageService;
 
+    #endregion Services
+
+    #region Constructor
+
     public ProductController(IMediator mediator, IManageImageService manageImageService) =>
         (_mediator, _manageImageService) = (mediator, manageImageService);
+
+    #endregion Constructor
+
+    #region Methods
 
     [AllowAnonymous]
     [HttpGet]
@@ -31,4 +41,6 @@ public sealed class ProductController : ControllerBase
 
         return Ok(products);
     }
+
+    #endregion Methods
 }

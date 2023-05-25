@@ -2,7 +2,6 @@
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
-using Example.Ecommerce.Persistence.Repositories.EfCore;
 using MediatR;
 using System.Linq.Expressions;
 
