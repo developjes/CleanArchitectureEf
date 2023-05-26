@@ -2,6 +2,7 @@
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
+using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using System.Linq.Expressions;
 
@@ -18,14 +19,15 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, I
     public async Task<IReadOnlyList<ProductResponseDto>> Handle(
         GetProductListQuery request, CancellationToken cancellationToken)
     {
-        List<Expression<Func<ProductEntity, object>>> includes = new()
-        {
-            p => p.ProductImages!,
-            p => p.Reviews!
-        };
+        List<Expression<Func<ProductEntity, object>>> includes = new() { p => p.ProductImages!, p => p.Reviews! };
 
-        IReadOnlyList<ProductEntity> products = await _efUnitOfWork.EfRepository<ProductEntity>()
-            .Get(false, orderBy: x => x.OrderBy(y => y.Name), includeProperties: includes, cancellationToken: cancellationToken);
+        IReadOnlyList<ProductEntity> products = await _efUnitOfWork.EfRepository<ProductEntity>().Get(
+            false
+            ,filter: f => f.StateId == EProductState.Active
+            ,orderBy: x => x.OrderBy(y => y.Name)
+            ,includeProperties: includes
+            ,cancellationToken: cancellationToken
+        );
 
         return _mapper.Map<IReadOnlyList<ProductResponseDto>>(products);
     }

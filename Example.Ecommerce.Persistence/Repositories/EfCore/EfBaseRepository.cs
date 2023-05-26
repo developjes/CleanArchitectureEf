@@ -1,5 +1,8 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+﻿using Example.Ecommerce.Application.Interface.Persistence;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Persistence.Specification;
 using Microsoft.EntityFrameworkCore;
+using SendGrid.Helpers.Mail;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -170,4 +173,18 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
     }
 
     #endregion Hard Delete Data
+
+    #region Specification
+
+    public async Task<int> CountAsync(ISpecification<T> spec) => await ApplySpecification(spec).CountAsync();
+
+    public async Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec) =>
+        await ApplySpecification(spec).ToListAsync();
+
+    public async Task<T> GetByIdWithSpec(ISpecification<T> spec) => (await ApplySpecification(spec).FirstOrDefaultAsync())!;
+
+    private IQueryable<T> ApplySpecification(ISpecification<T> spec) =>
+        SpecificationEvaluator<T>.GetQuery(_dbcontext.Set<T>().AsQueryable(), spec);
+
+    #endregion Specification
 }

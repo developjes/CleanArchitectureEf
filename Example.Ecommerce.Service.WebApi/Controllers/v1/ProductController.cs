@@ -1,5 +1,8 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
+using Example.Ecommerce.Application.DTO.Features.Shared;
 using Example.Ecommerce.Application.UseCases.Features.Products.Queries.GetProductList;
+using Example.Ecommerce.Application.UseCases.Features.Products.Queries.PaginationProductList;
+using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +51,23 @@ public sealed class ProductController : ControllerBase
         IReadOnlyList<ProductResponseDto> products = await _mediator.Send(query);
 
         return Ok(products);
+    }
+
+    /// <summary>
+    /// Return Paginated product list
+    /// </summary>
+    /// <param name="paginationProductsQuery"></param>
+    /// <returns>ProductResponseDto</returns>
+    [AllowAnonymous]
+    [HttpGet("paginationList", Name = "PaginationProductList")]
+    [ProducesResponseType(typeof(PaginationDto<ProductResponseDto>), (int)HttpStatusCode.OK)]
+    public async Task<ActionResult<PaginationDto<ProductResponseDto>>> PaginationProduct(
+        [FromQuery] PaginationProductListQuery paginationProductsQuery)
+    {
+        paginationProductsQuery.State = EProductState.Active;
+        PaginationDto<ProductResponseDto> paginationProduct = await _mediator.Send(paginationProductsQuery);
+
+        return Ok(paginationProduct);
     }
 
     #endregion Methods

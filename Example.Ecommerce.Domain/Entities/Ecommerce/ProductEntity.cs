@@ -19,7 +19,7 @@ public class ProductEntity : BaseDomainEntity
 
     #region Relations
 
-    public EProductState StateId { get => (EProductState)_stateId; set => _stateId = (int)value; }
+    public virtual EProductState StateId { get => (EProductState)_stateId; set => _stateId = (int)value; }
     private int _stateId;
 
     public int CategoryId { get; set; }

@@ -64,4 +64,14 @@ public interface IEfBaseRepository<T> where T : class
     void Delete(IEnumerable<T> tEntities);
 
     #endregion
+
+    #region Specification
+
+    Task<T> GetByIdWithSpec(ISpecification<T> spec);
+
+    Task<IReadOnlyList<T>> GetAllWithSpec(ISpecification<T> spec);
+
+    Task<int> CountAsync(ISpecification<T> spec);
+
+    #endregion Specification
 }
