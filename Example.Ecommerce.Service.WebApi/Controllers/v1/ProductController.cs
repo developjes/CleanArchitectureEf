@@ -1,7 +1,7 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.DTO.Features.Shared;
-using Example.Ecommerce.Application.UseCases.Features.Products.Queries.GetProductList;
-using Example.Ecommerce.Application.UseCases.Features.Products.Queries.PaginationProductList;
+using Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.GetProductList;
+using Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.PaginationProductList;
 using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

@@ -6,7 +6,7 @@ using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using System.Linq.Expressions;
 
-namespace Example.Ecommerce.Application.UseCases.Features.Products.Queries.GetProductList;
+namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.GetProductList;
 
 public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, IReadOnlyList<ProductResponseDto>>
 {
@@ -23,10 +23,10 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, I
 
         IReadOnlyList<ProductEntity> products = await _efUnitOfWork.EfRepository<ProductEntity>().Get(
             false
-            ,filter: f => f.StateId == (int)EProductState.Active
-            ,orderBy: x => x.OrderBy(y => y.Name)
-            ,includeProperties: includes
-            ,cancellationToken: cancellationToken
+            , filter: f => f.StateId == (int)EProductState.Active
+            , orderBy: x => x.OrderBy(y => y.Name)
+            , includeProperties: includes
+            , cancellationToken: cancellationToken
         );
 
         return _mapper.Map<IReadOnlyList<ProductResponseDto>>(products);

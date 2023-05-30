@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
-using Example.Ecommerce.Application.UseCases.Features.Products.Queries.PaginationProductList;
+using Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.PaginationProductList;
 using Example.Ecommerce.Application.UseCases.Specifications.Product;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
 

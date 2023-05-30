@@ -6,7 +6,7 @@ using Example.Ecommerce.Application.UseCases.Specifications.Product;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
 using MediatR;
 
-namespace Example.Ecommerce.Application.UseCases.Features.Products.Queries.PaginationProductList;
+namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.PaginationProductList;
 
 public class PaginationProductListQueryHandler :
     IRequestHandler<PaginationProductListQuery, PaginationDto<ProductResponseDto>>
