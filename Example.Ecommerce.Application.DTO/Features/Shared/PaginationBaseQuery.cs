@@ -1,4 +1,4 @@
-﻿namespace Example.Ecommerce.Application.UseCases.Features.Shared.Queries;
+﻿namespace Example.Ecommerce.Application.DTO.Features.Shared;
 
 public class PaginationBaseQuery
 {

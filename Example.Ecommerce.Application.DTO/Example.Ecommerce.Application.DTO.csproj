@@ -12,6 +12,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Example.Ecommerce.Domain\Example.Ecommerce.Domain.csproj" />
   </ItemGroup>
 

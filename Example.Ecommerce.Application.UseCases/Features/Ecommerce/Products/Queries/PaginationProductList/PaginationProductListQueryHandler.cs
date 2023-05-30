@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.DTO.Features.Shared;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
@@ -9,7 +10,7 @@ using MediatR;
 namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.PaginationProductList;
 
 public class PaginationProductListQueryHandler :
-    IRequestHandler<PaginationProductListQuery, PaginationDto<ProductResponseDto>>
+    IRequestHandler<PaginationProductListQuery, PaginationResponseDto<ProductResponseDto>>
 {
     private readonly IEfUnitOfWork _efUnitOfWork;
     private readonly IMapper _mapper;
@@ -17,7 +18,7 @@ public class PaginationProductListQueryHandler :
     public PaginationProductListQueryHandler(IEfUnitOfWork efUnitOfWork, IMapper mapper) =>
         (_efUnitOfWork, _mapper) = (efUnitOfWork, mapper);
 
-    public async Task<PaginationDto<ProductResponseDto>> Handle(
+    public async Task<PaginationResponseDto<ProductResponseDto>> Handle(
         PaginationProductListQuery request, CancellationToken cancellationToken)
     {
         ProductSpecificationParams productSpecificationParams = _mapper.Map<ProductSpecificationParams>(request);

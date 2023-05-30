@@ -1,6 +1,6 @@
 ﻿namespace Example.Ecommerce.Application.DTO.Features.Shared;
 
-public class PaginationDto<T> where T : class
+public class PaginationResponseDto<T> where T : class
 {
     public int Count { get; set; }
     public int PageIndex { get; set; }
