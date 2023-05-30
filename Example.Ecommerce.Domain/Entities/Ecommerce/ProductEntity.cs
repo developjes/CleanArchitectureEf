@@ -1,6 +1,5 @@
 ﻿using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Domain.Entities.Parametrization;
-using Example.Ecommerce.Domain.Enums.Parametrization;
 
 namespace Example.Ecommerce.Domain.Entities.Ecommerce;
 
@@ -19,9 +18,7 @@ public class ProductEntity : BaseDomainEntity
 
     #region Relations
 
-    public virtual EProductState StateId { get => (EProductState)_stateId; set => _stateId = (int)value; }
-    private int _stateId;
-
+    public int StateId { get; set; }
     public int CategoryId { get; set; }
 
     #endregion Relations

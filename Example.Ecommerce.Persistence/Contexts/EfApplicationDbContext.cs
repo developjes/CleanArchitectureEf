@@ -8,7 +8,6 @@ using System.Reflection;
 
 namespace Example.Ecommerce.Persistence.Contexts;
 
-//public class EfApplicationDbContext : DbContext
 public class EfApplicationDbContext : IdentityDbContext<UserEntity>
 {
     #region Interceptors

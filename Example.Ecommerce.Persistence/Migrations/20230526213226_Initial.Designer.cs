@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Example.Ecommerce.Persistence.Migrations
 {
     [DbContext(typeof(EfApplicationDbContext))]
-    [Migration("20230522043415_Initial")]
+    [Migration("20230526213226_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -414,6 +414,12 @@ namespace Example.Ecommerce.Persistence.Migrations
                         .HasColumnOrder(7)
                         .HasComment("Product seller");
 
+                    b.Property<int>("StateId")
+                        .HasColumnType("int")
+                        .HasColumnName("StateId")
+                        .HasColumnOrder(8)
+                        .HasComment("Product ForeignKey State Table");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int")
                         .HasColumnName("Stock")
@@ -423,19 +429,43 @@ namespace Example.Ecommerce.Persistence.Migrations
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("_stateId")
-                        .HasColumnType("int")
-                        .HasColumnName("StateId")
-                        .HasColumnOrder(8)
-                        .HasComment("Product ForeignKey State Table");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("_stateId");
+                    b.HasIndex("StateId");
 
                     b.ToTable("Product", "Ecommerce");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            CreateAt = new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Description = "Televisor 20 pulgadas",
+                            Name = "TV '20",
+                            Price = 2000000m,
+                            Rating = 5,
+                            Seller = "Camilo Obando",
+                            StateId = 2,
+                            Stock = 200
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 2,
+                            CreateAt = new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Description = "Aspiradora plegable",
+                            Name = "Aspiradora",
+                            Price = 500000m,
+                            Rating = 3,
+                            Seller = "Juan Salazar",
+                            StateId = 2,
+                            Stock = 30
+                        });
                 });
 
             modelBuilder.Entity("Example.Ecommerce.Domain.Entities.Ecommerce.ProductImageEntity", b =>
@@ -984,6 +1014,29 @@ namespace Example.Ecommerce.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Category", "Parametrization");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateAt = new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Name = "Tecnologia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateAt = new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Name = "Electrodomesticos"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateAt = new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "System",
+                            Name = "Alimentos"
+                        });
                 });
 
             modelBuilder.Entity("Example.Ecommerce.Domain.Entities.Parametrization.CountryEntity", b =>
@@ -1376,10 +1429,9 @@ namespace Example.Ecommerce.Persistence.Migrations
 
                     b.HasOne("Example.Ecommerce.Domain.Entities.Parametrization.StateEntity", "State")
                         .WithMany("Products")
-                        .HasForeignKey("_stateId")
+                        .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("FK_Product_State_StateId");
+                        .IsRequired();
 
                     b.Navigation("Category");
 

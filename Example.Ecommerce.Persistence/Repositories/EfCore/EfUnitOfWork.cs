@@ -1,4 +1,5 @@
 ﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Domain.Persistence;
 using Example.Ecommerce.Persistence.Contexts;
 using Microsoft.Data.SqlClient;
@@ -9,6 +10,7 @@ using System.Collections;
 using System.Data;
 using System.Data.Common;
 using System.Reflection;
+using static Dapper.SqlMapper;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
 
@@ -23,7 +25,7 @@ public class EfUnitOfWork : IEfUnitOfWork
 
     #region Repositories
 
-    public IEfBaseRepository<T> EfRepository<T>() where T : class
+    public IEfBaseRepository<T> EfRepository<T>() where T : BaseDomainEntity
     {
         string type = typeof(T).Name;
         _repositories ??= new Hashtable();

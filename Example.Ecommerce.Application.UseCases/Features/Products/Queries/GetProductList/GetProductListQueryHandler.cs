@@ -23,7 +23,7 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, I
 
         IReadOnlyList<ProductEntity> products = await _efUnitOfWork.EfRepository<ProductEntity>().Get(
             false
-            ,filter: f => f.StateId == EProductState.Active
+            ,filter: f => f.StateId == (int)EProductState.Active
             ,orderBy: x => x.OrderBy(y => y.Name)
             ,includeProperties: includes
             ,cancellationToken: cancellationToken

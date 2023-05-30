@@ -1,4 +1,5 @@
 ﻿using Example.Ecommerce.Domain.Entities.Ecommerce;
+using Example.Ecommerce.Persistence.Seeders.Ecommerce;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -67,13 +68,13 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
             .IsUnicode(false)
             .IsRequired(required: true);
 
-        productBuilder.Ignore(product => product.StateId);
-        productBuilder.Property<int>("_stateId")
+        productBuilder.Property(product => product.StateId)
             .HasColumnName("StateId")
             .HasComment("Product ForeignKey State Table")
             .HasColumnType("int")
             .HasColumnOrder(8)
-            .IsRequired(required: true);
+            .IsRequired(required: true)
+           ;
 
         productBuilder.Property(product => product.CategoryId)
             .HasColumnName("CategoryId")
@@ -88,8 +89,7 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
 
         productBuilder.HasOne(product => product.State)
             .WithMany(state => state.Products)
-            .HasForeignKey("_stateId")
-            .HasConstraintName("FK_Product_State_StateId")
+            .HasForeignKey(p => p.StateId)
             .OnDelete(DeleteBehavior.Restrict);
 
         productBuilder.HasOne(product => product.Category)
@@ -115,6 +115,8 @@ public sealed class ProductConfiguration : IEntityTypeConfiguration<ProductEntit
         #endregion Relationships
 
         #region Seeder
+
+        productBuilder.AddSeeder();
 
         #endregion Seeder
 

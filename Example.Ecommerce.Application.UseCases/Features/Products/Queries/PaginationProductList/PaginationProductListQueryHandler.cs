@@ -20,32 +20,21 @@ public class PaginationProductListQueryHandler :
     public async Task<PaginationDto<ProductResponseDto>> Handle(
         PaginationProductListQuery request, CancellationToken cancellationToken)
     {
-        ProductSpecificationParams productSpecificationParams = new()
-        {
-            PageIndex = request.PageIndex,
-            PageSize = request.PageSize,
-            Search = request.Search,
-            Sort = request.Sort,
-            MaxPrice = request.MaxPrice,
-            MinPrice = request.MinPrice,
-            Rating = request.Rating,
-            StateId = request.State
-        };
+        ProductSpecificationParams productSpecificationParams = _mapper.Map<ProductSpecificationParams>(request);
 
-        ProductForCountingSpecification specCount = new(productSpecificationParams);
-        int totalProducts = await _efUnitOfWork.EfRepository<ProductEntity>().CountAsync(specCount);
+        int totalProducts = await _efUnitOfWork
+            .EfRepository<ProductEntity>().CountAsync(new ProductForCountingSpecification(productSpecificationParams));
 
-        ProductSpecification spec = new(productSpecificationParams);
-        IReadOnlyList<ProductEntity> products = await _efUnitOfWork.EfRepository<ProductEntity>().GetAllWithSpec(spec);
+        IReadOnlyList<ProductEntity> products = await _efUnitOfWork
+            .EfRepository<ProductEntity>().GetAllWithSpec(new ProductSpecification(productSpecificationParams));
 
-        decimal rounded = Math.Ceiling(Convert.ToDecimal(totalProducts) / Convert.ToDecimal(request.PageSize));
         IReadOnlyList<ProductResponseDto> data = _mapper.Map<IReadOnlyList<ProductResponseDto>>(products);
 
         return new()
         {
             Count = totalProducts,
             Data = data,
-            PageCount = (int)rounded,
+            PageCount = (int)Math.Ceiling(Convert.ToDecimal(totalProducts) / Convert.ToDecimal(request.PageSize)),
             PageIndex = request.PageIndex,
             PageSize = request.PageSize,
             ResultByPage = products.Count

@@ -1,4 +1,5 @@
 ﻿using Example.Ecommerce.Domain.Entities.Parametrization;
+using Example.Ecommerce.Persistence.Seeders.Parametrization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -39,6 +40,8 @@ public sealed class CategoryConfiguration : IEntityTypeConfiguration<CategoryEnt
         #endregion Relationships
 
         #region Seeder
+
+        categoryBuilder.AddSeeder();
 
         #endregion Seeder
 

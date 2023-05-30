@@ -43,8 +43,7 @@ public sealed class StateConfiguration : IEntityTypeConfiguration<StateEntity>
 
         stateBuilder.HasMany(state => state.Products)
             .WithOne(product => product.State)
-            .HasForeignKey("_stateId")
-            .HasConstraintName("FK_Product_State_StateId")
+            .HasForeignKey(p => p.StateId)
             .OnDelete(DeleteBehavior.Restrict);
 
         stateBuilder.HasMany(state => state.Orders)

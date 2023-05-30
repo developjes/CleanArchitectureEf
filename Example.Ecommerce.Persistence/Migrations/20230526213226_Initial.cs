@@ -516,6 +516,17 @@ namespace Example.Ecommerce.Persistence.Migrations
 
             migrationBuilder.InsertData(
                 schema: "Parametrization",
+                table: "Category",
+                columns: new[] { "Id", "CreateAt", "CreatedBy", "LastModifiedBy", "Name", "UpdateAt" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, "Tecnologia", null },
+                    { 2, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, "Electrodomesticos", null },
+                    { 3, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", null, "Alimentos", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "Parametrization",
                 table: "State",
                 columns: new[] { "Id", "CreateAt", "CreatedBy", "Description", "LastModifiedBy", "Name", "UpdateAt" },
                 values: new object[,]
@@ -531,12 +542,21 @@ namespace Example.Ecommerce.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
                 columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "fab4fac1-c546-41de-aebc-a14da6895711", "b74ddd14-6340-4840-95c2-db12554843e5" });
+                values: new object[,]
+                {
+                    { "fab4fac1-c546-41de-aebc-a14da6895711", "b74ddd14-6340-4840-95c2-db12554843e5" },
+                    { "c7b013f0-5201-4317-abd8-c211f91b7330", "b74ddd14-6340-4840-95c2-db579863843e" }
+                });
 
             migrationBuilder.InsertData(
-                table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId" },
-                values: new object[] { "c7b013f0-5201-4317-abd8-c211f91b7330", "b74ddd14-6340-4840-95c2-db579863843e" });
+                schema: "Ecommerce",
+                table: "Product",
+                columns: new[] { "Id", "CategoryId", "CreateAt", "CreatedBy", "Description", "LastModifiedBy", "Name", "Price", "Rating", "Seller", "StateId", "Stock", "UpdateAt" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "Televisor 20 pulgadas", null, "TV '20", 2000000m, 5, "Camilo Obando", 2, 200, null },
+                    { 2, 2, new DateTime(2023, 5, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "System", "Aspiradora plegable", null, "Aspiradora", 500000m, 3, "Juan Salazar", 2, 30, null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

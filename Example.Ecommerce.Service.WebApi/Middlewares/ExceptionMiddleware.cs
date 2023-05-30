@@ -48,10 +48,7 @@ public class ExceptionMiddleware
             }
 
             if (string.IsNullOrEmpty(result))
-            {
-                result = JsonConvert.SerializeObject(
-                    new CodeErrorException(statusCode, new string[] { ex.Message }, ex.StackTrace));
-            }
+                result = JsonConvert.SerializeObject(new CodeErrorException(statusCode, new string[] { ex.Message }, ex.StackTrace));
 
             context.Response.StatusCode = statusCode;
             await context.Response.WriteAsync(result);
