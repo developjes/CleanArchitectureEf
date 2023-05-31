@@ -23,8 +23,20 @@ namespace Example.Ecommerce.Persistence;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddPersistenceServices(
+        this IServiceCollection services, IConfiguration configuration
+    )
     {
+        #region Config
+
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
+        services.Configure<SendGridSettings>(configuration.GetSection("SendGridConfiguration"));
+        services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
+        services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMqSettings"));
+
+        #endregion Config
+
         #region Interceptor
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
@@ -65,6 +77,7 @@ public static class ConfigureServices
         #region UnitOfWork
 
         services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
+        services.AddScoped(typeof(IDapperBaseRepository<>), typeof(DapperBaseRepository<>));
 
         services.AddScoped<IEfUnitOfWork, EfUnitOfWork>();
         services.AddScoped(typeof(IEfBaseRepository<>), typeof(EfBaseRepository<>));
@@ -94,15 +107,6 @@ public static class ConfigureServices
         });
 
         #endregion RabbitMq
-
-        #region Config
-
-        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
-        services.Configure<SendGridSettings>(configuration.GetSection("SendGridConfiguration"));
-        services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
-        services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMqSettings"));
-        #endregion
 
         return services;
     }

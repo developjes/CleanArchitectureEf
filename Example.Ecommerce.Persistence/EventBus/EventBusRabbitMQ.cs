@@ -5,7 +5,6 @@ using Example.Ecommerce.Persistence.Models.Configuration;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -15,11 +14,11 @@ namespace Example.Ecommerce.Persistence.EventBus;
 
 public class EventBusRabbitMQ : IEventBus
 {
-    private readonly RabbitMqSettings _rabbitMQSettings;
     private readonly IMediator _mediator;
-    private readonly Dictionary<string, List<Type>> _handlers;
-    private readonly List<Type> _eventTypes;
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private readonly ConnectionFactory _factory;
+    private readonly List<Type> _eventTypes;
+    private readonly Dictionary<string, List<Type>> _handlers;
 
     public EventBusRabbitMQ(
         IMediator mediator,
@@ -29,31 +28,30 @@ public class EventBusRabbitMQ : IEventBus
     {
         _mediator = mediator;
         _serviceScopeFactory = serviceScopeFactory;
-        _rabbitMQSettings = rabbitMQSettings.Value;
+
+        _factory = new()
+        {
+            HostName = rabbitMQSettings.Value.HostName,
+            UserName = rabbitMQSettings.Value.UserName,
+            Password = rabbitMQSettings.Value.Password,
+            VirtualHost = rabbitMQSettings.Value.VirtualHost
+        };
+
         _handlers = new Dictionary<string, List<Type>>();
         _eventTypes = new List<Type>();
     }
 
     public void Publish<T>(T @event) where T : Event
     {
-        ConnectionFactory factory = new()
-        {
-            HostName = _rabbitMQSettings.HostName,
-            UserName = _rabbitMQSettings.UserName,
-            Password = _rabbitMQSettings.Password,
-            VirtualHost = _rabbitMQSettings.VirtualHost
-        };
-
-        using IConnection connection = factory.CreateConnection();
+        using IConnection connection = _factory.CreateConnection();
         using IModel channel = connection.CreateModel();
 
         string eventName = @event.GetType().Name;
-        channel.QueueDeclare(eventName, false, false, false, null);
 
         string message = JsonSerializer.Serialize(@event);
-
         byte[] body = Encoding.UTF8.GetBytes(message);
 
+        channel.QueueDeclare(eventName, false, false, false, null);
         channel.BasicPublish(string.Empty, eventName, null, body);
     }
 
@@ -80,23 +78,13 @@ public class EventBusRabbitMQ : IEventBus
 
     private void StartBasicConsume<T>() where T : Event
     {
-        ConnectionFactory factory = new()
-        {
-            HostName = _rabbitMQSettings.HostName,
-            UserName = _rabbitMQSettings.UserName,
-            Password = _rabbitMQSettings.Password,
-            VirtualHost = _rabbitMQSettings.VirtualHost
-        };
-
-        IConnection connection = factory.CreateConnection();
-        IModel channel = connection.CreateModel();
-
         string eventName = typeof(T).Name;
+        IConnection connection = _factory.CreateConnection();
+        IModel channel = connection.CreateModel();
 
         channel.QueueDeclare(eventName, false, false, false, null);
 
         AsyncEventingBasicConsumer consumer = new(channel);
-
         consumer.Received += Consumer_Received;
 
         channel.BasicConsume(eventName, true, consumer);
@@ -108,30 +96,26 @@ public class EventBusRabbitMQ : IEventBus
         string message = Encoding.UTF8.GetString(e.Body.Span);
 
         try { await ProcessEvent(eventName, message).ConfigureAwait(false); }
-        catch (Exception ex)
-        {
-
-        }
+        catch (Exception ex) { Console.WriteLine(ex.Message); }
     }
 
     private async Task ProcessEvent(string eventName, string message)
     {
-        if (_handlers.ContainsKey(eventName))
+        if (!_handlers.ContainsKey(eventName)) return;
+
+        using IServiceScope scope = _serviceScopeFactory.CreateScope();
+
+        foreach (Type subscription in _handlers[eventName])
         {
-            using IServiceScope scope = _serviceScopeFactory.CreateScope();
+            object? handler = scope.ServiceProvider.GetService(subscription);
 
-            foreach (Type subscription in _handlers[eventName])
-            {
-                object? handler = scope.ServiceProvider.GetService(subscription);
+            if (handler is null) continue;
 
-                if (handler is null) continue;
+            Type? eventType = _eventTypes.SingleOrDefault(t => t.Name == eventName);
+            Type concreteType = typeof(IEventHandler<>).MakeGenericType(eventType!);
+            object? @event = JsonSerializer.Deserialize(message, eventType!);
 
-                Type? eventType = _eventTypes.SingleOrDefault(t => t.Name == eventName);
-                object? @event = JsonConvert.DeserializeObject(message, eventType!);
-                Type concreteType = typeof(IEventHandler<>).MakeGenericType(eventType);
-
-                await (Task)concreteType.GetMethod("Handle")!.Invoke(handler, new object[] { @event! })!;
-            }
+            await (Task)concreteType.GetMethod("Handle")!.Invoke(handler, new object[] { @event! })!;
         }
     }
 }
