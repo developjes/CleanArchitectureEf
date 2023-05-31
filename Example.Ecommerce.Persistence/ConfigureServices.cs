@@ -3,7 +3,9 @@ using Example.Ecommerce.Application.Interface.Persistence.Connector.Dapper;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Application.Interface.Persistence.EmailSendGrid;
 using Example.Ecommerce.Application.Interface.Persistence.ImageCloudinary;
+using Example.Ecommerce.Application.Interface.Persistence.RabbitMq;
 using Example.Ecommerce.Persistence.Contexts;
+using Example.Ecommerce.Persistence.EventBus;
 using Example.Ecommerce.Persistence.ExternalServices.EmailSengrid;
 using Example.Ecommerce.Persistence.ExternalServices.ImageCloudinary;
 using Example.Ecommerce.Persistence.Interceptors;
@@ -11,9 +13,11 @@ using Example.Ecommerce.Persistence.Models.Configuration;
 using Example.Ecommerce.Persistence.Repositories.Dapper;
 using Example.Ecommerce.Persistence.Repositories.EfCore;
 using Example.Ecommerce.Persistence.Services;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Example.Ecommerce.Persistence;
 
@@ -80,13 +84,24 @@ public static class ConfigureServices
 
         #endregion External Services
 
+        #region RabbitMq
+
+        services.AddScoped<IEventBus, EventBusRabbitMQ>(sp => {
+            IServiceScopeFactory scopeFactory = sp.GetRequiredService<IServiceScopeFactory>();
+            IOptions<RabbitMqSettings>? optionsFactory = sp.GetService<IOptions<RabbitMqSettings>>();
+
+            return new EventBusRabbitMQ(sp.GetService<IMediator>()!, scopeFactory, optionsFactory!);
+        });
+
+        #endregion RabbitMq
+
         #region Config
 
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
         services.Configure<SendGridSettings>(configuration.GetSection("SendGridConfiguration"));
         services.Configure<StripeSettings>(configuration.GetSection("StripeSettings"));
-
+        services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMqSettings"));
         #endregion
 
         return services;
