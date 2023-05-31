@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.GetProductList;
 
-public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, IReadOnlyList<ProductResponseDto>>
+public class GetProductListQueryHandler : IRequestHandler<GetProductListQueryDto, IReadOnlyList<ProductResponseDto>>
 {
     private readonly IEfUnitOfWork _efUnitOfWork;
     private readonly IMapper _mapper;
@@ -18,7 +18,7 @@ public class GetProductListQueryHandler : IRequestHandler<GetProductListQuery, I
         (_efUnitOfWork, _mapper) = (efUnitOfWork, mapper);
 
     public async Task<IReadOnlyList<ProductResponseDto>> Handle(
-        GetProductListQuery request, CancellationToken cancellationToken)
+        GetProductListQueryDto request, CancellationToken cancellationToken)
     {
         List<Expression<Func<ProductEntity, object>>> includes = new() { p => p.ProductImages!, p => p.Reviews! };
 

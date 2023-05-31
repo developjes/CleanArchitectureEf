@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+﻿using Example.Ecommerce.Service.WebApi.Middlewares;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Example.Ecommerce.Service.WebApi;
@@ -73,6 +74,10 @@ public static class ConfigureWebApplicationServices
         app.UseHttpsRedirection();
 
         app.UseRouting();
+
+        app.UseMiddleware<SecurityHeadersMiddleware>();
+
+        app.UseMiddleware<ExceptionMiddleware>();
 
         app.UseAuthentication();
 

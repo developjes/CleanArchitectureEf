@@ -3,7 +3,6 @@ using Example.Ecommerce.Persistence.Configurations.Common;
 using Example.Ecommerce.Persistence.Interceptors;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Reflection;
 
 namespace Example.Ecommerce.Persistence.Contexts;

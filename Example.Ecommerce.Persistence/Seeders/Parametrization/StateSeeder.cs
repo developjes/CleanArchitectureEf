@@ -1,6 +1,5 @@
 ﻿using Example.Ecommerce.Domain.Entities.Parametrization;
 using Example.Ecommerce.Domain.Enums.Parametrization;
-using Example.Ecommerce.Transversal.Common.Extension;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
 

@@ -38,9 +38,9 @@ public class ManageImageService : IManageImageService
 
             return new ImageResponse { PublicId = uploadResult.PublicId, Url = uploadResult.Url.ToString() };
         }
-		catch (Exception ex)
-		{
+        catch (Exception ex)
+        {
             throw new ArgumentException(ex.Message, ex.InnerException);
-		}
+        }
     }
 }

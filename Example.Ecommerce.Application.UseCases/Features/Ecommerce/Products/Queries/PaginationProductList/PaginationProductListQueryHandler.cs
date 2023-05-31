@@ -10,7 +10,7 @@ using MediatR;
 namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Queries.PaginationProductList;
 
 public class PaginationProductListQueryHandler :
-    IRequestHandler<PaginationProductListQuery, PaginationResponseDto<ProductResponseDto>>
+    IRequestHandler<PaginationProductListQueryDto, PaginationResponseDto<ProductResponseDto>>
 {
     private readonly IEfUnitOfWork _efUnitOfWork;
     private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ public class PaginationProductListQueryHandler :
         (_efUnitOfWork, _mapper) = (efUnitOfWork, mapper);
 
     public async Task<PaginationResponseDto<ProductResponseDto>> Handle(
-        PaginationProductListQuery request, CancellationToken cancellationToken)
+        PaginationProductListQueryDto request, CancellationToken cancellationToken)
     {
         ProductSpecificationParams productSpecificationParams = _mapper.Map<ProductSpecificationParams>(request);
 

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Example.Ecommerce.Application.DTO\Example.Ecommerce.Application.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validations\" />
+  </ItemGroup>
+
 </Project>

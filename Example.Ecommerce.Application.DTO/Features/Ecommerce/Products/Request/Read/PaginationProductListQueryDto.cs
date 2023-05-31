@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 
-public class PaginationProductListQuery : PaginationBaseQuery, IRequest<PaginationResponseDto<ProductResponseDto>>
+public class PaginationProductListQueryDto : PaginationBaseQuery, IRequest<PaginationResponseDto<ProductResponseDto>>
 {
     public decimal? MaxPrice { get; set; }
     public decimal? MinPrice { get; set; }

@@ -2,15 +2,13 @@
 using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Domain.Persistence;
 using Example.Ecommerce.Persistence.Contexts;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Collections;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Reflection;
-using static Dapper.SqlMapper;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
 

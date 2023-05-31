@@ -1,4 +1,5 @@
 ﻿using Example.Ecommerce.Application.Validator.Behaviors;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -15,6 +16,12 @@ public static class ConfigureServices
 
         #endregion Mapper
 
+        #region Fluent Validator
+
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+        #endregion Fluent Validator
+
         #region Add MediaTr
 
         services.AddMediatR(handlers => handlers.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
@@ -23,8 +30,8 @@ public static class ConfigureServices
 
         #region Behaviors
 
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
 
         #endregion  Behaviors
 

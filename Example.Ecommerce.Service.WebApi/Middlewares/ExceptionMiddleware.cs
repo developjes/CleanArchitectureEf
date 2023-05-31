@@ -1,7 +1,7 @@
-﻿using System.Net;
-using Example.Ecommerce.Application.Validator.Exceptions;
+﻿using Example.Ecommerce.Application.Validator.Exceptions;
 using Example.Ecommerce.Service.WebApi.Exceptions;
-using Newtonsoft.Json;
+using System.Net;
+using System.Text.Json;
 
 namespace Example.Ecommerce.Service.WebApi.Middlewares;
 
@@ -23,6 +23,7 @@ public class ExceptionMiddleware
 
             int statusCode;
             string result = string.Empty;
+            JsonSerializerOptions jsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
             switch (ex)
             {
@@ -33,9 +34,10 @@ public class ExceptionMiddleware
                 case FluentValidation.ValidationException validationException:
                     statusCode = (int)HttpStatusCode.BadRequest;
                     string[] errors = validationException.Errors.Select(ers => ers.ErrorMessage).ToArray();
-                    string validationJsons = JsonConvert.SerializeObject(errors);
+                    string validationJsons = JsonSerializer.Serialize(errors, jsonSerializerOptions);
 
-                    result = JsonConvert.SerializeObject(new CodeErrorException(statusCode, errors, validationJsons));
+                    result = JsonSerializer
+                        .Serialize(new CodeErrorException(statusCode, errors, validationJsons), jsonSerializerOptions);
                     break;
 
                 case BadRequestException:
@@ -48,7 +50,12 @@ public class ExceptionMiddleware
             }
 
             if (string.IsNullOrEmpty(result))
-                result = JsonConvert.SerializeObject(new CodeErrorException(statusCode, new string[] { ex.Message }, ex.StackTrace));
+            {
+                result = JsonSerializer.Serialize(
+                    new CodeErrorException(statusCode, new string[] { ex.Message }, ex.StackTrace),
+                    jsonSerializerOptions
+                );
+            }
 
             context.Response.StatusCode = statusCode;
             await context.Response.WriteAsync(result);

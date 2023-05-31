@@ -17,9 +17,11 @@ namespace Example.Ecommerce.Application.Validator.Behaviors
             catch (Exception ex)
             {
                 string requestName = typeof(TRequest).Name;
+
                 _logger.LogError(
                     ex, "Application Request: Sucedio una exception para el request {Name} {@Request}", requestName, request);
-                throw new ArgumentException("Application Request con Errores");
+
+                throw;
             }
         }
     }

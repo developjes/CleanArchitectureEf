@@ -44,13 +44,8 @@ public sealed class ProductController : ControllerBase
     [HttpGet]
     [Route("list", Name = "GetProductList")]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), (int)HttpStatusCode.OK)]
-    public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll()
-    {
-        GetProductListQuery query = new();
-        IReadOnlyList<ProductResponseDto> products = await _mediator.Send(query);
-
-        return Ok(products);
-    }
+    public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
+        Ok(await _mediator.Send(new GetProductListQueryDto()));
 
     /// <summary>
     /// Return Paginated product list
@@ -61,7 +56,7 @@ public sealed class ProductController : ControllerBase
     [HttpGet("paginationList", Name = "PaginationProductList")]
     [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), (int)HttpStatusCode.OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
-        [FromQuery] PaginationProductListQuery paginationProductsQuery)
+        [FromQuery] PaginationProductListQueryDto paginationProductsQuery)
     {
         paginationProductsQuery.State = EProductState.Active;
         PaginationResponseDto<ProductResponseDto> paginationProduct = await _mediator.Send(paginationProductsQuery);

@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
+using ValidationException = Example.Ecommerce.Application.Validator.Exceptions.ValidationException;
 
 namespace Example.Ecommerce.Application.Validator.Behaviors;
 
@@ -17,6 +18,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         if (_validators.Any())
         {
             ValidationContext<TRequest> context = new(request);
+
             ValidationResult[] validationResults = await Task
                 .WhenAll(_validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 

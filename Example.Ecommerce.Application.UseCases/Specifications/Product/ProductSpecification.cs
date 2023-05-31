@@ -4,7 +4,7 @@ namespace Example.Ecommerce.Application.UseCases.Specifications.Product;
 
 public class ProductSpecification : SpecificationBase<ProductEntity>
 {
-    public ProductSpecification(ProductSpecificationParams productParams): base(
+    public ProductSpecification(ProductSpecificationParams productParams) : base(
         productEntity => (
             string.IsNullOrWhiteSpace(productParams.Search)
             || productEntity.Name!.Contains(productParams.Search)

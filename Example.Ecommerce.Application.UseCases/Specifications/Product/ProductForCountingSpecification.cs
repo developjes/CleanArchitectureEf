@@ -13,5 +13,6 @@ public class ProductForCountingSpecification : SpecificationBase<ProductEntity>
         && (!productParams.MinPrice.HasValue || productEntity.Price >= productParams.MinPrice)
         && (!productParams.MaxPrice.HasValue || productEntity.Price <= productParams.MaxPrice)
         && (!productParams.StateId.HasValue || productEntity.StateId.Equals(productParams.StateId))
-    ) { }
+    )
+    { }
 }

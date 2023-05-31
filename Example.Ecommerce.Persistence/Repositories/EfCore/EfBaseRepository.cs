@@ -2,7 +2,6 @@
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Persistence.Specification;
 using Microsoft.EntityFrameworkCore;
-using SendGrid.Helpers.Mail;
 using System.Linq.Expressions;
 using System.Reflection;
 
