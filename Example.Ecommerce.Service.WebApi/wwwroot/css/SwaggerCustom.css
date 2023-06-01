@@ -1,61 +1,7 @@
 ﻿@charset "UTF-8";
 
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
-body {
-    margin: 0;
-    background: white;
-}
-
-.swagger-ui .topbar {
-    background-color: whitesmoke;
-}
-
-#footer {
-    background-color: whitesmoke;
-    font-family: sans-serif;
-    color: #4da32c;
-    font-size: 70%;
-    text-align: center;
-}
-
-.topbar-wrapper img {
-    content: url('../img/logo.png');
-    border-radius: 3px;
-    width: 182px;
-    height: 56px
-}
-
-.swagger-ui .opblock-body pre.microlight {
-    color: lightsteelblue !important;
-}
-
-/*
-.swagger-ui .topbar .download-url-wrapper .download-url-button {
-    background-color: #red !important;
-}
-
-.swagger-ui .topbar .download-url-wrapper input[type=text] {
-    border-color: #red !important;
-}
-*/
-.swagger-ui .opblock.opblock-post .opblock-summary {
-    background: #49cc90
-}
-
-.swagger-ui .opblock.opblock-get .opblock-summary {
-    background: #61affe
-}
-
-
 .swagger-ui html {
-    box-sizing: border-box;
-    overflow: scroll;
-    overflow-y: scroll;
+    box-sizing: border-box
 }
 
 .swagger-ui *, .swagger-ui :after, .swagger-ui :before {
@@ -286,8 +232,7 @@ body {
         }
 
         .swagger-ui .opblock.opblock-put .opblock-summary {
-            border-color: #fca130;
-            Background: #ffc107;
+            border-color: #fca130
         }
 
     .swagger-ui .opblock.opblock-delete {
@@ -300,8 +245,7 @@ body {
         }
 
         .swagger-ui .opblock.opblock-delete .opblock-summary {
-            border-color: #f93e3e;
-            background: #e57373;
+            border-color: #f93e3e
         }
 
     .swagger-ui .opblock.opblock-get {
@@ -510,12 +454,11 @@ body {
     font-weight: 600;
     color: #fff
 }
-
-/*
-.swagger-ui .opblock-body pre span {
-    color: #fff !important
-}
-*/
+    /*
+    .swagger-ui .opblock-body pre span {
+        color: #fff !important
+    }
+    */
 
 .swagger-ui .scheme-container {
     margin: 0 0 20px;
@@ -669,10 +612,9 @@ body {
         -webkit-animation: pulse 2s infinite;
         animation: pulse 2s infinite;
         color: #fff;
-        background: #263238;
-        border-color: #000000;
+        border-color: #4990e2
     }
-/*
+
 @-webkit-keyframes pulse {
     0% {
         color: #fff;
@@ -708,7 +650,7 @@ body {
         box-shadow: 0 0 0 0 rgba(73, 144, 226, 0)
     }
 }
-*/
+
 .swagger-ui .btn-group {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -716,19 +658,19 @@ body {
     padding: 30px
 }
 
-    .swagger-ui .btn-group .btn {
-        -webkit-box-flex: 1;
-        -ms-flex: 1;
-        flex: 1
-    }
+.swagger-ui .btn-group .btn {
+    -webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1
+}
 
-        .swagger-ui .btn-group .btn:first-child {
-            border-radius: 4px 0 0 4px
-        }
+.swagger-ui .btn-group .btn:first-child {
+    border-radius: 4px 0 0 4px
+}
 
-        .swagger-ui .btn-group .btn:last-child {
-            border-radius: 0 4px 4px 0
-        }
+.swagger-ui .btn-group .btn:last-child {
+    border-radius: 0 4px 4px 0
+}
 
 .swagger-ui .authorization__btn {
     padding: 0 10px;
@@ -736,37 +678,37 @@ body {
     background: none
 }
 
-    .swagger-ui .authorization__btn.locked {
-        opacity: 1
-    }
+.swagger-ui .authorization__btn.locked {
+    opacity: 1
+}
 
-    .swagger-ui .authorization__btn.unlocked {
-        opacity: .4
-    }
+.swagger-ui .authorization__btn.unlocked {
+    opacity: .4
+}
 
 .swagger-ui .expand-methods, .swagger-ui .expand-operation {
     border: none;
     background: none
 }
 
-    .swagger-ui .expand-methods svg, .swagger-ui .expand-operation svg {
-        width: 20px;
-        height: 20px
-    }
+.swagger-ui .expand-methods svg, .swagger-ui .expand-operation svg {
+    width: 20px;
+    height: 20px
+}
 
 .swagger-ui .expand-methods {
     padding: 0 10px
 }
 
-    .swagger-ui .expand-methods:hover svg {
-        fill: #444
-    }
+.swagger-ui .expand-methods:hover svg {
+    fill: #444
+}
 
-    .swagger-ui .expand-methods svg {
-        -webkit-transition: all .3s;
-        transition: all .3s;
-        fill: #777
-    }
+.swagger-ui .expand-methods svg {
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    fill: #777
+}
 
 .swagger-ui button {
     cursor: pointer;
@@ -1357,10 +1299,6 @@ body {
         display: flex
     }
 
-        .swagger-ui .topbar .download-url-wrapper label.select-label span {
-            color: white;
-        }
-
         .swagger-ui .topbar .download-url-wrapper input[type=text] {
             min-width: 350px;
             margin: 0;
@@ -1605,187 +1543,165 @@ body {
 /**
  * Swagger UI Theme Overrides
  *
- * Theme: Material
+ * Theme: Flattop
  * Author: Mark Ostrander
  * Github: https://github.com/ostranme/swagger-ui-themes
  */
 
 .swagger-ui .opblock.opblock-post {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
     .swagger-ui .opblock.opblock-post .opblock-summary-method {
-        background: #009688;
+        background: #049372;
     }
 
     .swagger-ui .opblock.opblock-post .opblock-summary {
-        border-color: #ffffff;
-    }
-
-    .swagger-ui .opblock.opblock-post .tab-header .tab-item.active h4 span:after {
-        background: #009688;
+        border-color: #DADFE1;
     }
 
 .swagger-ui .opblock.opblock-put {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
     .swagger-ui .opblock.opblock-put .opblock-summary-method {
-        background: #ff9800;
+        background: #EB9532;
     }
 
     .swagger-ui .opblock.opblock-put .opblock-summary {
-        border-color: #ffffff;
-    }
-
-    .swagger-ui .opblock.opblock-put .tab-header .tab-item.active h4 span:after {
-        background: #ff9800;
+        border-color: #DADFE1;
     }
 
 .swagger-ui .opblock.opblock-delete {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
     .swagger-ui .opblock.opblock-delete .opblock-summary-method {
-        background: #f44336;
+        background: #C0392B;
     }
 
     .swagger-ui .opblock.opblock-delete .opblock-summary {
-        border-color: #ffffff;
-    }
-
-    .swagger-ui .opblock.opblock-delete .tab-header .tab-item.active h4 span:after {
-        background: #f44336;
+        border-color: #DADFE1;
     }
 
 .swagger-ui .opblock.opblock-get {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
     .swagger-ui .opblock.opblock-get .opblock-summary-method {
-        background: #3f51b5;
+        background: #34495E;
     }
 
     .swagger-ui .opblock.opblock-get .opblock-summary {
-        border-color: #ffffff;
-    }
-
-    .swagger-ui .opblock.opblock-get .tab-header .tab-item.active h4 span:after {
-        background: #3f51b5;
+        border-color: #DADFE1;
     }
 
 .swagger-ui .opblock.opblock-patch {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
-.swagger-ui .opblock.opblock-patch .opblock-summary-method {
-    background: #f57c00;
-}
+    .swagger-ui .opblock.opblock-patch .opblock-summary-method {
+        background: #F57C00;
+    }
 
-.swagger-ui .opblock.opblock-patch .opblock-summary {
-    border-color: #ffffff;
-}
-
-.swagger-ui .opblock.opblock-patch .tab-header .tab-item.active h4 span:after {
-    background: #f57c00;
-}
+    .swagger-ui .opblock.opblock-patch .opblock-summary {
+        border-color: #DADFE1;
+    }
 
 .swagger-ui .opblock.opblock-head {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
-.swagger-ui .opblock.opblock-head .opblock-summary-method {
-    background: #3f51b5;
-}
+    .swagger-ui .opblock.opblock-head .opblock-summary-method {
+        background: #5C6BC0;
+    }
 
-.swagger-ui .opblock.opblock-head .opblock-summary {
-    border-color: #ffffff;
-}
-
-.swagger-ui .opblock.opblock-head .tab-header .tab-item.active h4 span:after {
-    background: #3f51b5;
-}
+    .swagger-ui .opblock.opblock-head .opblock-summary {
+        border-color: #DADFE1;
+    }
 
 .swagger-ui .opblock.opblock-options {
-    border-color: #ffffff;
-    background: #ffffff;
+    border-color: #DADFE1;
+    background: rgba(236, 240, 241, .1);
 }
 
-.swagger-ui .opblock.opblock-options .opblock-summary-method {
-    background: #3f51b5;
-}
+    .swagger-ui .opblock.opblock-options .opblock-summary-method {
+        background: #3F51B5;
+    }
 
-.swagger-ui .opblock.opblock-options .opblock-summary {
-    border-color: #ffffff;
-}
-
-.swagger-ui .opblock.opblock-options .tab-header .tab-item.active h4 span:after {
-    background: #3f51b5;
-}
+    .swagger-ui .opblock.opblock-options .opblock-summary {
+        border-color: #DADFE1;
+    }
 
 .swagger-ui .topbar {
     padding: 8px 30px;
-    background-color: #3f51b5;
-    box-shadow: 0 5px 5px 0 rgba(0,0,0,.4), 0 3px 1px -2px rgba(0,0,0,.2), 0 1px 5px 0 rgba(0,0,0,.12);
+    background-color: #2C3E50;
 }
 
-.swagger-ui .topbar .download-url-wrapper input[type=text] {
-    min-width: 350px;
-    margin: 0;
-    border: 2px solid #DADFE1;
-    border-radius: 4px 0 0 4px;
-    outline: none;
-}
+    .swagger-ui .topbar .download-url-wrapper input[type=text] {
+        min-width: 350px;
+        margin: 0;
+        border: 2px solid #DADFE1;
+        border-radius: 4px 0 0 4px;
+        outline: none;
+    }
 
-.swagger-ui .topbar .download-url-wrapper .download-url-button {
-    font-size: 16px;
-    font-weight: 700;
-    padding: 4px 40px;
-    border: none;
-    border-radius: 0 4px 4px 0;
-    background: #ffffff;
-    font-family: Titillium Web, sans-serif;
-    color: #222222;
-}
+    .swagger-ui .topbar .download-url-wrapper .download-url-button {
+        font-size: 16px;
+        font-weight: 700;
+        padding: 4px 40px;
+        border: none;
+        border-radius: 0 4px 4px 0;
+        background: #DADFE1;
+        font-family: Titillium Web, sans-serif;
+        color: #2C3E50;
+    }
 
 .swagger-ui .info a {
     font-size: 14px;
     -webkit-transition: all .4s;
     transition: all .4s;
     font-family: Open Sans, sans-serif;
-    color: #3f51b5;
+    color: #336E7B;
 }
 
-.swagger-ui .info a:hover {
-    color: #3f51b5;
-}
+    .swagger-ui .info a:hover {
+        color: #336E7B;
+    }
 
 .swagger-ui .btn.authorize {
     line-height: 1;
     display: inline;
-    color: #3f51b5;
-    border-color: #3f51b5;
+    color: #336E7B;
+    border-color: #336E7B;
 }
 
-.swagger-ui .btn.authorize svg {
-    fill: #3f51b5;
-}
+    .swagger-ui .btn.authorize svg {
+        fill: #336E7B;
+    }
 
-body {
-    margin: 0;
-    background: #ffffff;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-}
 
-.swagger-ui .opblock {
-    margin: 0 0 15px;
-    border: none;
-    border-radius: 2px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+.swagger-ui .topbar {
+    background: #c80680;
+    /* Old browsers */
+    background: #c80680;
+    /* Old browsers  */
+    background: -moz-linear-gradient(left, #c80680 0%, #731472 41%);
+    /* FF3.6+ */
+    background: -webkit-linear-gradient(left, #c80680 0%, #731472 41%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left, #c80680 0%, #731472 41%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(left, #c80680 0%, #731472 41%);
+    /* IE10+ */
+    background: linear-gradient(to right, #c80680 0%, #731472 41%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$left', endColorstr='$right',GradientType=0 );
+    /* IE6-9 */
 }

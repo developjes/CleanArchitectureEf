@@ -49,7 +49,7 @@ public class ExceptionMiddleware
                     break;
             }
 
-            if (string.IsNullOrEmpty(result))
+            if (string.IsNullOrWhiteSpace(result))
             {
                 result = JsonSerializer.Serialize(
                     new CodeErrorException(statusCode, new string[] { ex.Message }, ex.StackTrace),

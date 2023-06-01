@@ -16,6 +16,8 @@ public static class ConfigureWebApplicationServices
 
             app.UseStaticFiles();
 
+            app.UseDefaultFiles();
+
             #endregion
 
             #region Exception page
@@ -53,7 +55,7 @@ public static class ConfigureWebApplicationServices
                 c.EnableValidator();
                 c.DefaultModelsExpandDepth(-1);
                 c.DocExpansion(DocExpansion.List);
-                c.InjectStylesheet(Path.Combine("css", "SwaggerCustom.css"));
+                c.InjectStylesheet($"/{Path.Combine("css", "SwaggerCustom.css")}");
                 c.SupportedSubmitMethods(
                     SubmitMethod.Get, SubmitMethod.Post, SubmitMethod.Put, SubmitMethod.Patch,
                     SubmitMethod.Delete, SubmitMethod.Head
@@ -67,9 +69,12 @@ public static class ConfigureWebApplicationServices
 
         #region Production elements
 
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         else { app.UseHsts(); }
 
         #endregion Production elements
+
+        #region WebApplicationBuilders
 
         app.UseHttpsRedirection();
 
@@ -88,6 +93,8 @@ public static class ConfigureWebApplicationServices
         app.UseRequestLocalization();
 
         app.MapControllers();
+
+        #endregion WebApplicationBuilders
 
         return app;
     }
