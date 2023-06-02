@@ -5,7 +5,13 @@ using Example.Ecommerce.Service.WebApi.Services.Cors;
 using Example.Ecommerce.Service.WebApi.Services.Injection;
 using Example.Ecommerce.Service.WebApi.Services.Swagger;
 using Example.Ecommerce.Service.WebApi.Services.Versioning;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace Example.Ecommerce.Service.WebApi;
@@ -46,7 +52,10 @@ public static class ConfigureServices
 
         #region compresion
 
-        services.AddResponseCompression();
+        services.AddResponseCompression(opt => {
+            opt.Providers.Add<BrotliCompressionProvider>();
+            opt.Providers.Add<GzipCompressionProvider>();
+        });
 
         #endregion compresion
 
@@ -67,31 +76,39 @@ public static class ConfigureServices
 
         services.AddCors(configuration);
 
-        #endregion
+        #endregion Feature
 
         #region Authentication
 
         services.AddIdentityAuthentication(configuration);
 
-        #endregion
+        #endregion Authentication
 
         #region Versioning
 
         services.AddVersioning();
 
-        #endregion
+        #endregion Versioning
 
         #region Dependency Injection
 
         services.AddInjection(configuration);
 
-        #endregion
+        #endregion Dependency Injection
 
         #region Swagger
 
         services.AddSwagger();
+        services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
+        services.AddFluentValidationRulesToSwagger();
 
-        #endregion
+        #endregion Swagger
+
+        #region Forms limit
+
+        services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = 100000000);
+
+        #endregion Forms limit
 
         return services;
     }

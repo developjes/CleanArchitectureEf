@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Example.Ecommerce.Service.WebApi.Services.Swagger.Filters;
+using Example.Ecommerce.Service.WebApi.Services.Swagger.Options;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -17,11 +19,6 @@ public static class SwaggerExtension
 
         services.AddSwaggerGen(c =>
         {
-            // Set the comments path for the Swagger JSON and UI.
-            string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            c.IncludeXmlComments(xmlPath);
-
             OpenApiSecurityScheme securityScheme = new()
             {
                 Name = "Authorization",
@@ -32,27 +29,34 @@ public static class SwaggerExtension
                 BearerFormat = "JWT",
                 Reference = new() { Id = JwtBearerDefaults.AuthenticationScheme, Type = ReferenceType.SecurityScheme }
             };
+
             c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+            c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+            c.OperationFilter<SwaggerFormMultipartFilter>();
             c.AddSecurityRequirement(new OpenApiSecurityRequirement() { { securityScheme, new List<string>() } });
             c.UseInlineDefinitionsForEnums();
             c.UseOneOfForPolymorphism();
             c.UseAllOfToExtendReferenceSchemas();
-            c.CustomSchemaIds(x => x.FullName);
             c.SupportNonNullableReferenceTypes();
             c.DescribeAllParametersInCamelCase();
             c.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             c.IgnoreObsoleteActions();
             c.IgnoreObsoleteProperties();
-            c.ExampleFilters();
             c.OrderActionsBy((apiDesc) => $"{apiDesc.ActionDescriptor.RouteValues["controller"]}_{apiDesc.HttpMethod}");
             c.CustomOperationIds(apiDesc => apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null);
 
-            c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-            c.OperationFilter<SwaggerFormMultipartFilter>();
+            // Set the comments path for the Swagger JSON and UI.
+            string xmlPath = GetXmlDocumentationFileFor(Assembly.GetExecutingAssembly());
+            if (File.Exists(xmlPath))
+                c.IncludeXmlComments(xmlPath);
         });
-        services.AddLogging(builder => builder.AddConsole());
-        services.AddSwaggerExamplesFromAssemblies(Assembly.GetEntryAssembly());
 
         return services;
+    }
+
+    private static string GetXmlDocumentationFileFor(Assembly assembly)
+    {
+        string documentationFile = $"{assembly.GetName().Name}.xml";
+        return Path.Combine(AppContext.BaseDirectory, documentationFile);
     }
 }

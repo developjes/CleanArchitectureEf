@@ -5,7 +5,7 @@ using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 
@@ -43,7 +43,7 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("list", Name = "GetProductList")]
-    [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
         Ok(await _mediator.Send(new GetProductListQueryDto()));
 
@@ -54,7 +54,10 @@ public sealed class ProductController : ControllerBase
     /// <returns>ProductResponseDto</returns>
     [AllowAnonymous]
     [HttpGet("paginationList", Name = "PaginationProductList")]
-    [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), (int)HttpStatusCode.OK)]
+    [SwaggerOperation(
+        Description = "Retona resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Products" }
+    )]
+    [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
         [FromQuery] PaginationProductListQueryDto paginationProductsQuery)
     {
@@ -64,5 +67,33 @@ public sealed class ProductController : ControllerBase
         return Ok(paginationProduct);
     }
 
+    [AllowAnonymous]
+    [SwaggerOperation]
+    [HttpPost("pruebaPost", Name = "PruebaPost")]
+    public IActionResult PostController()
+    {
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpPut("pruebaPut", Name = "PruebaPut")]
+    public IActionResult PutController()
+    {
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpPatch("pruebaPatch", Name = "PruebaPatch")]
+    public IActionResult PatchController()
+    {
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpDelete("pruebaDelete", Name = "PruebaDelete")]
+    public IActionResult DeleteController()
+    {
+        return Ok();
+    }
     #endregion Methods
 }

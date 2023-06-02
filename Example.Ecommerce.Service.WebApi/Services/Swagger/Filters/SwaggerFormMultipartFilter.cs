@@ -3,7 +3,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
 
-namespace Example.Ecommerce.Service.WebApi.Services.Swagger;
+namespace Example.Ecommerce.Service.WebApi.Services.Swagger.Filters;
 
 public class SwaggerFormMultipartFilter : IOperationFilter
 {
