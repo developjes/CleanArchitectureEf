@@ -1341,7 +1341,7 @@
     background: rgba(0, 0, 0, .05);
     font-family: Source Code Pro, monospace;
     font-weight: 600;
-    color: #9012fe
+    color: lightgray
 }
 
 .swagger-ui .info a {

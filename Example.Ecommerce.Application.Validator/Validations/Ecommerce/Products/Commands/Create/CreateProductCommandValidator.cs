@@ -10,27 +10,27 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     private void DefineRules()
     {
         RuleFor(p => p.Name)
-            .NotEmpty().WithMessage("Can't be empty");
+            .NotEmpty().WithMessage("Can't be null or empty");
 
         RuleFor(p => p.Description)
-            .NotEmpty().WithMessage("Can't be empty");
+            .NotEmpty().WithMessage("Can't be null or empty");
 
         RuleFor(p => p.Seller)
-            .NotEmpty().WithMessage("Can't be empty");
+            .NotEmpty().WithMessage("Can't be null or empty");
 
         RuleFor(p => p.Price)
-            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
+            .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Rating)
-            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
+            .GreaterThan(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Stock)
-            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
+            .GreaterThan(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.StateId)
-            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
+            .GreaterThan(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.CategoryId)
-            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
+            .GreaterThan(1).WithMessage("Can be greater 0");
     }
 }

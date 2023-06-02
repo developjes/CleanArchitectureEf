@@ -14,10 +14,11 @@ namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 /// All methods for Product data
 /// </summary>
 [ApiController]
-[SwaggerTag("Get Weather forecast and place orders. Very weird and unstructed API :)")]
+[SwaggerTag("Product Actions. Ecommerce API :D")]
 [ApiExplorerSettings(IgnoreApi = false)]
 [ApiVersion("1.0", Deprecated = false)]
 [Route("api/v{version:apiVersion}/[controller]")]
+[Produces("application/json")]
 public sealed class ProductController : ControllerBase
 {
     #region Services
@@ -57,7 +58,7 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpGet("paginationList", Name = "PaginationProductList")]
     [SwaggerOperation(
-        Description = "Retona resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Products" }
+        Description = "Retona resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Product" }
     )]
     [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
@@ -69,18 +70,32 @@ public sealed class ProductController : ControllerBase
         return Ok(paginationProduct);
     }
 
+    /// <summary>Insertar un producto</summary>
+    /// <remarks>
+    /// <para>Sample request:
+    ///
+    /// POST api/Product/Store
+    /// {
+    ///     "name": "TV",
+    ///     "price": 400000,
+    ///     "description": "Televisor 24 pulgadas",
+    ///     "rating": 5,
+    ///     "stock": 20,
+    ///     "stateId": 1,
+    ///     "categoryId": 1
+    /// }
+    /// </para>
+    /// </remarks>
     [AllowAnonymous]
     [HttpPost("Store", Name = "StoreProduct")]
-    [SwaggerOperation(
-        Description = "Inserta un producto", OperationId = "InsertProduct", Tags = new[] { "Products" }
-    )]
+    [SwaggerOperation(OperationId = "InsertProduct", Tags = new[] { "Product" })]
     public async Task<ActionResult<int>> PostController([FromBody] CreateProductCommandDto request)
     {
         return await _mediator.Send(request);
     }
 
     [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Products" })]
+    [SwaggerOperation(Tags = new[] { "Product" })]
     [HttpPut("pruebaPut", Name = "PruebaPut")]
     public IActionResult PutController()
     {
@@ -88,7 +103,7 @@ public sealed class ProductController : ControllerBase
     }
 
     [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Products" })]
+    [SwaggerOperation(Tags = new[] { "Product" })]
     [HttpPatch("pruebaPatch", Name = "PruebaPatch")]
     public IActionResult PatchController()
     {
@@ -96,7 +111,7 @@ public sealed class ProductController : ControllerBase
     }
 
     [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Products" })]
+    [SwaggerOperation(Tags = new[] { "Product" })]
     [HttpDelete("pruebaDelete", Name = "PruebaDelete")]
     public IActionResult DeleteController()
     {
