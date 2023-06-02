@@ -1,4 +1,5 @@
-﻿using Example.Ecommerce.Service.WebApi.Services.AntiforgeryCookie;
+﻿using Example.Ecommerce.Service.WebApi.Filters;
+using Example.Ecommerce.Service.WebApi.Services.AntiforgeryCookie;
 using Example.Ecommerce.Service.WebApi.Services.Authentication;
 using Example.Ecommerce.Service.WebApi.Services.Converters;
 using Example.Ecommerce.Service.WebApi.Services.Cors;
@@ -31,6 +32,7 @@ public static class ConfigureServices
         services.AddControllers(x =>
         {
             x.Filters.AddService(typeof(AntiforgeryCookieFilterAttribute));
+            x.Filters.Add<ApiExceptionFilterAttribute>();
             x.EnableEndpointRouting = false;
             x.ModelMetadataDetailsProviders.Clear();
             x.ModelValidatorProviders.Clear();

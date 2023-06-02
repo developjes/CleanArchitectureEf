@@ -1707,3 +1707,7 @@
 .swagger-ui .opblock-body pre.microlight {
     color: lightgray
 }
+
+.swagger-ui .markdown code, .swagger-ui .renderedMarkdown code {
+    color: lightgray
+}

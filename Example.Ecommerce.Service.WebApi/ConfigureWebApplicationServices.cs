@@ -76,12 +76,13 @@ public static class ConfigureWebApplicationServices
 
         #region WebApplicationBuilders
 
+        //app.UseStatusCodePages();
+
         app.UseHttpsRedirection();
 
         app.UseRouting();
 
         app.UseMiddleware<SecurityHeadersMiddleware>();
-        app.UseMiddleware<ExceptionMiddleware>();
 
         app.UseAuthentication();
         app.UseAuthorization();

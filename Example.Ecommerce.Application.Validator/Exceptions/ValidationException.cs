@@ -2,16 +2,11 @@ using FluentValidation.Results;
 
 namespace Example.Ecommerce.Application.Validator.Exceptions;
 
-public class ValidationException : ApplicationException
+public class ValidationException : Exception
 {
     public IDictionary<string, string[]> Errors { get; }
 
-    public ValidationException() : base("Se presentaron uno o mas errores de validation") =>
-        Errors = new Dictionary<string, string[]>();
-
-    public ValidationException(string message) : base(message) => Errors = new Dictionary<string, string[]>();
-
-    public ValidationException(string message, Exception innerException) : base(message, innerException) =>
+    public ValidationException() : base("One or more validation failures have occurred.") =>
         Errors = new Dictionary<string, string[]>();
 
     public ValidationException(IEnumerable<ValidationFailure> failures) : this()
