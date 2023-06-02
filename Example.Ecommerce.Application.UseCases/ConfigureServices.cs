@@ -1,5 +1,6 @@
 ﻿using Example.Ecommerce.Application.Validator.Behaviors;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -18,7 +19,8 @@ public static class ConfigureServices
 
         #region Fluent Validator
 
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies(), ServiceLifetime.Scoped);
+        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
         #endregion Fluent Validator
 

@@ -81,11 +81,9 @@ public static class ConfigureWebApplicationServices
         app.UseRouting();
 
         app.UseMiddleware<SecurityHeadersMiddleware>();
-
         app.UseMiddleware<ExceptionMiddleware>();
 
         app.UseAuthentication();
-
         app.UseAuthorization();
 
         app.UseCors("policyApiEcommerce");

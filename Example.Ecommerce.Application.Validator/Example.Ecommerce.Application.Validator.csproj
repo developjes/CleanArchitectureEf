@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Validations\" />
+    <ProjectReference Include="..\Example.Ecommerce.Application.DTO\Example.Ecommerce.Application.DTO.csproj" />
   </ItemGroup>
 
 </Project>

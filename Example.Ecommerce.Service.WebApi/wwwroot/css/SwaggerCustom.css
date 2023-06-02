@@ -1703,3 +1703,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$left', endColorstr='$right',GradientType=0 );
     /* IE6-9 */
 }
+
+.swagger-ui .opblock-body pre.microlight {
+    color: lightgray
+}

@@ -1,4 +1,5 @@
-﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
+﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.DTO.Features.Shared;
 using Example.Ecommerce.Domain.Enums.Parametrization;
@@ -13,6 +14,7 @@ namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 /// All methods for Product data
 /// </summary>
 [ApiController]
+[SwaggerTag("Get Weather forecast and place orders. Very weird and unstructed API :)")]
 [ApiExplorerSettings(IgnoreApi = false)]
 [ApiVersion("1.0", Deprecated = false)]
 [Route("api/v{version:apiVersion}/[controller]")]
@@ -68,14 +70,17 @@ public sealed class ProductController : ControllerBase
     }
 
     [AllowAnonymous]
-    [SwaggerOperation]
-    [HttpPost("pruebaPost", Name = "PruebaPost")]
-    public IActionResult PostController()
+    [HttpPost("Store", Name = "StoreProduct")]
+    [SwaggerOperation(
+        Description = "Inserta un producto", OperationId = "InsertProduct", Tags = new[] { "Products" }
+    )]
+    public async Task<ActionResult<int>> PostController([FromBody] CreateProductCommandDto request)
     {
-        return Ok();
+        return await _mediator.Send(request);
     }
 
     [AllowAnonymous]
+    [SwaggerOperation(Tags = new[] { "Products" })]
     [HttpPut("pruebaPut", Name = "PruebaPut")]
     public IActionResult PutController()
     {
@@ -83,6 +88,7 @@ public sealed class ProductController : ControllerBase
     }
 
     [AllowAnonymous]
+    [SwaggerOperation(Tags = new[] { "Products" })]
     [HttpPatch("pruebaPatch", Name = "PruebaPatch")]
     public IActionResult PatchController()
     {
@@ -90,10 +96,12 @@ public sealed class ProductController : ControllerBase
     }
 
     [AllowAnonymous]
+    [SwaggerOperation(Tags = new[] { "Products" })]
     [HttpDelete("pruebaDelete", Name = "PruebaDelete")]
     public IActionResult DeleteController()
     {
         return Ok();
     }
+
     #endregion Methods
 }

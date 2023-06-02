@@ -9,9 +9,15 @@ namespace Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.
 public class PaginationProductListQueryDto : PaginationBaseQuery,
     IRequest<PaginationResponseDto<ProductResponseDto>>
 {
-    [SwaggerSchema(Description = "Max jes price", Nullable = true, Format = "$doculeeee")]
+    [SwaggerParameter(Description = "Precio max del producto")]
     public decimal? MaxPrice { get; set; }
+
+    [SwaggerParameter(Description = "Precio min del producto")]
     public decimal? MinPrice { get; set; }
+
+    [SwaggerParameter(Description = "Calificacion del producto")]
     public int? Rating { get; set; }
+
+    [SwaggerParameter(Description = "Estado del producto")]
     public EProductState? State { get; set; }
 }
