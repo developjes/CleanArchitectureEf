@@ -9,14 +9,36 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 
     private void DefineRules()
     {
-        RuleFor(p => p.Name).NotNull().NotEmpty().WithMessage("{Name} can't be null");
-        RuleFor(p => p.Description).NotNull().NotEmpty().WithMessage("{Description} can't be null");
-        RuleFor(p => p.Seller).NotNull().NotEmpty().WithMessage("{Seller} can't be null");
-        RuleFor(p => p.Price).NotNull().Must(p => p > 0).WithMessage("{Price} can be major to 0");
-        RuleFor(p => p.Rating).NotNull().Must(p => p > 0).WithMessage("{Rating} can be major to 0");
-        RuleFor(p => p.Stock).NotNull().Must(p => p > 0).WithMessage("{Stock} can be major to 0");
+        RuleFor(p => p.Name)
+            .NotNull().WithMessage("{Name} can't be null")
+            .NotEmpty().WithMessage("{Name} can't be empty");
 
-        RuleFor(p => p.StateId).NotNull().Must(p => p > 0).WithMessage("{StateId} can be major to 0");
-        RuleFor(p => p.CategoryId).NotNull().Must(p => p > 0).WithMessage("{CategoryId} can be major to 0");
+        RuleFor(p => p.Description)
+            .NotNull().WithMessage("{Description} can't be null")
+            .NotEmpty().WithMessage("{Description} can't be empty");
+
+        RuleFor(p => p.Seller)
+            .NotNull().WithMessage("{Description} can't be null")
+            .NotEmpty().WithMessage("{Description} can't be empty");
+
+        RuleFor(p => p.Price)
+            .NotEmpty().WithMessage("{Description} can't be empty")
+            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+
+        RuleFor(p => p.Rating)
+            .NotEmpty().WithMessage("{Description} can't be empty")
+            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+
+        RuleFor(p => p.Stock)
+            .NotEmpty().WithMessage("{Description} can't be empty")
+            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+
+        RuleFor(p => p.StateId)
+            .NotNull().WithMessage("{Description} can't be empty")
+            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+
+        RuleFor(p => p.CategoryId)
+            .NotNull().WithMessage("{Description} can't be empty")
+            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0"); ;
     }
 }
