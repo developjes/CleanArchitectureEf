@@ -10,35 +10,27 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     private void DefineRules()
     {
         RuleFor(p => p.Name)
-            .NotNull().WithMessage("{Name} can't be null")
-            .NotEmpty().WithMessage("{Name} can't be empty");
+            .NotEmpty().WithMessage("Can't be empty");
 
         RuleFor(p => p.Description)
-            .NotNull().WithMessage("{Description} can't be null")
-            .NotEmpty().WithMessage("{Description} can't be empty");
+            .NotEmpty().WithMessage("Can't be empty");
 
         RuleFor(p => p.Seller)
-            .NotNull().WithMessage("{Description} can't be null")
-            .NotEmpty().WithMessage("{Description} can't be empty");
+            .NotEmpty().WithMessage("Can't be empty");
 
         RuleFor(p => p.Price)
-            .NotEmpty().WithMessage("{Description} can't be empty")
-            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Rating)
-            .NotEmpty().WithMessage("{Description} can't be empty")
-            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Stock)
-            .NotEmpty().WithMessage("{Description} can't be empty")
-            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.StateId)
-            .NotNull().WithMessage("{Description} can't be empty")
-            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0");
+            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
 
         RuleFor(p => p.CategoryId)
-            .NotNull().WithMessage("{Description} can't be empty")
-            .GreaterThanOrEqualTo(1).WithMessage("{Description} can be greater 0"); ;
+            .GreaterThanOrEqualTo(1).WithMessage("Can be greater 0");
     }
 }
