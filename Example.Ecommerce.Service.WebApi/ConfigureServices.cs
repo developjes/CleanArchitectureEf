@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Filters;
+using System.IO.Compression;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -55,9 +56,13 @@ public static class ConfigureServices
         #region compresion
 
         services.AddResponseCompression(opt => {
+            opt.EnableForHttps = true;
             opt.Providers.Add<BrotliCompressionProvider>();
             opt.Providers.Add<GzipCompressionProvider>();
         });
+
+        services.Configure<BrotliCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+        services.Configure<GzipCompressionProviderOptions>(options => options.Level = CompressionLevel.SmallestSize);
 
         #endregion compresion
 

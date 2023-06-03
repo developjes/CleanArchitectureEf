@@ -22,15 +22,15 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Rating)
-            .GreaterThan(1).WithMessage("Can be greater 0");
+            .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.Stock)
-            .GreaterThan(1).WithMessage("Can be greater 0");
+            .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.StateId)
-            .GreaterThan(1).WithMessage("Can be greater 0");
+            .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.CategoryId)
-            .GreaterThan(1).WithMessage("Can be greater 0");
+            .GreaterThan(0).WithMessage("Can be greater 0");
     }
 }

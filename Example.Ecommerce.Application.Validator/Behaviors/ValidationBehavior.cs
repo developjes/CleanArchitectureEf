@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
-using ValidationException = Example.Ecommerce.Application.Validator.Exceptions.ValidationException;
+using FluentValidationException = Example.Ecommerce.Application.Validator.Exceptions.FluentValidationException;
 
 namespace Example.Ecommerce.Application.Validator.Behaviors;
 
@@ -10,7 +10,8 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators) => _validators = validators;
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators) =>
+        _validators = validators;
 
     public async Task<TResponse> Handle(
         TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
@@ -25,7 +26,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             List<ValidationFailure> failures = validationResults
                 .SelectMany(r => r.Errors).Where(f => f is not null).ToList();
 
-            if (failures.Any()) throw new ValidationException(failures);
+            if (failures.Any()) throw new FluentValidationException(failures);
         }
 
         return await next();

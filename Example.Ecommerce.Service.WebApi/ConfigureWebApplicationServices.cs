@@ -76,7 +76,7 @@ public static class ConfigureWebApplicationServices
 
         #region WebApplicationBuilders
 
-        //app.UseStatusCodePages();
+        app.UseResponseCompression();
 
         app.UseHttpsRedirection();
 

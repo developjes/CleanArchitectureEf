@@ -4,15 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Example.Ecommerce.Service.WebApi.Filters;
 
+/// <summary>
+/// Api filter for exceptions cases
+/// </summary>
 public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="context">Contexto input data</param>
     public override void OnException(ExceptionContext context)
     {
         switch (context.Exception)
         {
-            case ValidationException validationEx:
-                HandleValidationException(context, validationEx);
+            case FluentValidationException fluentValidationEx:
+                HandleFluentValidationException(context, fluentValidationEx);
+                break;
+            case MessageValidationException messageValidationEx:
+                HandleMessageValidationException(context, messageValidationEx);
                 break;
             case NotFoundException notFoundEx:
                 HandleNotFoundException(context, notFoundEx);
@@ -28,8 +37,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         base.OnException(context);
     }
 
-
-    private static void HandleValidationException(ExceptionContext context, ValidationException exception)
+    private static void HandleFluentValidationException(ExceptionContext context, FluentValidationException exception)
     {
         ValidationProblemDetails details = new(exception.Errors)
         {
@@ -55,9 +63,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         ProblemDetails details = new()
         {
+            Detail = exception.Message,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
-            Title = "The specified resource was not found.",
-            Detail = exception.Message
+            Title = "The specified resource was not found."
         };
 
         context.Result = new NotFoundObjectResult(details);
@@ -87,16 +95,26 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         ProblemDetails details = new()
         {
+            Detail = context.Exception.Message,
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
         };
 
-        context.Result = new ObjectResult(details)
+        context.Result = new ObjectResult(details) { StatusCode = StatusCodes.Status500InternalServerError };
+        context.ExceptionHandled = true;
+    }
+
+    private static void HandleMessageValidationException(ExceptionContext context, MessageValidationException exception)
+    {
+        ValidationProblemDetails details = new(exception.Messages)
         {
-            StatusCode = StatusCodes.Status500InternalServerError
+            Status = StatusCodes.Status400BadRequest,
+            Title = "One or more validation message have occurred",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
 
+        context.Result = new BadRequestObjectResult(details);
         context.ExceptionHandled = true;
     }
 }
