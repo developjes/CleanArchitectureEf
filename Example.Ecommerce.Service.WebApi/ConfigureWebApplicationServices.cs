@@ -78,6 +78,8 @@ public static class ConfigureWebApplicationServices
 
         app.UseResponseCompression();
 
+        app.UseStatusCodePages();
+
         app.UseHttpsRedirection();
 
         app.UseRouting();

@@ -3,6 +3,7 @@ using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
 using Example.Ecommerce.Application.DTO.Features.Shared;
 using Example.Ecommerce.Domain.Enums.Parametrization;
+using Example.Ecommerce.Service.WebApi.Models.Exceptions;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -88,11 +89,12 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     [AllowAnonymous]
     [HttpPost("Store", Name = "StoreProduct")]
-    [SwaggerOperation(OperationId = "InsertProduct", Tags = new[] { "Product" })]
-    public async Task<ActionResult<int>> PostController([FromBody] CreateProductCommandDto request)
-    {
-        return await _mediator.Send(request);
-    }
+    [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product" })]
+    [ProducesResponseType(typeof(int), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(typeof(CodeError), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<int>> Store([FromBody] CreateProductCommandDto request) =>
+        await _mediator.Send(request);
 
     [AllowAnonymous]
     [SwaggerOperation(Tags = new[] { "Product" })]

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Application.Validator.Exceptions;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using System.Net;
+using System.Web.Http;
 
 namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Commands.Create;
 

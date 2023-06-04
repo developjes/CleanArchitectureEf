@@ -1,6 +1,7 @@
 ﻿using Example.Ecommerce.Application.Validator.Exceptions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Example.Ecommerce.Service.WebApi.Models.Exceptions;
 
 namespace Example.Ecommerce.Service.WebApi.Filters;
 
@@ -41,21 +42,11 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         ValidationProblemDetails details = new(exception.Errors)
         {
+            Status = StatusCodes.Status422UnprocessableEntity,
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
         };
 
-        context.Result = new BadRequestObjectResult(details);
-        context.ExceptionHandled = true;
-    }
-
-    private static void HandleInvalidModelStateException(ExceptionContext context)
-    {
-        ValidationProblemDetails details = new(context.ModelState)
-        {
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
-
-        context.Result = new BadRequestObjectResult(details);
+        context.Result = new BadRequestObjectResult(details) { StatusCode = StatusCodes.Status422UnprocessableEntity };
         context.ExceptionHandled = true;
     }
 
@@ -105,16 +96,25 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         context.ExceptionHandled = true;
     }
 
-    private static void HandleMessageValidationException(ExceptionContext context, MessageValidationException exception)
+    private static void HandleInvalidModelStateException(ExceptionContext context)
     {
-        ValidationProblemDetails details = new(exception.Messages)
-        {
-            Status = StatusCodes.Status400BadRequest,
-            Title = "One or more validation message have occurred",
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-        };
+        ValidationProblemDetails details = new(context.ModelState) { Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",  };
 
         context.Result = new BadRequestObjectResult(details);
+        context.ExceptionHandled = true;
+    }
+
+    private static void HandleMessageValidationException(ExceptionContext context, MessageValidationException exception)
+    {
+        CodeError details = new()
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "One or more validation message have occurred.",
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Messages = exception.Messages
+        };
+
+        context.Result = new BadRequestObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
         context.ExceptionHandled = true;
     }
 }
