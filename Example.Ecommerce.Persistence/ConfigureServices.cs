@@ -8,7 +8,6 @@ using Example.Ecommerce.Persistence.Contexts;
 using Example.Ecommerce.Persistence.EventBus;
 using Example.Ecommerce.Persistence.ExternalServices.EmailSengrid;
 using Example.Ecommerce.Persistence.ExternalServices.ImageCloudinary;
-using Example.Ecommerce.Persistence.Interceptors;
 using Example.Ecommerce.Persistence.Models.Configuration;
 using Example.Ecommerce.Persistence.Repositories.Dapper;
 using Example.Ecommerce.Persistence.Repositories.EfCore;
@@ -36,12 +35,6 @@ public static class ConfigureServices
         services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMqSettings"));
 
         #endregion Config
-
-        #region Interceptor
-
-        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-
-        #endregion Interceptor
 
         #region DbContext
 

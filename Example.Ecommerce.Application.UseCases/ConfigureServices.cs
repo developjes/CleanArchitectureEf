@@ -1,4 +1,5 @@
-﻿using Example.Ecommerce.Application.Validator.Behaviors;
+﻿using Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Commands.Create;
+using Example.Ecommerce.Application.Validator.Behaviors;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -20,8 +21,9 @@ public static class ConfigureServices
 
         #region Fluent Validator
 
-        services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies(), ServiceLifetime.Scoped);
-        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+        services.AddFluentValidationAutoValidation(config => config.DisableDataAnnotationsValidation = true).AddFluentValidationClientsideAdapters();
+
+        services.AddValidatorsFromAssemblyContaining<CreateProductCommandValidator>();
 
         #endregion Fluent Validator
 

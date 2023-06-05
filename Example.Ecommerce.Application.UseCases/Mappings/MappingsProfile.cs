@@ -28,8 +28,6 @@ public class MappingsProfile : Profile
 
         CreateMap<CategoryEntity, CreateCategoryResponseDto>();
         CreateMap<StateEntity, CreateStateResponseDto>();
-        CreateMap<ProductEntity, CreateProductResponseDto>()
-            .ForMember(p => p.Category, x => x.MapFrom(a => a.Category))
-            .ForMember(p => p.State, x => x.MapFrom(a => a.State));
+        CreateMap<ProductEntity, CreateProductResponseDto>();
     }
 }

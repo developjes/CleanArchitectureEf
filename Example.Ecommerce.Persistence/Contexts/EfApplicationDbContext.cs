@@ -9,18 +9,12 @@ namespace Example.Ecommerce.Persistence.Contexts;
 
 public class EfApplicationDbContext : IdentityDbContext<UserEntity>
 {
-    #region Interceptors
-
-    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor = new();
-
-    #endregion Interceptors
-
     #region Constructor
 
     public EfApplicationDbContext(DbContextOptions<EfApplicationDbContext> options) : base(options)
     {
         ChangeTracker.AutoDetectChangesEnabled = true;
-        ChangeTracker.LazyLoadingEnabled = true;
+        ChangeTracker.LazyLoadingEnabled = false;
     }
 
     #endregion Constructor
@@ -28,7 +22,7 @@ public class EfApplicationDbContext : IdentityDbContext<UserEntity>
     #region Methods
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
-        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
+        optionsBuilder.AddInterceptors(new AuditableEntitySaveChangesInterceptor());
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

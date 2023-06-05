@@ -32,7 +32,7 @@ public static class UserSeeder
                 LastName = "Perez",
                 Email = "juan.perez@gmail.com",
                 UserName = "juan.perez",
-                NormalizedUserName = "JES",
+                NormalizedUserName = "JUAN",
                 PhoneNumber = "98563434534",
                 AvatarUrl = "https://firebasestorage.googleapis.com/v0/b/edificacion-app.appspot.com/o/avatar-1.webp?alt=media&token=58da3007-ff21-494d-a85c-25ffa758ff6d",
                 EmailConfirmed = true,

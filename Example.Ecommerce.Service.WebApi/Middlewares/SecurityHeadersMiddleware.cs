@@ -73,7 +73,6 @@ public sealed class SecurityHeadersMiddleware
 
         context.Response.Headers.Add("Cache-Control", new StringValues("no-cache"));
         context.Response.Headers.Add("Pragma", new StringValues("no-cache"));
-
         #endregion
 
         #region Remove Headers
