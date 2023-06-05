@@ -9,13 +9,12 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Example.Ecommerce.Service.WebApi/Example.Ecommerce.Service.WebApi.csproj", "Example.Ecommerce.Service.WebApi/"]
 COPY ["Example.Ecommerce.Application.DTO/Example.Ecommerce.Application.DTO.csproj", "Example.Ecommerce.Application.DTO/"]
-COPY ["Example.Ecommerce.Application.Interface/Example.Ecommerce.Application.Interface.csproj", "Example.Ecommerce.Application.Interface/"]
 COPY ["Example.Ecommerce.Domain/Example.Ecommerce.Domain.csproj", "Example.Ecommerce.Domain/"]
+COPY ["Example.Ecommerce.Application.Interface/Example.Ecommerce.Application.Interface.csproj", "Example.Ecommerce.Application.Interface/"]
 COPY ["Example.Ecommerce.Transversal.Common/Example.Ecommerce.Transversal.Common.csproj", "Example.Ecommerce.Transversal.Common/"]
 COPY ["Example.Ecommerce.Application.UseCases/Example.Ecommerce.Application.UseCases.csproj", "Example.Ecommerce.Application.UseCases/"]
 COPY ["Example.Ecommerce.Application.Validator/Example.Ecommerce.Application.Validator.csproj", "Example.Ecommerce.Application.Validator/"]
 COPY ["Example.Ecommerce.Persistence/Example.Ecommerce.Persistence.csproj", "Example.Ecommerce.Persistence/"]
-COPY ["Example.Ecommerce.Transversal.Logging/Example.Ecommerce.Transversal.Logging.csproj", "Example.Ecommerce.Transversal.Logging/"]
 RUN dotnet restore "Example.Ecommerce.Service.WebApi/Example.Ecommerce.Service.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Example.Ecommerce.Service.WebApi"

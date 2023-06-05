@@ -21,13 +21,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         RuleFor(p => p.Price)
             .GreaterThan(0).WithMessage("Can be greater 0");
 
-        RuleFor(p => p.Rating)
-            .GreaterThan(0).WithMessage("Can be greater 0");
-
         RuleFor(p => p.Stock)
-            .GreaterThan(0).WithMessage("Can be greater 0");
-
-        RuleFor(p => p.StateId)
             .GreaterThan(0).WithMessage("Can be greater 0");
 
         RuleFor(p => p.CategoryId)

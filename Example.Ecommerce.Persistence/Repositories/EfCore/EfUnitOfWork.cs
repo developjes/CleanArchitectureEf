@@ -8,6 +8,7 @@ using System.Collections;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
@@ -22,6 +23,11 @@ public class EfUnitOfWork : IEfUnitOfWork
         _context = context ?? throw new ArgumentNullException(nameof(context));
 
     #region Repositories
+
+    public async Task LoadRelatedData<T, TProperty>(T entity, Expression<Func<T, TProperty?>> reference)
+        where T : BaseDomainEntity
+        where TProperty : BaseDomainEntity =>
+            await _context.Entry(entity).Reference(reference).LoadAsync();
 
     public IEfBaseRepository<T> EfRepository<T>() where T : BaseDomainEntity
     {

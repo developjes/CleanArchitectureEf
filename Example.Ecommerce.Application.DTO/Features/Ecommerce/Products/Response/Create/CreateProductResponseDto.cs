@@ -1,10 +1,11 @@
-﻿using Example.Ecommerce.Domain.Enums.Parametrization;
+﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Category.Response.Create;
+using Example.Ecommerce.Application.DTO.Features.Parametrization.State.Response.Create;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
+namespace Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Create;
 
 [SwaggerSchema(Description = "Representa un producto")]
-public class ProductResponseDto
+public class CreateProductResponseDto
 {
     [SwaggerSchema(Description = "Id unico", Nullable = false, Format = "int32 : 1", ReadOnly = true)]
     public int Id { get; set; }
@@ -18,8 +19,7 @@ public class ProductResponseDto
     public string? Seller { get; set; }
     [SwaggerSchema(Description = "Cantidad en stock", Nullable = false, Format = "int32 : 400", ReadOnly = true)]
     public int Stock { get; set; }
-    [SwaggerSchema(Description = "Relacion categoria", Nullable = false, Format = "int32 : 1", ReadOnly = true)]
-    public int CategoryId { get; set; }
-    [SwaggerSchema(Description = "Estado", Nullable = false, Format = "int32 : 1 or $string: \"Inactive\"", ReadOnly = true)]
-    public EProductState StateId { get; set; }
+    public int ReviewsCount { get; set; }
+    public CreateCategoryResponseDto? Category { get; set; }
+    public CreateStateResponseDto? State { get; set; }
 }

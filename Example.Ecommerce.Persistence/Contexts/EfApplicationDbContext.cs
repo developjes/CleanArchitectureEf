@@ -11,20 +11,16 @@ public class EfApplicationDbContext : IdentityDbContext<UserEntity>
 {
     #region Interceptors
 
-    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
+    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor = new();
 
     #endregion Interceptors
 
     #region Constructor
 
-    public EfApplicationDbContext(
-        DbContextOptions<EfApplicationDbContext> options,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor
-    ) : base(options)
+    public EfApplicationDbContext(DbContextOptions<EfApplicationDbContext> options) : base(options)
     {
         ChangeTracker.AutoDetectChangesEnabled = true;
-        ChangeTracker.LazyLoadingEnabled = false;
-        _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
+        ChangeTracker.LazyLoadingEnabled = true;
     }
 
     #endregion Constructor

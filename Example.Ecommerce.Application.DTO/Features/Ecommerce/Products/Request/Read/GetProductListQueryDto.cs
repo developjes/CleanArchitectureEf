@@ -1,4 +1,4 @@
-﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
+﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
 using MediatR;
 
 namespace Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;

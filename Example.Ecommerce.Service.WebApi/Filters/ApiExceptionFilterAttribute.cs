@@ -86,7 +86,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         ProblemDetails details = new()
         {
-            Detail = context.Exception.Message,
+            Detail = $"{context.Exception.Message} ==> {context.Exception.InnerException?.ToString()}",
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"

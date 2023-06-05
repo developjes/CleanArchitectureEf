@@ -20,4 +20,12 @@ public class MessageValidationException : Exception
         foreach (KeyValuePair<string, string> message in messages)
             Messages.Add(new Dictionary<string, string> { { message.Key, message.Value } });
     }
+
+    public MessageValidationException(string keyMessage, string valueMessage) : this()
+    {
+        Messages = new List<Dictionary<string, string>>
+        {
+            new Dictionary<string, string> { { keyMessage, valueMessage } }
+        };
+    }
 }

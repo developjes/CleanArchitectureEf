@@ -25,7 +25,7 @@ public class ProductEntity : BaseDomainEntity
 
     #region Navigation props
 
-    public virtual StateEntity? State { get; set; }
+    public StateEntity? State { get; set; }
     public virtual CategoryEntity? Category { get; set; }
     public virtual ICollection<ReviewEntity>? Reviews { get; set; }
     public virtual ICollection<ProductImageEntity>? ProductImages { get; set; }

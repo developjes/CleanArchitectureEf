@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Create;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
-using Example.Ecommerce.Application.Validator.Exceptions;
 using Example.Ecommerce.Domain.Entities.Ecommerce;
+using Example.Ecommerce.Domain.Entities.Parametrization;
+using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Net;
-using System.Web.Http;
 
 namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Commands.Create;
 
-public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandDto, int>
+public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandDto, CreateProductResponseDto>
 {
     private readonly IMapper _mapper;
     private readonly IEfUnitOfWork _efUnitOfWork;
@@ -26,19 +27,20 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandD
         _logger = logger;
     }
 
-    public async Task<int> Handle(CreateProductCommandDto request, CancellationToken cancellationToken)
+    public async Task<CreateProductResponseDto> Handle(CreateProductCommandDto request, CancellationToken cancellationToken)
     {
         ProductEntity productEntity = _mapper.Map<ProductEntity>(request);
+        productEntity.StateId = (int)EProductState.Active;
 
         await _efUnitOfWork.EfRepository<ProductEntity>().Insert(productEntity);
-        int isSaved = await _efUnitOfWork.EfSave(cancellationToken: cancellationToken);
 
-        if (isSaved <= 0)
-        {
-            _logger.LogError("No se inserto el record del director");
-            throw new ArgumentException("No se pudo insertar el record del director");
-        }
+        if (await _efUnitOfWork.EfSave(cancellationToken: cancellationToken) <= uint.MinValue)
+            throw new DbUpdateException("Can't be inserted sucessfull");
 
-        return productEntity.Id;
+        // Load related data.
+        await _efUnitOfWork.LoadRelatedData(productEntity, x => x.Category);
+        await _efUnitOfWork.LoadRelatedData(productEntity, x => x.State);
+
+        return _mapper.Map<CreateProductResponseDto>(productEntity);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response;
+﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
 using Example.Ecommerce.Application.DTO.Features.Shared;
 using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
