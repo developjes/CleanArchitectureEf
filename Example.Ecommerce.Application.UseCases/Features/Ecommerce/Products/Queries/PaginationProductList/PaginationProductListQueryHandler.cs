@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
-using Example.Ecommerce.Application.DTO.Features.Shared;
+using Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Application.UseCases.Specifications.Product;
 using Example.Ecommerce.Domain.Entities.Ecommerce;

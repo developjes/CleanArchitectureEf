@@ -2,7 +2,8 @@
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Create;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
-using Example.Ecommerce.Application.DTO.Features.Shared;
+using Example.Ecommerce.Application.DTO.Features.Shared.Create;
+using Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
 using Example.Ecommerce.Domain.Enums.Parametrization;
 using Example.Ecommerce.Service.WebApi.Models.Exceptions;
 using MediatR;
@@ -90,11 +91,15 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpPost("Store", Name = "StoreProduct")]
     [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product" })]
-    [ProducesResponseType(typeof(CreateProductResponseDto), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(CreateIdResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-    [ProducesResponseType(typeof(CodeError), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<CreateProductResponseDto>> Store([FromBody] CreateProductCommandDto request) =>
-        await _mediator.Send(request);
+    [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<CreateIdResponseDto>> Store([FromBody] CreateProductCommandDto request)
+    {
+        CreateIdResponseDto response = await _mediator.Send(request);
+        return StatusCode(response.Status, response);
+    }
+
 
     [AllowAnonymous]
     [SwaggerOperation(Tags = new[] { "Product" })]

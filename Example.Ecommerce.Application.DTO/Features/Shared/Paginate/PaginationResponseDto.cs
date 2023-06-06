@@ -1,4 +1,4 @@
-﻿namespace Example.Ecommerce.Application.DTO.Features.Shared;
+﻿namespace Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
 
 public class PaginationResponseDto<T> where T : class
 {

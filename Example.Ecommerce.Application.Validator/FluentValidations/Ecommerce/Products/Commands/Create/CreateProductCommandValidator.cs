@@ -1,7 +1,7 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
 using FluentValidation;
 
-namespace Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Commands.Create;
+namespace Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Create;
 
 public class CreateProductCommandValidator : AbstractValidator<CreateProductCommandDto>
 {

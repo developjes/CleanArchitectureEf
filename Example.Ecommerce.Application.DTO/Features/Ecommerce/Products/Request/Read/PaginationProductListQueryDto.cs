@@ -1,5 +1,5 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
-using Example.Ecommerce.Application.DTO.Features.Shared;
+using Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
 using Example.Ecommerce.Domain.Enums.Parametrization;
 using MediatR;
 using Swashbuckle.AspNetCore.Annotations;

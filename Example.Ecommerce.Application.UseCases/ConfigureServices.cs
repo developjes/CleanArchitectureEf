@@ -1,5 +1,6 @@
-﻿using Example.Ecommerce.Application.UseCases.Features.Ecommerce.Products.Commands.Create;
-using Example.Ecommerce.Application.Validator.Behaviors;
+﻿using Example.Ecommerce.Application.Validator.Behaviors;
+using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Create;
+using Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Create;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -38,7 +39,13 @@ public static class ConfigureServices
         services.Configure<ApiBehaviorOptions>(opts => opts.SuppressModelStateInvalidFilter = true);
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-        #endregion  Behaviors
+        #endregion Behaviors
+
+        #region Business validations
+
+        services.AddScoped<BusinessValidationCreateProduct, BusinessValidationCreateProduct>();
+
+        #endregion Business validation
 
         return services;
     }

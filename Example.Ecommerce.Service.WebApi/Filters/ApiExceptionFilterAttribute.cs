@@ -84,9 +84,10 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             return;
         }
 
+        string? innerExeption = context.Exception?.InnerException?.ToString();
         ProblemDetails details = new()
         {
-            Detail = $"{context.Exception.Message} ==> {context.Exception.InnerException?.ToString()}",
+            Detail = (context.Exception?.Message) + (innerExeption is null ? string.Empty : $" {innerExeption}"),
             Status = StatusCodes.Status500InternalServerError,
             Title = "An error occurred while processing your request.",
             Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1"
@@ -106,7 +107,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
     private static void HandleMessageValidationException(ExceptionContext context, MessageValidationException exception)
     {
-        CodeError details = new()
+        ValidationMessageDetails details = new()
         {
             Status = StatusCodes.Status400BadRequest,
             Title = "One or more validation message have occurred.",

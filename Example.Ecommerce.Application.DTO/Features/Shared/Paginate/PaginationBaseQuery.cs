@@ -1,6 +1,4 @@
-﻿using Swashbuckle.AspNetCore.Annotations;
-
-namespace Example.Ecommerce.Application.DTO.Features.Shared;
+﻿namespace Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
 
 public class PaginationBaseQuery
 {
@@ -10,5 +8,5 @@ public class PaginationBaseQuery
     public string? Search { get; set; }
     public string? Sort { get; set; }
     public int PageIndex { get; set; } = 1;
-    public int PageSize { get => _pageSize; set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value; }
+    public int PageSize { get => _pageSize; set => _pageSize = value > MaxPageSize ? MaxPageSize : value; }
 }

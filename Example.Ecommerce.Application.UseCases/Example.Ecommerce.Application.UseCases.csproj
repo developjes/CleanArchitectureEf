@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="Features\Ecommerce\Products\Commands\Delete\" />
     <Folder Include="Features\Ecommerce\Products\Commands\Update\" />
+    <Folder Include="Const\" />
   </ItemGroup>
 
 </Project>
