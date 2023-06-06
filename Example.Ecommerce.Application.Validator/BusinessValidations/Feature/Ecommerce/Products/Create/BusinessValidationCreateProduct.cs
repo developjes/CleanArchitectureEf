@@ -7,17 +7,20 @@ namespace Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ec
 
 public class BusinessValidationCreateProduct
 {
-    private IEfUnitOfWork EfUnitOfWork { get; set; }
+    private readonly IEfUnitOfWork _efUnitOfWork;
 
     public BusinessValidationCreateProduct(IEfUnitOfWork efUnitOfWork) =>
-        EfUnitOfWork = efUnitOfWork;
+        _efUnitOfWork = efUnitOfWork;
 
     public async Task CreateValidate(CreateProductCommandDto request)
     {
-        int countProduct = await EfUnitOfWork.EfRepository<ProductEntity>()
+        int countProduct = await _efUnitOfWork.EfRepository<ProductEntity>()
             .Count(false, filter: x => x.Name!.Equals(request.Name) && x.CategoryId.Equals(request.CategoryId));
 
-        if (countProduct >= 1)
-            throw new MessageValidationException("CantExistProduct", "Ya existe un producto con el mismo nombre");
+        if (countProduct > ushort.MinValue)
+        {
+            throw new MessageValidationException(
+                "CantExistProduct", $"Ya existe un producto con el nombre '{request.Name}' en la categoria #'{request.CategoryId}'");
+        }
     }
 }
