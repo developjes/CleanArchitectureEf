@@ -18,8 +18,8 @@ namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 /// Endpoints for Product
 /// </summary>
 [ApiController]
-[SwaggerTag(description: "Product Actions. Ecommerce API :D")]
-[ApiExplorerSettings(IgnoreApi = false, GroupName = "Product Endpoints XD")]
+[SwaggerTag(description: "Endpoints CRUD for Product")]
+[ApiExplorerSettings(IgnoreApi = false, GroupName = "Product")]
 [ApiVersion("1.0", Deprecated = false)]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
@@ -49,8 +49,7 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("list", Name = "GetProductList")]
-    [SwaggerOperation(
-        Description = "Retorna todos los resultados", OperationId = "ProductList", Tags = new[] { "Product Endpoints XD" }
+    [SwaggerOperation(OperationId = "ProductList", Tags = new[] { "Product" }
     )]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
@@ -61,9 +60,7 @@ public sealed class ProductController : ControllerBase
     /// </summary>
     [AllowAnonymous]
     [HttpGet("paginationList", Name = "PaginationProductList")]
-    [SwaggerOperation(
-        Description = "Retorna resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Product Endpoints XD" }
-    )]
+    [SwaggerOperation(OperationId = "PaginationProductList", Tags = new[] { "Product" })]
     [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
         [FromQuery] PaginationProductListQueryDto paginationProductsQuery)
@@ -74,7 +71,7 @@ public sealed class ProductController : ControllerBase
         return Ok(paginationProduct);
     }
 
-    /// <summary>Insertar un producto</summary>
+    /// <summary>Create a new peoduct</summary>
     /// <remarks>
     /// <para>Sample request:
     ///
@@ -91,7 +88,7 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     [AllowAnonymous]
     [HttpPost("Store", Name = "StoreProduct")]
-    [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product Endpoints XD" })]
+    [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product" })]
     [ProducesResponseType(typeof(CreateIdResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
@@ -101,7 +98,7 @@ public sealed class ProductController : ControllerBase
         return StatusCode(response.Status, response);
     }
 
-    /// <summary>Actualizar un producto</summary>
+    /// <summary>Update a product</summary>
     /// <remarks>
     /// <para>Sample request:
     ///
@@ -123,7 +120,7 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpPut("Update", Name = "UpdateProduct")]
     [HttpPatch("Patch", Name = "PatchUpdateProduct")]
-    [SwaggerOperation(OperationId = "UpdateProduct", Tags = new[] { "Product Endpoints XD" })]
+    [SwaggerOperation(OperationId = "UpdateProduct", Tags = new[] { "Product" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
@@ -133,7 +130,7 @@ public sealed class ProductController : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent);
     }
 
-    /// <summary>Eliminar un producto</summary>
+    /// <summary>Delete a product</summary>
     /// <remarks>
     /// <para>Sample request:
     ///
@@ -145,7 +142,7 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     [AllowAnonymous]
     [HttpDelete("{id:int:min(1)}/Delete", Name = "DeleteProduct")]
-    [SwaggerOperation(OperationId = "DeleteProduct", Tags = new[] { "Product Endpoints XD" })]
+    [SwaggerOperation(OperationId = "DeleteProduct", Tags = new[] { "Product" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
