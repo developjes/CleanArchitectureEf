@@ -28,7 +28,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommandD
             .GetFirst(true, filter: x => x.Id.Equals(request.Id), cancellationToken: cancellationToken);
 
         // Mapper entity
-        _efUnitOfWork.EfRepository<ProductEntity>().Patch(productToUpdate, request);
+        _efUnitOfWork.EfRepository<ProductEntity>().Patch(request, productToUpdate!);
 
         // Validation for save changes
         if (await _efUnitOfWork.EfCommit(cancellationToken: cancellationToken) <= sbyte.MinValue) // Commit changes

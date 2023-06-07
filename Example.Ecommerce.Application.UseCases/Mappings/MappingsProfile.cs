@@ -30,6 +30,8 @@ public class MappingsProfile : Profile
 
         CreateMap<CategoryEntity, CreateCategoryResponseDto>();
         CreateMap<StateEntity, CreateStateResponseDto>();
+        //.ForAllMembers(opt => opt.Condition((src, dest, sourceMember) => sourceMember is not null));
+        //.ForMember(dest => dest.Code, opt => opt.Condition(source => source.Id == 0))
 
         CreateMap<ProductEntity, CreateProductResponseDto>();
     }

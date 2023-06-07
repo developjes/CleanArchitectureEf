@@ -91,14 +91,14 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : BaseDom
 
     #region Update Data
 
-    public void Patch(T? entityToUpdate, object objSrcChanges)
+    public void Patch<E>(E objSrcChanges, T entityToUpdate) where E : class
     {
         if (entityToUpdate is null || objSrcChanges is null)
-            throw new ArgumentNullException(nameof(entityToUpdate), $"{nameof(entityToUpdate)} cannot be null.");
+            throw new ArgumentException($"{nameof(objSrcChanges)} or {nameof(entityToUpdate)} cannot be null.");
 
-        _dbSet.Attach(entityToUpdate!);
+        _dbSet.Attach(entityToUpdate);
 
-        _mapper.Map(objSrcChanges, entityToUpdate, typeof(object), typeof(T));
+        _mapper.Map(objSrcChanges, entityToUpdate);
     }
 
     public void Update(T tEntity)

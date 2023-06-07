@@ -46,9 +46,17 @@ public sealed class ProductController : ControllerBase
     /// <summary>
     /// Return all product list
     /// </summary>
+    /// <para>
+    ///
+    /// -H 'accept: */*'
+    /// -H 'Content-Type: application/json'
+    ///
+    /// GET api/v1/Product/List
+    ///
+    /// </para>
     [AllowAnonymous]
     [HttpGet]
-    [Route("list", Name = "GetProductList")]
+    [Route("List", Name = "ProductList")]
     [SwaggerOperation(OperationId = "ProductList", Tags = new[] { "Product" })]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
@@ -57,8 +65,16 @@ public sealed class ProductController : ControllerBase
     /// <summary>
     /// Return Paginated product list
     /// </summary>
+    /// <para>
+    ///
+    /// -H 'accept: */*'
+    /// -H 'Content-Type: application/json'
+    ///
+    /// GET api/v1/Product/PaginationList
+    ///
+    /// </para>
     [AllowAnonymous]
-    [HttpGet("paginationList", Name = "PaginationProductList")]
+    [HttpGet("PaginationList", Name = "PaginationProductList")]
     [SwaggerOperation(OperationId = "PaginationProductList", Tags = new[] { "Product" })]
     [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
@@ -70,18 +86,21 @@ public sealed class ProductController : ControllerBase
         return StatusCode(StatusCodes.Status200OK, paginationProduct);
     }
 
-    /// <summary>Create a new peoduct</summary>
+    /// <summary>Create a new product</summary>
     /// <remarks>
     /// <para>Sample request:
     ///
+    /// -H 'accept: */*'
+    /// -H 'Content-Type: application/json'
+    ///
     /// POST api/Product/Store
     /// {
-    ///     "name": "TV", *
-    ///     "price": 400000, *
-    ///     "description": "Televisor 24 pulgadas", *
-    ///     "seller": "Junior Casas", *
-    ///     "stock": 20, *
-    ///     "categoryId": 1 *
+    ///     "name": "TV",
+    ///     "price": 400000,
+    ///     "description": "Televisor 24 pulgadas",
+    ///     "seller": "Junior Casas",
+    ///     "stock": 20,
+    ///     "categoryId": 1
     /// }
     /// </para>
     /// </remarks>

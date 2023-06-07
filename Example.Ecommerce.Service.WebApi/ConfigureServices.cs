@@ -48,6 +48,8 @@ public static class ConfigureServices
             opt.JsonSerializerOptions.IncludeFields = true;
             opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             opt.JsonSerializerOptions.MaxDepth = 0;
+
+            //opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
         });
 
         #endregion Validator and serializators
