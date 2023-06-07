@@ -49,6 +49,9 @@ public static class SwaggerExtension
             string xmlPath = GetXmlDocumentationFileFor(Assembly.GetExecutingAssembly());
             if (File.Exists(xmlPath))
                 c.IncludeXmlComments(xmlPath);
+
+            c.TagActionsBy(api => new[] { api.GroupName });
+            c.DocInclusionPredicate((_, __) => true);
         });
 
         return services;

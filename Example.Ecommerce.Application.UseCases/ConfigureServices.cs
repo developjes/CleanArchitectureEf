@@ -1,5 +1,6 @@
 ﻿using Example.Ecommerce.Application.Validator.Behaviors;
 using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Create;
+using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Delete;
 using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Update;
 using Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Create;
 using Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Update;
@@ -46,8 +47,9 @@ public static class ConfigureServices
 
         #region Business validations
 
-        services.AddScoped<BusinessValidationCreateProduct, BusinessValidationCreateProduct>();
-        services.AddScoped<BusinessValidationUpdateProduct, BusinessValidationUpdateProduct>();
+        services.AddScoped<BusinessValidationCreateProduct>();
+        services.AddScoped<BusinessValidationUpdateProduct>();
+        services.AddScoped<BusinessValidationDeleteProduct>();
 
         #endregion Business validation
 

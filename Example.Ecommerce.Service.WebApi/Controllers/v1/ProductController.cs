@@ -1,4 +1,5 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Delete;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Update;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
@@ -14,11 +15,11 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace Example.Ecommerce.Service.WebApi.Controllers.v1;
 
 /// <summary>
-/// All methods for Product data
+/// Endpoints for Product
 /// </summary>
 [ApiController]
-[SwaggerTag("Product Actions. Ecommerce API :D")]
-[ApiExplorerSettings(IgnoreApi = false)]
+[SwaggerTag(description: "Product Actions. Ecommerce API :D")]
+[ApiExplorerSettings(IgnoreApi = false, GroupName = "Product Endpoints XD")]
 [ApiVersion("1.0", Deprecated = false)]
 [Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json")]
@@ -45,10 +46,12 @@ public sealed class ProductController : ControllerBase
     /// <summary>
     /// Return all product list
     /// </summary>
-    /// <returns>ProductResponseDto</returns>
     [AllowAnonymous]
     [HttpGet]
     [Route("list", Name = "GetProductList")]
+    [SwaggerOperation(
+        Description = "Retorna todos los resultados", OperationId = "ProductList", Tags = new[] { "Product Endpoints XD" }
+    )]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
         Ok(await _mediator.Send(new GetProductListQueryDto()));
@@ -56,12 +59,10 @@ public sealed class ProductController : ControllerBase
     /// <summary>
     /// Return Paginated product list
     /// </summary>
-    /// <param name="paginationProductsQuery"></param>
-    /// <returns>ProductResponseDto</returns>
     [AllowAnonymous]
     [HttpGet("paginationList", Name = "PaginationProductList")]
     [SwaggerOperation(
-        Description = "Retona resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Product" }
+        Description = "Retorna resultados paginados", OperationId = "PaginationProductList", Tags = new[] { "Product Endpoints XD" }
     )]
     [ProducesResponseType(typeof(PaginationResponseDto<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<PaginationResponseDto<ProductResponseDto>>> PaginationProduct(
@@ -90,7 +91,7 @@ public sealed class ProductController : ControllerBase
     /// </remarks>
     [AllowAnonymous]
     [HttpPost("Store", Name = "StoreProduct")]
-    [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product" })]
+    [SwaggerOperation(OperationId = "StoreProduct", Tags = new[] { "Product Endpoints XD" })]
     [ProducesResponseType(typeof(CreateIdResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
@@ -122,12 +123,36 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpPut("Update", Name = "UpdateProduct")]
     [HttpPatch("Patch", Name = "PatchUpdateProduct")]
-    [SwaggerOperation(OperationId = "UpdateProduct", Tags = new[] { "Product" })]
+    [SwaggerOperation(OperationId = "UpdateProduct", Tags = new[] { "Product Endpoints XD" })]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<Unit>> PutController([FromBody] UpdateProductCommandDto request)
+    public async Task<ActionResult<Unit>> Update([FromBody] UpdateProductCommandDto request)
     {
+        await _mediator.Send(request);
+        return StatusCode(StatusCodes.Status204NoContent);
+    }
+
+    /// <summary>Eliminar un producto</summary>
+    /// <remarks>
+    /// <para>Sample request:
+    ///
+    /// -H 'accept: */*'
+    /// -H 'Content-Type: application/json'
+    ///
+    /// DELETE api/Product/1/Update/
+    /// </para>
+    /// </remarks>
+    [AllowAnonymous]
+    [HttpDelete("{id:int:min(1)}/Delete", Name = "DeleteProduct")]
+    [SwaggerOperation(OperationId = "DeleteProduct", Tags = new[] { "Product Endpoints XD" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Unit>> Delete(int id)
+    {
+        DeleteProductCommandDto request = new(id);
+
         await _mediator.Send(request);
         return StatusCode(StatusCodes.Status204NoContent);
     }

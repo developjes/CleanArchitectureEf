@@ -5,7 +5,6 @@ using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Persistence.Specification;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using static Dapper.SqlMapper;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
 
@@ -94,10 +93,7 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : BaseDom
 
     public void Patch(T? entityToUpdate, object objSrcChanges)
     {
-        if (entityToUpdate is null)
-            throw new ArgumentNullException(nameof(entityToUpdate), $"{nameof(entityToUpdate)} cannot be null.");
-
-        if (objSrcChanges is null)
+        if (entityToUpdate is null || objSrcChanges is null)
             throw new ArgumentNullException(nameof(entityToUpdate), $"{nameof(entityToUpdate)} cannot be null.");
 
         _dbSet.Attach(entityToUpdate!);
@@ -119,12 +115,16 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : BaseDom
 
     #region Hard Delete Data
 
-    public void Delete(object id) { T? tEntity = _dbSet.Find(id); Delete(tEntity); }
+    public void Delete(int id)
+    {
+        T? tEntity = _dbSet.Find(id);
+        Delete(tEntity);
+    }
 
-    private void Delete(T? tEntity)
+    public void Delete(T? tEntity)
     {
         if (tEntity is null)
-            throw new DbUpdateConcurrencyException(nameof(tEntity));
+            throw new ArgumentException(null, nameof(tEntity));
 
         if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached))
             _dbSet.Attach(tEntity);

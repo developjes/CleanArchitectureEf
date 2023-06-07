@@ -57,7 +57,9 @@ public interface IEfBaseRepository<T> where T : class
 
     void Update(IEnumerable<T> tEntitites);
 
-    void Delete(object id);
+    void Delete(int id);
+
+    void Delete(T? tEntity);
 
     void Delete(IEnumerable<T> tEntities);
 
