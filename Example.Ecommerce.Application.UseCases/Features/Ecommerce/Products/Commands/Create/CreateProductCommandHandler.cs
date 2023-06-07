@@ -38,7 +38,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommandD
         await _efUnitOfWork.EfRepository<ProductEntity>().Insert(productEntity);
 
         // Validation for save changes
-        if (await _efUnitOfWork.EfSave(cancellationToken: cancellationToken) <= sbyte.MinValue) // Commit changes
+        if (await _efUnitOfWork.EfCommit(cancellationToken: cancellationToken) <= sbyte.MinValue) // Commit changes
             throw new DbUpdateException($"Can't be inserted sucessfull. Afected rows {sbyte.MinValue}"); // Exception validation
 
         // Return Response

@@ -1,6 +1,8 @@
 ﻿using Example.Ecommerce.Application.Validator.Behaviors;
 using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Create;
+using Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Update;
 using Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Create;
+using Example.Ecommerce.Application.Validator.FluentValidations.Ecommerce.Products.Commands.Update;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
@@ -25,6 +27,7 @@ public static class ConfigureServices
         services.AddFluentValidationAutoValidation(config => config.DisableDataAnnotationsValidation = true).AddFluentValidationClientsideAdapters();
 
         services.AddValidatorsFromAssemblyContaining<CreateProductCommandValidator>();
+        services.AddValidatorsFromAssemblyContaining<UpdateProductCommandValidator>();
 
         #endregion Fluent Validator
 
@@ -44,6 +47,7 @@ public static class ConfigureServices
         #region Business validations
 
         services.AddScoped<BusinessValidationCreateProduct, BusinessValidationCreateProduct>();
+        services.AddScoped<BusinessValidationUpdateProduct, BusinessValidationUpdateProduct>();
 
         #endregion Business validation
 

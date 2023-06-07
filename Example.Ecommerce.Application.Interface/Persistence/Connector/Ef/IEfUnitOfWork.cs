@@ -11,7 +11,7 @@ public interface IEfUnitOfWork : IAsyncDisposable
         where T : BaseDomainEntity where TProperty : BaseDomainEntity;
     IEfBaseRepository<T> EfRepository<T>() where T : BaseDomainEntity;
 
-    Task<int> EfSave(CancellationToken cancellationToken = default);
+    Task<int> EfCommit(CancellationToken cancellationToken = default);
     void EfRejectChanges();
     Task<IReadOnlyList<T>> EfExecuteEnumerableSP<T>(string spName, List<SqlParam> parameters);
     Task<IDbContextTransaction> EfBeginTransactionAsync();

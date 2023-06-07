@@ -1,11 +1,10 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
-using Example.Ecommerce.Application.Validator.Exceptions;
-using Example.Ecommerce.Domain.Entities.Ecommerce;
+using Example.Ecommerce.Application.Validator.BusinessValidations.Shared;
 
 namespace Example.Ecommerce.Application.Validator.BusinessValidations.Feature.Ecommerce.Products.Create;
 
-public class BusinessValidationCreateProduct
+public sealed class BusinessValidationCreateProduct
 {
     private readonly IEfUnitOfWork _efUnitOfWork;
 
@@ -14,13 +13,7 @@ public class BusinessValidationCreateProduct
 
     public async Task CreateValidate(CreateProductCommandDto request)
     {
-        int countProduct = await _efUnitOfWork.EfRepository<ProductEntity>()
-            .Count(false, filter: x => x.Name!.Equals(request.Name) && x.CategoryId.Equals(request.CategoryId));
-
-        if (countProduct > ushort.MinValue)
-        {
-            throw new MessageValidationException(
-                "CantExistProduct", $"Ya existe un producto con el nombre '{request.Name}' en la categoria #'{request.CategoryId}'");
-        }
+        // validate if exist Product with the same name and category
+        await GenericsValidation.MustnExistProductByNameAndCategoryId(request.Name!, request.CategoryId, _efUnitOfWork);
     }
 }

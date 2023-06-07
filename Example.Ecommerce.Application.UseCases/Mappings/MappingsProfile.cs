@@ -2,6 +2,7 @@
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Category.Response.Create;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Update;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Create;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
 using Example.Ecommerce.Application.DTO.Features.Parametrization.State.Response.Create;
@@ -25,9 +26,11 @@ public class MappingsProfile : Profile
 
         // Create category
         CreateMap<CreateProductCommandDto, ProductEntity>();
+        CreateMap<UpdateProductCommandDto, ProductEntity>();
 
         CreateMap<CategoryEntity, CreateCategoryResponseDto>();
         CreateMap<StateEntity, CreateStateResponseDto>();
+
         CreateMap<ProductEntity, CreateProductResponseDto>();
     }
 }

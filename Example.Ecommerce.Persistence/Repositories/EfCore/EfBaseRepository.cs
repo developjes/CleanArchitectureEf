@@ -1,18 +1,22 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence;
+﻿using AutoMapper;
+using Example.Ecommerce.Application.Interface.Persistence;
 using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Persistence.Specification;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Reflection;
+using static Dapper.SqlMapper;
 
 namespace Example.Ecommerce.Persistence.Repositories.EfCore;
 
-public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
+public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : BaseDomainEntity
 {
     private readonly DbContext _dbcontext;
     private readonly DbSet<T> _dbSet;
+    private readonly IMapper _mapper;
 
-    public EfBaseRepository(DbContext dbcontext) => (_dbcontext, _dbSet) = (dbcontext, dbcontext.Set<T>());
+    public EfBaseRepository(DbContext dbcontext, IMapper mapper) =>
+        (_dbcontext, _dbSet, _mapper) = (dbcontext, dbcontext.Set<T>(), mapper);
 
     public IQueryable<T> AsQuery() => _dbSet.AsQueryable<T>().AsNoTracking();
 
@@ -88,57 +92,26 @@ public sealed class EfBaseRepository<T> : IEfBaseRepository<T> where T : class
 
     #region Update Data
 
-    public async Task<T> Patch(object entityId, object updateObject)
+    public void Patch(T? entityToUpdate, object objSrcChanges)
     {
-        if (entityId is null)
-            throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
+        if (entityToUpdate is null)
+            throw new ArgumentNullException(nameof(entityToUpdate), $"{nameof(entityToUpdate)} cannot be null.");
 
-        if (updateObject is null)
-            throw new ArgumentNullException(nameof(entityId), $"{nameof(entityId)} cannot be null.");
+        if (objSrcChanges is null)
+            throw new ArgumentNullException(nameof(entityToUpdate), $"{nameof(entityToUpdate)} cannot be null.");
 
-        T? tEntity = await _dbSet.FindAsync(entityId);
+        _dbSet.Attach(entityToUpdate!);
 
-        if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
-
-        foreach (PropertyInfo? dbProperty in
-            tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
-        {
-            PropertyInfo? propertyNameNewTentity =
-                Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
-
-            if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) == true)
-                dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
-        }
-
-        return tEntity;
+        _mapper.Map(objSrcChanges, entityToUpdate, typeof(object), typeof(T));
     }
 
-    public T Patch(T? tEntity, object updateObject)
+    public void Update(T tEntity)
     {
-        if (tEntity is not null)
-            throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
+        if (_dbcontext.Entry(tEntity).State.Equals(EntityState.Detached))
+            _dbSet.Attach(tEntity);
 
-        if (updateObject is null)
-            throw new ArgumentNullException(nameof(tEntity), $"{nameof(tEntity)} cannot be null.");
-
-        _dbSet.Attach(tEntity!);
-
-        if (tEntity is null) throw new DbUpdateConcurrencyException(nameof(tEntity));
-
-        foreach (PropertyInfo? dbProperty in
-            tEntity!.GetType().GetProperties().Where(p => !p.GetGetMethod()!.GetParameters().Any()))
-        {
-            PropertyInfo? propertyNameNewTentity =
-                Array.Find(updateObject.GetType().GetProperties(), pp => pp.Name.Equals(dbProperty.Name));
-
-            if (propertyNameNewTentity?.GetType().Name.Equals(dbProperty.GetType().Name) is true)
-                dbProperty.SetValue(tEntity, propertyNameNewTentity.GetValue(updateObject, null));
-        }
-
-        return tEntity;
+        _dbcontext.Update(tEntity);
     }
-
-    public void Update(T tEntity) => _dbcontext.Update(tEntity);
 
     public void Update(IEnumerable<T> tEntitites) => _dbcontext.UpdateRange(tEntitites);
 

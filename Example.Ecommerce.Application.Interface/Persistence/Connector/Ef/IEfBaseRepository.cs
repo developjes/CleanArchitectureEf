@@ -51,9 +51,7 @@ public interface IEfBaseRepository<T> where T : class
 
     Task Insert(IEnumerable<T> tEntities);
 
-    Task<T> Patch(object entityId, object updateObject);
-
-    T Patch(T? tEntity, object updateObject);
+    void Patch(T? entityToUpdate, object objSrcChanges);
 
     void Update(T tEntity);
 

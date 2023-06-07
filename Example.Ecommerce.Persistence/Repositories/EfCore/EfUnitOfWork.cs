@@ -1,4 +1,5 @@
-﻿using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
+﻿using AutoMapper;
+using Example.Ecommerce.Application.Interface.Persistence.Connector.Ef;
 using Example.Ecommerce.Domain.Entities.Common;
 using Example.Ecommerce.Domain.Persistence;
 using Example.Ecommerce.Persistence.Contexts;
@@ -18,9 +19,13 @@ public class EfUnitOfWork : IEfUnitOfWork
     protected readonly EfApplicationDbContext _context;
     private Hashtable? _repositories;
     private bool _disposed;
+    private IMapper _mapper;
 
-    public EfUnitOfWork(EfApplicationDbContext context) =>
+    public EfUnitOfWork(EfApplicationDbContext context, IMapper mapper)
+    {
         _context = context ?? throw new ArgumentNullException(nameof(context));
+        _mapper = mapper;
+    }
 
     #region Repositories
 
@@ -37,7 +42,7 @@ public class EfUnitOfWork : IEfUnitOfWork
         if (!_repositories.ContainsKey(type))
         {
             Type repositoryType = typeof(EfBaseRepository<>);
-            object? repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
+            object? repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context, _mapper);
             _repositories.Add(type, repositoryInstance);
         }
 
@@ -68,7 +73,7 @@ public class EfUnitOfWork : IEfUnitOfWork
 
     #region Methods
 
-    public async Task<int> EfSave(CancellationToken cancellationToken = default) =>
+    public async Task<int> EfCommit(CancellationToken cancellationToken = default) =>
         await _context.SaveChangesAsync(cancellationToken);
 
     public void EfRejectChanges()

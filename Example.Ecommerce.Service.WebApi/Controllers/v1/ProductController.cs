@@ -1,6 +1,6 @@
 ﻿using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Create;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Read;
-using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Create;
+using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Request.Update;
 using Example.Ecommerce.Application.DTO.Features.Ecommerce.Products.Response.Read;
 using Example.Ecommerce.Application.DTO.Features.Shared.Create;
 using Example.Ecommerce.Application.DTO.Features.Shared.Paginate;
@@ -79,12 +79,12 @@ public sealed class ProductController : ControllerBase
     ///
     /// POST api/Product/Store
     /// {
-    ///     "name": "TV",
-    ///     "price": 400000,
-    ///     "description": "Televisor 24 pulgadas",
-    ///     "seller": "Junior Casas",
-    ///     "stock": 20,
-    ///     "categoryId": 1
+    ///     "name": "TV", *
+    ///     "price": 400000, *
+    ///     "description": "Televisor 24 pulgadas", *
+    ///     "seller": "Junior Casas", *
+    ///     "stock": 20, *
+    ///     "categoryId": 1 *
     /// }
     /// </para>
     /// </remarks>
@@ -100,29 +100,36 @@ public sealed class ProductController : ControllerBase
         return StatusCode(response.Status, response);
     }
 
-
+    /// <summary>Actualizar un producto</summary>
+    /// <remarks>
+    /// <para>Sample request:
+    ///
+    /// -H 'accept: */*'
+    /// -H 'Content-Type: application/json'
+    ///
+    /// PUT api/Product/1/Update/
+    /// {
+    ///     "Id": 1,
+    ///     "name": "TV",
+    ///     "price": 400000,
+    ///     "description": "Televisor 24 pulgadas",
+    ///     "seller": "Junior Casas",
+    ///     "stock": 20,
+    ///     "categoryId": 1
+    /// }
+    /// </para>
+    /// </remarks>
     [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Product" })]
-    [HttpPut("pruebaPut", Name = "PruebaPut")]
-    public IActionResult PutController()
+    [HttpPut("Update", Name = "UpdateProduct")]
+    [HttpPatch("Patch", Name = "PatchUpdateProduct")]
+    [SwaggerOperation(OperationId = "UpdateProduct", Tags = new[] { "Product" })]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+    [ProducesResponseType(typeof(ValidationMessageDetails), StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<Unit>> PutController([FromBody] UpdateProductCommandDto request)
     {
-        return Ok();
-    }
-
-    [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Product" })]
-    [HttpPatch("pruebaPatch", Name = "PruebaPatch")]
-    public IActionResult PatchController()
-    {
-        return Ok();
-    }
-
-    [AllowAnonymous]
-    [SwaggerOperation(Tags = new[] { "Product" })]
-    [HttpDelete("pruebaDelete", Name = "PruebaDelete")]
-    public IActionResult DeleteController()
-    {
-        return Ok();
+        await _mediator.Send(request);
+        return StatusCode(StatusCodes.Status204NoContent);
     }
 
     #endregion Methods

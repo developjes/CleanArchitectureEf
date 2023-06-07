@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.ECS" Version="3.7.108.15" />
+    <PackageReference Include="AWSSDK.ECS" Version="3.7.108.16" />
     <PackageReference Include="AWSSDK.SecretsManager.Caching" Version="1.0.5" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="5.7.0" />
     <PackageReference Include="MicroElements.Swashbuckle.FluentValidation.WebApi" Version="0.1.0" />
