@@ -49,11 +49,10 @@ public sealed class ProductController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [Route("list", Name = "GetProductList")]
-    [SwaggerOperation(OperationId = "ProductList", Tags = new[] { "Product" }
-    )]
+    [SwaggerOperation(OperationId = "ProductList", Tags = new[] { "Product" })]
     [ProducesResponseType(typeof(IReadOnlyList<ProductResponseDto>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetAll() =>
-        Ok(await _mediator.Send(new GetProductListQueryDto()));
+        StatusCode(StatusCodes.Status200OK, await _mediator.Send(new GetProductListQueryDto()));
 
     /// <summary>
     /// Return Paginated product list
@@ -68,7 +67,7 @@ public sealed class ProductController : ControllerBase
         paginationProductsQuery.State = EProductState.Active;
         PaginationResponseDto<ProductResponseDto> paginationProduct = await _mediator.Send(paginationProductsQuery);
 
-        return Ok(paginationProduct);
+        return StatusCode(StatusCodes.Status200OK, paginationProduct);
     }
 
     /// <summary>Create a new peoduct</summary>
