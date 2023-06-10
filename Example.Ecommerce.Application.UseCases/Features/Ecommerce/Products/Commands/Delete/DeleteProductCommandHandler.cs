@@ -28,7 +28,7 @@ public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommandD
             .GetFirst(true, filter: x => x.Id.Equals(request.Id), cancellationToken: cancellationToken);
 
         // Delete Product
-        _efUnitOfWork.EfRepository<ProductEntity>().Delete(productToDelete!);
+        _efUnitOfWork.EfRepository<ProductEntity>().Delete(productToDelete);
 
         // Validation for save changes
         if (await _efUnitOfWork.EfCommit(cancellationToken: cancellationToken) <= sbyte.MinValue) // Commit changes
